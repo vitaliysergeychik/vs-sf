@@ -24,17 +24,17 @@ private class AccountControllerTest {
     static void testGetAllInactiveAccounts() {
         // Create test data
         List<Account> testAccounts = new List<Account>();
-        for (Integer i = 0; i < 10; i++) {
+        for (Integer i = 0; i < 3; i++) {
             testAccounts.add(new Account(Name = 'Test Account ' + i, Active__c = 'No'));
         }
         insert testAccounts;
 
         List<Account> inactiveAccounts = new List<Account>();
         Test.startTest();
-        inactiveAccounts = AccountController.getAllActiveAccounts();
+        inactiveAccounts = AccountController.getAllInactiveAccounts();
         Test.stopTest();
         // Assert the size of the list
-        System.assertEquals(0, inactiveAccounts.size());
+        System.assertEquals(3, inactiveAccounts.size());
     }
 
     @isTest
