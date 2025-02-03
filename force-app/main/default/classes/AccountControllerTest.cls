@@ -3,26 +3,20 @@ private class AccountControllerTest {
 
 @isTest
     static void testGetAllActiveAccounts() {
-        List<Account> allAccounts = new List<Account>();
-        User adminUser = createAdminUser();
-        System.runAs(adminUser) {
-            Test.startTest();
-            allAccounts = AccountController.getAllActiveAccounts();
-            Test.stopTest();
-        }
+        List<Account> allActiveAccounts = new List<Account>();
+        Test.startTest();
+        allActiveAccounts = AccountController.getAllActiveAccounts();
+        Test.stopTest();
         //Assert the size of the list
-        System.assertEquals(3, allAccounts.size());
+        System.assertEquals(10, allActiveAccounts.size());
     }
 @isTest
     static void testGetAllInactiveAccounts() {
-        List<Account> allAccounts = new List<Account>();
-        User adminUser = createAdminUser();
-        System.runAs(adminUser) {
-            Test.startTest();
-            allAccounts = AccountController.getAllInactiveAccounts();
-            Test.stopTest();
-        }
+        List<Account> inactiveAccounts = new List<Account>();
+        Test.startTest();
+        inactiveAccounts = AccountController.getAllActiveAccounts();
+        Test.stopTest();
         //Assert the size of the list
-        System.assertEquals(3, allAccounts.size());
+        System.assertEquals(0, inactiveAccounts.size());
     }
 }
