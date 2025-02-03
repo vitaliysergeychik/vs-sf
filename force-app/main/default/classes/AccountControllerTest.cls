@@ -51,6 +51,7 @@ private class AccountControllerTest {
         allAccounts = AccountController.getAllAccounts();
         Test.stopTest();
         // Assert that allAccounts list is not null and has size 13
+        // Assert that the list is not null
         System.assertNotEquals(null, allAccounts);
         System.assertEquals(13, allAccounts.size());
     }
