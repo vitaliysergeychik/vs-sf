@@ -7,7 +7,9 @@ private class AccountControllerTest {
         Test.startTest();
         allActiveAccounts = AccountController.getAllActiveAccounts();
         Test.stopTest();
-        //Assert the size of the list
+        // Print the size of the list
+        System.debug('Size of allActiveAccounts: ' + allActiveAccounts.size());
+        // Assert the size of the list
         System.assertEquals(10, allActiveAccounts.size());
     }
 @isTest
