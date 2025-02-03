@@ -1,8 +1,15 @@
 @isTest
 private class AccountControllerTest {
 
-@isTest
+    @isTest
     static void testGetAllActiveAccounts() {
+        // Create test data
+        List<Account> testAccounts = new List<Account>();
+        for (Integer i = 0; i < 10; i++) {
+            testAccounts.add(new Account(Name = 'Test Account ' + i, Active__c = 'Yes'));
+        }
+        insert testAccounts;
+
         List<Account> allActiveAccounts = new List<Account>();
         Test.startTest();
         allActiveAccounts = AccountController.getAllActiveAccounts();
@@ -12,17 +19,33 @@ private class AccountControllerTest {
         // Assert the size of the list
         System.assertEquals(10, allActiveAccounts.size());
     }
-@isTest
+
+    @isTest
     static void testGetAllInactiveAccounts() {
+        // Create test data
+        List<Account> testAccounts = new List<Account>();
+        for (Integer i = 0; i < 10; i++) {
+            testAccounts.add(new Account(Name = 'Test Account ' + i, Active__c = 'No'));
+        }
+        insert testAccounts;
+
         List<Account> inactiveAccounts = new List<Account>();
         Test.startTest();
         inactiveAccounts = AccountController.getAllActiveAccounts();
         Test.stopTest();
-        //Assert the size of the list
+        // Assert the size of the list
         System.assertEquals(0, inactiveAccounts.size());
     }
-@isTest
+
+    @isTest
     static void testGetAllAccounts() {
+        // Create test data
+        List<Account> testAccounts = new List<Account>();
+        for (Integer i = 0; i < 13; i++) {
+            testAccounts.add(new Account(Name = 'Test Account ' + i));
+        }
+        insert testAccounts;
+
         List<Account> allAccounts = new List<Account>();
         Test.startTest();
         allAccounts = AccountController.getAllAccounts();
