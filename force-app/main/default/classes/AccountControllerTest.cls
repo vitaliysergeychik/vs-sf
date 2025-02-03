@@ -21,4 +21,14 @@ private class AccountControllerTest {
         //Assert the size of the list
         System.assertEquals(0, inactiveAccounts.size());
     }
+@isTest
+    static void testGetAllAccounts() {
+        List<Account> allAccounts = new List<Account>();
+        Test.startTest();
+        allAccounts = AccountController.getAllAccounts();
+        Test.stopTest();
+        // Assert that allAccounts list is not null and has size 13
+        System.assertNotEquals(null, allAccounts);
+        System.assertEquals(13, allAccounts.size());
+    }
 }
