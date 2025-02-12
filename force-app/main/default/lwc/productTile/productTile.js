@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api } from 'LWC';
 
 /**
  * A presentation component to display a Product__c sObject. The provided

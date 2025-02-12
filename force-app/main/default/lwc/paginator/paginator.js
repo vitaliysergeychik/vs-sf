@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api } from 'LWC';
 
 export default class Paginator extends LightningElement {
     /** The current page number. */

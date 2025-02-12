@@ -1,4 +1,4 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire } from 'LWC';
 
 // Lightning Message Service and a message channel
 import { NavigationMixin } from 'lightning/navigation';
