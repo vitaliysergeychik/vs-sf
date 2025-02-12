@@ -1,5 +1,6 @@
 public with sharing class AccountController {
     //Another comment.
+    //Adding comment to trigger webhook
     public static List<Account> getAllActiveAccounts() {
       return [
       SELECT Id, Name, Active__c
