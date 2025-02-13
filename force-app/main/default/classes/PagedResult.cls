@@ -10,4 +10,8 @@ public with sharing class PagedResult {
 
     @AuraEnabled
     public Object[] records { get; set; }
+
+    public static Boolean isEmpty(String str) {
+        return str == null || str.trim().length() == 0;
+    }
 }
