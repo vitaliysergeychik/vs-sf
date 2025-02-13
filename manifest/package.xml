@@ -199,10 +199,6 @@
         <name>PermissionSetGroup</name>
     </types>
     <types>
-        <members>DataCloudGeoLocation</members>
-        <name>CleanDataService</name>
-    </types>
-    <types>
         <members>Program_Definition_sfdcSESv60</members>
         <members>Program_Definition_sfdcSESv61</members>
         <members>Program_Progress_sfdcSESv60</members>
