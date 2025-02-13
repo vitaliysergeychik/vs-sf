@@ -151,6 +151,7 @@
         <members>LightningService_UtilityBar</members>
         <members>RevenueCloudConsole_UtilityBar</members>
         <members>SalesCloudMobile_UtilityBar</members>
+        <members>Support_Home_Page</members>
         <name>FlexiPage</name>
     </types>
     <types>
