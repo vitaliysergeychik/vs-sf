@@ -5,7 +5,7 @@
     "**/.sfdx": true
   },
   "codescan.connectedMode.project": {
-    "connectionId": "githubrepos",
+    "connectionId": "githubsrepos-vsIDE",
     "projectKey": "vs-sf_githubrepos"
   }
 }
