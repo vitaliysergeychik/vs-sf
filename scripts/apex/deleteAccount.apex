@@ -5,3 +5,5 @@ List<Case> cases = [SELECT Id, AccountId FROM Case WHERE AccountId = :accounts[0
 for (Account acc : accounts) {
         delete acc;
 }
+
+//another change here
