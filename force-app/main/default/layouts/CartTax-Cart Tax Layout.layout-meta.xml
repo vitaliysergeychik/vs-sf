@@ -19,10 +19,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>CartItemPriceAdjustmentId</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>TaxType</field>
             </layoutItems>
             <layoutItems>
@@ -35,19 +31,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>TaxRate</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>Name</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Description</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
-        <style>TwoColumnsLeftToRight</style>
+        <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -60,13 +48,10 @@
         <fields>CartItemId</fields>
         <fields>CartId</fields>
         <fields>CreatedDate</fields>
-        <fields>CartItemPriceAdjustmentId</fields>
         <fields>TaxType</fields>
         <fields>TaxCalculationDate</fields>
         <fields>Amount</fields>
-        <fields>TaxRate</fields>
         <fields>Name</fields>
-        <fields>Description</fields>
     </miniLayout>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
