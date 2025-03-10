@@ -31,12 +31,6 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>helloWorld</componentName>
-                <identifier>c_helloWorld</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentName>runtime_sales_activities:todayTaskContainer</componentName>
                 <identifier>runtime_sales_activities_todayTaskContainer</identifier>
             </componentInstance>
@@ -56,6 +50,12 @@
             <componentInstance>
                 <componentName>home:assistant</componentName>
                 <identifier>home_assistant</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>helloWorld</componentName>
+                <identifier>c_helloWorld</identifier>
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>
