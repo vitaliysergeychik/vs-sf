@@ -7,5 +7,6 @@
   "codescan.connectedMode.project": {
     "connectionId": "githubsrepos-vsIDE",
     "projectKey": "vs-sf_githubrepos"
-  }
+  },
+  "salesforcedx-vscode-core.show-cli-success-msg": false
 }
