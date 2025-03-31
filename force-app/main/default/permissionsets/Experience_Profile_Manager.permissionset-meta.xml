@@ -3,6 +3,10 @@
     <hasActivationRequired>false</hasActivationRequired>
     <label>Experience Profile Manager</label>
     <license>Salesforce</license>
+    <tabSettings>
+        <tab>standard-SemanticModel</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessCMC</name>
