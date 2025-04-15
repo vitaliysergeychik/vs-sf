@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <version>61.0</version>
+    <version>62.0</version>
     <types>
         <members>enablement_coaching_feedback_ready</members>
         <name>CustomNotificationType</name>
     </types>
     <types>
+        <members>Candidate__c.New_Job_App</members>
         <members>Case.LogACall</members>
         <members>Case.NewChildCase</members>
         <members>CollaborationGroup.NewGroupMember</members>
@@ -28,6 +29,20 @@
         <name>QuickAction</name>
     </types>
     <types>
+        <members>Candidate__c</members>
+        <members>Interviewer__c</members>
+        <members>Job_Application__c</members>
+        <members>Job_Posting_Site__c</members>
+        <members>Position__c</members>
+        <members>Review__c</members>
+        <members>Zip_Code__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>Department</members>
+        <name>GlobalValueSet</name>
+    </types>
+    <types>
         <members>Enablement_sfdcSESv60</members>
         <members>Enablement_sfdcSESv61</members>
         <name>Dashboard</name>
@@ -42,6 +57,7 @@
         <members>Admin</members>
         <members>Analytics Cloud Integration User</members>
         <members>Analytics Cloud Security User</members>
+        <members>Anypoint Integration</members>
         <members>Authenticated Website</members>
         <members>B2B Reordering Portal Buyer Profile</members>
         <members>Chatter External User</members>
@@ -58,11 +74,13 @@
         <members>Customer Community User</members>
         <members>Customer Portal Manager Custom</members>
         <members>Customer Portal Manager Standard</members>
+        <members>Einstein Agent User</members>
         <members>External Apps Login User</members>
         <members>External Identity User</members>
         <members>Force%2Ecom - App Subscription User</members>
         <members>Force%2Ecom - Free User</members>
         <members>Gold Partner User</members>
+        <members>HR Recruiter</members>
         <members>High Volume Customer Portal User</members>
         <members>HighVolumePortal</members>
         <members>Identity User</members>
@@ -74,6 +92,8 @@
         <members>Partner Community User</members>
         <members>PlatformPortal</members>
         <members>Read Only</members>
+        <members>Recruiter%3A Nontechnical</members>
+        <members>Recruiter%3A Technical</members>
         <members>Salesforce API Only System Integrations</members>
         <members>Silver Partner User</members>
         <members>SolutionManager</members>
@@ -83,6 +103,7 @@
         <name>Profile</name>
     </types>
     <types>
+        <members>Recruiting</members>
         <members>standard__AllTabSet</members>
         <members>standard__AppLauncher</members>
         <members>standard__Chatter</members>
@@ -122,6 +143,7 @@
         <members>Asset.AllAssets</members>
         <members>Campaign.AllActiveCampaigns</members>
         <members>Campaign.MyActiveCampaigns</members>
+        <members>Candidate__c.All</members>
         <members>Case.AllClosedCases</members>
         <members>Case.AllOpenCases</members>
         <members>Case.MyCases</members>
@@ -139,6 +161,9 @@
         <members>Contract.MyActivatedContracts</members>
         <members>Contract.MyDraftContracts</members>
         <members>Contract.MyInApprovalContracts</members>
+        <members>Interviewer__c.All</members>
+        <members>Job_Application__c.All</members>
+        <members>Job_Posting_Site__c.All</members>
         <members>Lead.AllOpenLeads</members>
         <members>Lead.MyUnreadLeads</members>
         <members>Lead.TodaysLeads</members>
@@ -157,12 +182,15 @@
         <members>Order.AllActivatedOrders</members>
         <members>Order.AllDraftOrders</members>
         <members>Order.AllOrders</members>
+        <members>Position__c.All</members>
         <members>Product2.AllProducts</members>
+        <members>Review__c.All</members>
         <members>Solution.AllReviewedSolutions</members>
         <members>Solution.AllUnreviewedSolutions</members>
         <members>User.ActiveUsers</members>
         <members>User.AdminUsers</members>
         <members>User.AllUsers</members>
+        <members>Zip_Code__c.All</members>
         <name>ListView</name>
     </types>
     <types>
@@ -170,6 +198,11 @@
         <members>Contact.Standard_Contact_Duplicate_Rule</members>
         <members>Lead.Standard_Lead_Duplicate_Rule</members>
         <name>DuplicateRule</name>
+    </types>
+    <types>
+        <members>Position__c.Nontechnical_Position</members>
+        <members>Position__c.Technical_Position</members>
+        <name>RecordType</name>
     </types>
     <types>
         <members>enablement/sfdcEnablement_EnablementWorkspace.sfdc_cms__languageSettings/languages</members>
@@ -218,17 +251,36 @@
         <name>ReportType</name>
     </types>
     <types>
+        <members>Candidate_Record_Page</members>
         <members>ContactCenter_UtilityBar</members>
         <members>CrisisCenter_UtilityBar</members>
         <members>ExpressionSetConsole_UtilityBar</members>
         <members>FlowsApp_UtilityBar</members>
         <members>Home_Page_Default</members>
+        <members>Job_Application_Record_Page</members>
         <members>LightningSalesConsole_UtilityBar</members>
         <members>LightningSales_UtilityBar</members>
         <members>LightningService_UtilityBar</members>
         <members>RevenueCloudConsole_UtilityBar</members>
+        <members>Review_Record_Page</members>
         <members>SalesCloudMobile_UtilityBar</members>
+        <members>Technical_Position_Page</members>
         <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Candidate__c</members>
+        <members>Interviewer__c</members>
+        <members>Job_Application__c</members>
+        <members>Job_Posting_Site__c</members>
+        <members>Job_Posting__c</members>
+        <members>Position__c</members>
+        <members>Review__c</members>
+        <members>Zip_Code__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Candidate__c.Includes_Candidate_Name</members>
+        <name>CompactLayout</name>
     </types>
     <types>
         <members>EBotR_v3</members>
@@ -270,8 +322,16 @@
         <name>EscalationRule</name>
     </types>
     <types>
+        <members>HR_Recruiter_profilePasswordPolicy1744645569041</members>
+        <name>ProfilePasswordPolicy</name>
+    </types>
+    <types>
         <members>helloWorld</members>
         <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>HR_Recruiter_profileSessionSetting1744645569138</members>
+        <name>ProfileSessionSetting</name>
     </types>
     <types>
         <members>Account.Billing</members>
@@ -279,6 +339,15 @@
         <members>Case.UpsellCrosssellOpportunity</members>
         <members>Opportunity.DeliveryStatus</members>
         <name>WebLink</name>
+    </types>
+    <types>
+        <members>AW_Computing_logo</members>
+        <name>ContentAsset</name>
+    </types>
+    <types>
+        <members>Candidate__c.Zip_Code_Consistent_with_State</members>
+        <members>Position__c.Every_Position_Must_Have_a_Hiring_Mgr</members>
+        <name>ValidationRule</name>
     </types>
     <types>
         <members>standard case</members>
@@ -347,6 +416,7 @@
         <members>CalculationProcedureVersion-Calculation Procedure Version Layout</members>
         <members>Campaign-Campaign Layout</members>
         <members>CampaignMember-Campaign Member Page Layout</members>
+        <members>Candidate__c-Candidate Layout</members>
         <members>CardPaymentMethod-Card Payment Method Layout</members>
         <members>CartCheckoutSession-Cart Checkout Session Layout</members>
         <members>CartDeliveryGroup-Cart Delivery Group Layout</members>
@@ -402,8 +472,12 @@
         <members>GuestUserAnomalyEventStore-Guest User Anomaly Event Store Layout</members>
         <members>Idea-Idea Layout</members>
         <members>Individual-Individual Layout</members>
+        <members>Interviewer__c-Interviewer Layout</members>
         <members>Invoice-Invoice Layout</members>
         <members>InvoiceLine-Invoice Line Layout</members>
+        <members>Job_Application__c-Job Application Layout</members>
+        <members>Job_Posting_Site__c-Job Posting Site Layout</members>
+        <members>Job_Posting__c-Job Posting Layout</members>
         <members>Lead-Lead %28Marketing%29 Layout</members>
         <members>Lead-Lead %28Sales%29 Layout</members>
         <members>Lead-Lead %28Support%29 Layout</members>
@@ -428,6 +502,7 @@
         <members>PaymentGatewayLog-Payment Gateway Log Layout</members>
         <members>PaymentGroup-Payment Group Layout</members>
         <members>PaymentLineInvoice-Payment Line Invoice Layout</members>
+        <members>Position__c-Position Layout</members>
         <members>Pricebook2-Price Book Layout</members>
         <members>PricebookEntry-Price Book Entry Layout</members>
         <members>ProcessException-Process Exception Layout</members>
@@ -445,6 +520,7 @@
         <members>ReturnOrderLineItem-Return Order Line Item Layout</members>
         <members>RevenueAsyncOperation-Revenue Async Operation Layout</members>
         <members>RevenueTransactionErrorLog-Revenue Transaction Error Log Layout</members>
+        <members>Review__c-Review Layout</members>
         <members>Scorecard-Scorecard Layout</members>
         <members>ScorecardAssociation-Scorecard Association Layout</members>
         <members>ScorecardMetric-Scorecard Metric Layout</members>
@@ -486,12 +562,18 @@
         <members>WorkType-Work Type Layout</members>
         <members>WorkTypeGroup-Work Type Group Layout</members>
         <members>WorkTypeGroupMember-Work Type Group Member Layout</members>
+        <members>Zip_Code__c-Zip Code Layout</members>
         <name>Layout</name>
     </types>
     <types>
         <members>Experience_Profile_Manager</members>
+        <members>Hiring_Manager</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>AccountController</members>
+        <name>ApexClass</name>
     </types>
     <types>
         <members>Account.Active__c</members>
@@ -501,12 +583,46 @@
         <members>Account.SLASerialNumber__c</members>
         <members>Account.SLA__c</members>
         <members>Account.UpsellOpportunity__c</members>
+        <members>Candidate__c.City__c</members>
+        <members>Candidate__c.Country__c</members>
+        <members>Candidate__c.Current_Employer__c</members>
+        <members>Candidate__c.Currently_Employed__c</members>
+        <members>Candidate__c.Education__c</members>
+        <members>Candidate__c.Email__c</members>
+        <members>Candidate__c.First_Name__c</members>
+        <members>Candidate__c.Last_Name__c</members>
+        <members>Candidate__c.Legacy_Candidate_Number__c</members>
+        <members>Candidate__c.Mobile__c</members>
+        <members>Candidate__c.Phone__c</members>
+        <members>Candidate__c.State_Province__c</members>
+        <members>Candidate__c.Street_Address_1__c</members>
+        <members>Candidate__c.Street_Address_2__c</members>
+        <members>Candidate__c.Years_of_Experience__c</members>
+        <members>Candidate__c.Zip_Postal_Code__c</members>
         <members>Case.EngineeringReqNumber__c</members>
         <members>Case.PotentialLiability__c</members>
         <members>Case.Product__c</members>
         <members>Case.SLAViolation__c</members>
         <members>Contact.Languages__c</members>
         <members>Contact.Level__c</members>
+        <members>Interviewer__c.Employee__c</members>
+        <members>Interviewer__c.Legacy_Interviewer_Number__c</members>
+        <members>Interviewer__c.Position__c</members>
+        <members>Job_Application__c.Average_Review_Score__c</members>
+        <members>Job_Application__c.Candidate__c</members>
+        <members>Job_Application__c.Legacy_Job_Application_Number__c</members>
+        <members>Job_Application__c.Number_of_Reviews__c</members>
+        <members>Job_Application__c.Position__c</members>
+        <members>Job_Application__c.Review_Indicator__c</members>
+        <members>Job_Application__c.Stage__c</members>
+        <members>Job_Application__c.Status__c</members>
+        <members>Job_Application__c.Total_Review_Score__c</members>
+        <members>Job_Posting_Site__c.Description__c</members>
+        <members>Job_Posting_Site__c.Job_Posting_Site_URL__c</members>
+        <members>Job_Posting_Site__c.Status__c</members>
+        <members>Job_Posting_Site__c.Technical_Site__c</members>
+        <members>Job_Posting__c.Job_Posting_Site__c</members>
+        <members>Job_Posting__c.Position__c</members>
         <members>Lead.CurrentGenerators__c</members>
         <members>Lead.NumberofLocations__c</members>
         <members>Lead.Primary__c</members>
@@ -517,6 +633,35 @@
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
+        <members>Position__c.Approval_Status__c</members>
+        <members>Position__c.Department__c</members>
+        <members>Position__c.Education__c</members>
+        <members>Position__c.Hiring_Manager__c</members>
+        <members>Position__c.Job_Description__c</members>
+        <members>Position__c.Legacy_Position_Number__c</members>
+        <members>Position__c.Location__c</members>
+        <members>Position__c.Operating_Systems__c</members>
+        <members>Position__c.Pay_Grade__c</members>
+        <members>Position__c.Programming_Languages__c</members>
+        <members>Position__c.Related_Position__c</members>
+        <members>Position__c.Salary_Range__c</members>
+        <members>Position__c.Skills_Required__c</members>
+        <members>Position__c.Status__c</members>
+        <members>Review__c.Candidate_Name__c</members>
+        <members>Review__c.Core_Competencies_Comments__c</members>
+        <members>Review__c.Core_Competencies__c</members>
+        <members>Review__c.Experience_Comments__c</members>
+        <members>Review__c.Experience__c</members>
+        <members>Review__c.Interviewer__c</members>
+        <members>Review__c.Job_Application__c</members>
+        <members>Review__c.Leadership_Skills_Comments__c</members>
+        <members>Review__c.Leadership_Skills__c</members>
+        <members>Review__c.Overall_Review_Score__c</members>
+        <members>Review__c.Position_Title__c</members>
+        <members>Review__c.Reason_Recommended__c</members>
+        <members>Review__c.Recommend_for_Hire__c</members>
+        <members>Zip_Code__c.City__c</members>
+        <members>Zip_Code__c.State__c</members>
         <name>CustomField</name>
     </types>
     <types>
