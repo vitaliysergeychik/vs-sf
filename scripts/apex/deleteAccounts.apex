@@ -43,3 +43,5 @@ for (Account acc : accountsToDelete) {
 if (!accountsToDelete.isEmpty()) {
     delete accountsToDelete;
 }
+
+System.debug('=======Accounts deleted=======');
