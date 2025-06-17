@@ -70,6 +70,7 @@
         <members>MarketingProfile</members>
         <members>Minimum Access - API Only Integrations</members>
         <members>Minimum Access - Salesforce</members>
+        <members>New_Marketing_User</members>
         <members>New_SF_Admin</members>
         <members>New_Standard_User</members>
         <members>Partner App Subscription User</members>
@@ -208,6 +209,7 @@
         <members>force__SubscriptionManagementSalesOperationsRep</members>
         <members>force__SubscriptionManagementSalesRep</members>
         <members>force__SubscriptionManagementTaxAdmin</members>
+        <members>view_and_api</members>
         <name>PermissionSetGroup</name>
     </types>
     <types>
@@ -538,7 +540,9 @@
         <name>Layout</name>
     </types>
     <types>
+        <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
+        <members>View_All_Data</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>
