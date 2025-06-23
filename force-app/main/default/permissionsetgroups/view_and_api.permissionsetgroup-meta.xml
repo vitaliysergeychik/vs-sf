@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>view_and_api</label>
+    <permissionSets>API_Is_Enabled</permissionSets>
+    <permissionSets>View_All_Data</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>

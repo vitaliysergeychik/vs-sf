@@ -1,4 +1,5 @@
-<apex:page id="communitiesLandingPage"
+<apex:page
+    id="communitiesLandingPage"
     controller="CommunitiesLandingController"
     action="{!forwardToStartPage}"
     title="{!$Label.site.site_login}"
