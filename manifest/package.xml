@@ -532,6 +532,7 @@
         <members>Lead.ProductInterest__c</members>
         <members>Lead.SICCode__c</members>
         <members>Movie__c.Genre__c</members>
+        <members>Movie__c.Score__c</members>
         <members>Opportunity.CurrentGenerators__c</members>
         <members>Opportunity.DeliveryInstallationStatus__c</members>
         <members>Opportunity.MainCompetitors__c</members>
