@@ -502,6 +502,7 @@
         <name>Layout</name>
     </types>
     <types>
+        <members>API_Enabled</members>
         <members>Experience_Profile_Manager</members>
         <members>New_Standard_PS</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
