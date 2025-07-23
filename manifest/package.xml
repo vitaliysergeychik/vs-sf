@@ -3,8 +3,6 @@
     <types>
         <members>AccountController</members>
         <members>AccountControllerTest</members>
-        <members>ContactController</members>
-        <members>OpportunityController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -29,6 +27,10 @@
         <members>Case</members>
         <members>Lead</members>
         <name>AssignmentRules</name>
+    </types>
+    <types>
+        <members>pageTemplate_2_7_3</members>
+        <name>AuraDefinitionBundle</name>
     </types>
     <types>
         <members>Case</members>
@@ -78,9 +80,9 @@
         <members>Account.AccountSource</members>
         <members>Account.Active__c</members>
         <members>Account.AnnualRevenue</members>
-        <members>Account.AutorabitExtId__c</members>
         <members>Account.BillingAddress</members>
         <members>Account.CleanStatus</members>
+        <members>Account.CurrencyIsoCode</members>
         <members>Account.CustomerPriority__c</members>
         <members>Account.DandbCompanyId</members>
         <members>Account.Description</members>
@@ -206,6 +208,7 @@
         <members>Asset.AssetServicedById</members>
         <members>Asset.ConsequenceOfFailure</members>
         <members>Asset.ContactId</members>
+        <members>Asset.CurrencyIsoCode</members>
         <members>Asset.CurrentAmount</members>
         <members>Asset.CurrentLifecycleEndDate</members>
         <members>Asset.CurrentMrr</members>
@@ -278,6 +281,7 @@
         <members>AssetActionSource.Subtotal</members>
         <members>AssetActionSource.TransactionDate</members>
         <members>AssetRelationship.AssetId</members>
+        <members>AssetRelationship.CurrencyIsoCode</members>
         <members>AssetRelationship.FromDate</members>
         <members>AssetRelationship.RelatedAssetId</members>
         <members>AssetRelationship.RelationshipType</members>
@@ -297,6 +301,7 @@
         <members>AssociatedLocation.ActiveFrom</members>
         <members>AssociatedLocation.ActiveTo</members>
         <members>AssociatedLocation.AssociatedLocationNumber</members>
+        <members>AssociatedLocation.CurrencyIsoCode</members>
         <members>AssociatedLocation.LocationId</members>
         <members>AssociatedLocation.ParentRecordId</members>
         <members>AssociatedLocation.Type</members>
@@ -340,6 +345,7 @@
         <members>Campaign.AmountWonOpportunities</members>
         <members>Campaign.BudgetedCost</members>
         <members>Campaign.CampaignMemberRecordTypeId</members>
+        <members>Campaign.CurrencyIsoCode</members>
         <members>Campaign.Description</members>
         <members>Campaign.EndDate</members>
         <members>Campaign.ExpectedResponse</members>
@@ -568,6 +574,7 @@
         <members>Case.AccountId</members>
         <members>Case.AssetId</members>
         <members>Case.BusinessHoursId</members>
+        <members>Case.Case_Category__c</members>
         <members>Case.ClosedDate</members>
         <members>Case.Comments</members>
         <members>Case.ContactEmail</members>
@@ -575,6 +582,7 @@
         <members>Case.ContactId</members>
         <members>Case.ContactMobile</members>
         <members>Case.ContactPhone</members>
+        <members>Case.CurrencyIsoCode</members>
         <members>Case.Description</members>
         <members>Case.EngineeringReqNumber__c</members>
         <members>Case.EntitlementId</members>
@@ -694,6 +702,7 @@
         <members>CommSubscriptionTiming.PreferredTimeZone</members>
         <members>CommSubscriptionTiming.Unit</members>
         <members>ConsumptionRate.ConsumptionScheduleId</members>
+        <members>ConsumptionRate.CurrencyIsoCode</members>
         <members>ConsumptionRate.Description</members>
         <members>ConsumptionRate.LowerBound</members>
         <members>ConsumptionRate.Name</members>
@@ -718,6 +727,7 @@
         <members>Contact.BuyerAttributes</members>
         <members>Contact.CleanStatus</members>
         <members>Contact.ContactSource</members>
+        <members>Contact.CurrencyIsoCode</members>
         <members>Contact.Department</members>
         <members>Contact.Description</members>
         <members>Contact.DoNotCall</members>
@@ -834,6 +844,7 @@
         <members>ContactRequest.WhatId</members>
         <members>ContactRequest.WhoId</members>
         <members>ContentVersion.ContentSize</members>
+        <members>ContentVersion.CurrencyIsoCode</members>
         <members>ContentVersion.Description</members>
         <members>ContentVersion.FileExtension</members>
         <members>ContentVersion.FileType</members>
@@ -851,6 +862,7 @@
         <members>Contract.CompanySignedDate</members>
         <members>Contract.CompanySignedId</members>
         <members>Contract.ContractTerm</members>
+        <members>Contract.CurrencyIsoCode</members>
         <members>Contract.CustomerSignedDate</members>
         <members>Contract.CustomerSignedId</members>
         <members>Contract.CustomerSignedTitle</members>
@@ -898,9 +910,11 @@
         <members>CreditMemo.CorpCrcyCnvTotAmtWithTax</members>
         <members>CreditMemo.CorporateCurrencyCvsnDate</members>
         <members>CreditMemo.CorporateCurrencyCvsnRate</members>
+        <members>CreditMemo.CorporateCurrencyIsoCode</members>
         <members>CreditMemo.CreationMode</members>
         <members>CreditMemo.CreditDate</members>
         <members>CreditMemo.CreditMemoNumber</members>
+        <members>CreditMemo.CurrencyIsoCode</members>
         <members>CreditMemo.Description</members>
         <members>CreditMemo.ExternalReference</members>
         <members>CreditMemo.ExternalReferenceDataSource</members>
@@ -924,6 +938,7 @@
         <members>CreditMemoInvApplication.AppliedDate</members>
         <members>CreditMemoInvApplication.AssociatedLineId</members>
         <members>CreditMemoInvApplication.CreditMemoId</members>
+        <members>CreditMemoInvApplication.CurrencyIsoCode</members>
         <members>CreditMemoInvApplication.Date</members>
         <members>CreditMemoInvApplication.Description</members>
         <members>CreditMemoInvApplication.EffectiveDate</members>
@@ -942,7 +957,9 @@
         <members>CreditMemoLine.CorpCurrencyCnvTotalTaxAmt</members>
         <members>CreditMemoLine.CorporateCurrencyCvsnDate</members>
         <members>CreditMemoLine.CorporateCurrencyCvsnRate</members>
+        <members>CreditMemoLine.CorporateCurrencyIsoCode</members>
         <members>CreditMemoLine.CreditMemoId</members>
+        <members>CreditMemoLine.CurrencyIsoCode</members>
         <members>CreditMemoLine.Description</members>
         <members>CreditMemoLine.EndDate</members>
         <members>CreditMemoLine.LineAmount</members>
@@ -1190,6 +1207,7 @@
         <members>Event.ActivityDate</members>
         <members>Event.ActivityDateTime</members>
         <members>Event.Attendees</members>
+        <members>Event.CurrencyIsoCode</members>
         <members>Event.Description</members>
         <members>Event.DurationInMinutes</members>
         <members>Event.Email</members>
@@ -1476,6 +1494,8 @@
         <members>Invoice.CorpCrcyCnvTotAmtWithTax</members>
         <members>Invoice.CorporateCurrencyCvsnDate</members>
         <members>Invoice.CorporateCurrencyCvsnRate</members>
+        <members>Invoice.CorporateCurrencyIsoCode</members>
+        <members>Invoice.CurrencyIsoCode</members>
         <members>Invoice.Description</members>
         <members>Invoice.DueDate</members>
         <members>Invoice.InvoiceDate</members>
@@ -1509,6 +1529,8 @@
         <members>InvoiceLine.CorpCurrencyCnvTotalTaxAmt</members>
         <members>InvoiceLine.CorporateCurrencyCvsnDate</members>
         <members>InvoiceLine.CorporateCurrencyCvsnRate</members>
+        <members>InvoiceLine.CorporateCurrencyIsoCode</members>
+        <members>InvoiceLine.CurrencyIsoCode</members>
         <members>InvoiceLine.Description</members>
         <members>InvoiceLine.InvoiceId</members>
         <members>InvoiceLine.InvoiceLineEndDate</members>
@@ -1534,6 +1556,7 @@
         <members>Lead.CleanStatus</members>
         <members>Lead.Company</members>
         <members>Lead.CompanyDunsNumber</members>
+        <members>Lead.CurrencyIsoCode</members>
         <members>Lead.CurrentGenerators__c</members>
         <members>Lead.DandbCompanyId</members>
         <members>Lead.Description</members>
@@ -1564,6 +1587,7 @@
         <members>Lead.Website</members>
         <members>LeadCleanInfo.Industry</members>
         <members>LegalEntity.CompanyName</members>
+        <members>LegalEntity.CurrencyIsoCode</members>
         <members>LegalEntity.Description</members>
         <members>LegalEntity.LegalEntityAddress</members>
         <members>LegalEntity.Name</members>
@@ -1612,6 +1636,8 @@
         <members>Macro.Name</members>
         <members>Macro.OwnerId</members>
         <members>Macro.StartingContext</members>
+        <members>Manufacturing_Event__e.Order_Id__c</members>
+        <members>Manufacturing_Event__e.Status__c</members>
         <members>MessagingEndUser.AccountId</members>
         <members>MessagingEndUser.AuthenticatedEndUserId</members>
         <members>MessagingEndUser.ContactId</members>
@@ -1650,6 +1676,8 @@
         <members>MessagingSession.PreviewDetails</members>
         <members>MessagingSession.StartTime</members>
         <members>MessagingSession.Status</members>
+        <members>Movie__c.Genre__c</members>
+        <members>Movie__c.Score__c</members>
         <members>OperatingHours.Description</members>
         <members>OperatingHours.Name</members>
         <members>OperatingHours.OwnerId</members>
@@ -1662,6 +1690,7 @@
         <members>Opportunity.CampaignId</members>
         <members>Opportunity.CloseDate</members>
         <members>Opportunity.ContractId</members>
+        <members>Opportunity.CurrencyIsoCode</members>
         <members>Opportunity.CurrentGenerators__c</members>
         <members>Opportunity.DeliveryInstallationStatus__c</members>
         <members>Opportunity.Description</members>
@@ -1708,6 +1737,7 @@
         <members>Order.ContractEndDate</members>
         <members>Order.ContractId</members>
         <members>Order.ContractName</members>
+        <members>Order.CurrencyIsoCode</members>
         <members>Order.CustomerAuthorizedById</members>
         <members>Order.CustomerAuthorizedDate</members>
         <members>Order.Description</members>
@@ -1923,6 +1953,7 @@
         <members>ProcessException.Priority</members>
         <members>ProcessException.Severity</members>
         <members>ProcessException.Status</members>
+        <members>Product2.CurrencyIsoCode</members>
         <members>Product2.Description</members>
         <members>Product2.DisplayUrl</members>
         <members>Product2.ExternalDataSourceId</members>
@@ -1957,6 +1988,7 @@
         <members>ProductConsumptionSchedule.ProductId</members>
         <members>Promotion.AreQualItemsExclFromDiscounts</members>
         <members>Promotion.CampaignId</members>
+        <members>Promotion.CurrencyIsoCode</members>
         <members>Promotion.Description</members>
         <members>Promotion.DiscountOrder</members>
         <members>Promotion.DiscountRestriction</members>
@@ -1988,6 +2020,7 @@
         <members>PromotionMarketSegment.PromotionId</members>
         <members>PromotionMarketSegment.PromotionSegmentId</members>
         <members>PromotionQualifier.ApproachingDiscountThreshold</members>
+        <members>PromotionQualifier.CurrencyIsoCode</members>
         <members>PromotionQualifier.MinimumAmount</members>
         <members>PromotionQualifier.MinimumQuantity</members>
         <members>PromotionQualifier.Name</members>
@@ -2007,6 +2040,7 @@
         <members>PromotionTarget.AdjustmentAmount</members>
         <members>PromotionTarget.AdjustmentPercent</members>
         <members>PromotionTarget.AdjustmentType</members>
+        <members>PromotionTarget.CurrencyIsoCode</members>
         <members>PromotionTarget.IsMinItemCountRequired</members>
         <members>PromotionTarget.Name</members>
         <members>PromotionTarget.PromotionId</members>
@@ -2106,6 +2140,7 @@
         <members>ResourceAbsence.ResourceId</members>
         <members>ResourceAbsence.Start</members>
         <members>ResourceAbsence.Type</members>
+        <members>ResourcePreference.CurrencyIsoCode</members>
         <members>ResourcePreference.PreferenceType</members>
         <members>ResourcePreference.RelatedRecordId</members>
         <members>ResourcePreference.ResourcePreferenceNumber</members>
@@ -2113,6 +2148,7 @@
         <members>ReturnOrder.AccountId</members>
         <members>ReturnOrder.CaseId</members>
         <members>ReturnOrder.ContactId</members>
+        <members>ReturnOrder.CurrencyIsoCode</members>
         <members>ReturnOrder.Description</members>
         <members>ReturnOrder.DestinationLocationId</members>
         <members>ReturnOrder.ExpectedArrivalDate</members>
@@ -2187,9 +2223,11 @@
         <members>ReturnOrderLineItem.TotalTaxAmount</members>
         <members>ReturnOrderLineItem.TypeCode</members>
         <members>ReturnOrderLineItem.UnitPrice</members>
+        <members>Review__c.Product_Name__c</members>
         <members>SalesStore.Description</members>
         <members>SalesStore.LocationId</members>
         <members>SalesStore.Name</members>
+        <members>ScoreCard__c.Score__c</members>
         <members>Scorecard.Description</members>
         <members>Scorecard.Name</members>
         <members>Scorecard.OwnerId</members>
@@ -2264,6 +2302,7 @@
         <members>ServiceContract.ApprovalStatus</members>
         <members>ServiceContract.BillingAddress</members>
         <members>ServiceContract.ContactId</members>
+        <members>ServiceContract.CurrencyIsoCode</members>
         <members>ServiceContract.Description</members>
         <members>ServiceContract.Discount</members>
         <members>ServiceContract.EndDate</members>
@@ -2322,6 +2361,7 @@
         <members>ServiceTerritoryWorkType.WorkTypeId</members>
         <members>Shift.AppointmentCategoryId</members>
         <members>Shift.BackgroundColor</members>
+        <members>Shift.CurrencyIsoCode</members>
         <members>Shift.EndTime</members>
         <members>Shift.Label</members>
         <members>Shift.OwnerId</members>
@@ -2348,6 +2388,7 @@
         <members>ShiftWorkTopic.WorkTypeGroupId</members>
         <members>ShiftWorkTopic.WorkTypeId</members>
         <members>Shipment.ActualDeliveryDate</members>
+        <members>Shipment.CurrencyIsoCode</members>
         <members>Shipment.DeliveredToId</members>
         <members>Shipment.Description</members>
         <members>Shipment.DestinationLocationId</members>
@@ -2383,6 +2424,7 @@
         <members>ShippingCarrierMethod.ShippingAreaType</members>
         <members>ShippingCarrierMethod.ShippingCarrierId</members>
         <members>ShippingCarrierMethod.TransitTimeUnit</members>
+        <members>SkillRequirement.CurrencyIsoCode</members>
         <members>SkillRequirement.RelatedRecordId</members>
         <members>SkillRequirement.SkillId</members>
         <members>SkillRequirement.SkillLevel</members>
@@ -2393,6 +2435,7 @@
         <members>SocialPersona.ProfileUrl</members>
         <members>SocialPersona.Provider</members>
         <members>SocialPersona.SourceApp</members>
+        <members>Solution.CurrencyIsoCode</members>
         <members>Solution.IsPublished</members>
         <members>Solution.IsPublishedInPublicKb</members>
         <members>Solution.SolutionName</members>
@@ -2409,6 +2452,7 @@
         <members>Task.CallObject</members>
         <members>Task.CallType</members>
         <members>Task.CompletedDateTime</members>
+        <members>Task.CurrencyIsoCode</members>
         <members>Task.Description</members>
         <members>Task.Email</members>
         <members>Task.IsRecurrence</members>
@@ -2498,6 +2542,7 @@
         <members>WaitlistWorkType.WorkTypeId</members>
         <members>WebCart.AccountId</members>
         <members>WebCart.BillingAddress</members>
+        <members>WebCart.CurrencyIsoCode</members>
         <members>WebCart.FirstPymtGrandTotalAmount</members>
         <members>WebCart.FirstPymtTotalTaxAmount</members>
         <members>WebCart.GrandTotalAmount</members>
@@ -2577,6 +2622,7 @@
         <members>WebStore.ProductGrouping</members>
         <members>WebStore.SortByPricebookId</members>
         <members>WebStore.StrikethroughPricebookId</members>
+        <members>WebStore.SupportedCurrencies</members>
         <members>WebStore.SupportedLanguages</members>
         <members>WebStoreBuyerGroup.BuyerGroupId</members>
         <members>WebStoreBuyerGroup.WebStoreId</members>
@@ -2596,6 +2642,7 @@
         <members>WorkOrder.BusinessHoursId</members>
         <members>WorkOrder.CaseId</members>
         <members>WorkOrder.ContactId</members>
+        <members>WorkOrder.CurrencyIsoCode</members>
         <members>WorkOrder.Description</members>
         <members>WorkOrder.Discount</members>
         <members>WorkOrder.Duration</members>
@@ -2702,6 +2749,7 @@
         <members>WorkType.BlockTimeAfterUnit</members>
         <members>WorkType.BlockTimeBeforeAppointment</members>
         <members>WorkType.BlockTimeBeforeUnit</members>
+        <members>WorkType.CurrencyIsoCode</members>
         <members>WorkType.DefaultAppointmentType</members>
         <members>WorkType.Description</members>
         <members>WorkType.DurationType</members>
@@ -2715,6 +2763,7 @@
         <members>WorkType.TimeframeEnd</members>
         <members>WorkType.TimeframeStart</members>
         <members>WorkTypeGroup.AdditionalInformation</members>
+        <members>WorkTypeGroup.CurrencyIsoCode</members>
         <members>WorkTypeGroup.Description</members>
         <members>WorkTypeGroup.GroupType</members>
         <members>WorkTypeGroup.IsActive</members>
@@ -2859,8 +2908,10 @@
         <members>MacroAction</members>
         <members>MacroInstruction</members>
         <members>MacroUsage</members>
+        <members>Manufacturing_Event__e</members>
         <members>MessagingEndUser</members>
         <members>MessagingSession</members>
+        <members>Movie__c</members>
         <members>OperatingHours</members>
         <members>OperatingHoursHoliday</members>
         <members>Opportunity</members>
@@ -2922,7 +2973,9 @@
         <members>ReturnOrderItemAdjustment</members>
         <members>ReturnOrderItemTax</members>
         <members>ReturnOrderLineItem</members>
+        <members>Review__c</members>
         <members>SalesStore</members>
+        <members>ScoreCard__c</members>
         <members>Scorecard</members>
         <members>ScorecardAssociation</members>
         <members>ScorecardMetric</members>
@@ -2987,6 +3040,14 @@
         <members>WorkTypeGroup</members>
         <members>WorkTypeGroupMember</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Account-es</members>
+        <members>Manufacturing_Event__e-en_US</members>
+        <members>Movie__c-en_US</members>
+        <members>Review__c-en_US</members>
+        <members>ScoreCard__c-en_US</members>
+        <name>CustomObjectTranslation</name>
     </types>
     <types>
         <members>Enablement_sfdcSESv60/</members>
@@ -3066,6 +3127,14 @@
         <name>FlexiPage</name>
     </types>
     <types>
+        <members>Account_Revenue_Update</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Account_Revenue_Update</members>
+        <name>FlowDefinition</name>
+    </types>
+    <types>
         <members>DE Default</members>
         <name>HomePageLayout</name>
     </types>
@@ -3109,6 +3178,7 @@
         <members>Case-Case Layout</members>
         <members>CaseClose-Close Case Layout</members>
         <members>CaseMilestone-Case Milestone Layout</members>
+        <members>CollaborationGroup-Group Layout</members>
         <members>CommunityMemberLayout-Community Member Layout</members>
         <members>ConsumptionRate-Consumption Rate Layout</members>
         <members>ConsumptionSchedule-Consumption Schedule Layout</members>
@@ -3160,6 +3230,7 @@
         <members>LocationGroup-Location Group Layout</members>
         <members>LocationGroupAssignment-Location Group Assignment Layout</members>
         <members>Macro-Macro Layout</members>
+        <members>Movie__c-Movie Layout</members>
         <members>OperatingHours-Operating Hours Layout</members>
         <members>Opportunity-Opportunity %28Marketing%29 Layout</members>
         <members>Opportunity-Opportunity %28Sales%29 Layout</members>
@@ -3190,6 +3261,8 @@
         <members>ReturnOrderItemAdjustment-Return Order Item Adjustment Layout</members>
         <members>ReturnOrderItemTax-Return Order Item Tax Layout</members>
         <members>ReturnOrderLineItem-Return Order Line Item Layout</members>
+        <members>Review__c-Review Layout</members>
+        <members>ScoreCard__c-ScoreCard Layout</members>
         <members>Scorecard-Scorecard Layout</members>
         <members>ScorecardAssociation-Scorecard Association Layout</members>
         <members>ScorecardMetric-Scorecard Metric Layout</members>
@@ -3275,6 +3348,7 @@
         <members>Case.AllOpenCases</members>
         <members>Case.MyCases</members>
         <members>Case.MyOpenCases</members>
+        <members>Case.My_Cases</members>
         <members>ChangeRequest.AllChangeRequestsDefault</members>
         <members>CollaborationGroup.All_ChatterGroups</members>
         <members>CommSubscription.All_CommSubscriptions</members>
@@ -3439,7 +3513,9 @@
         <name>NotificationTypeConfig</name>
     </types>
     <types>
+        <members>API_Enabled</members>
         <members>Experience_Profile_Manager</members>
+        <members>New_Standard_PS</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>
@@ -3466,6 +3542,7 @@
         <members>Admin</members>
         <members>Analytics Cloud Integration User</members>
         <members>Analytics Cloud Security User</members>
+        <members>Anypoint Integration</members>
         <members>Authenticated Website</members>
         <members>B2B Reordering Portal Buyer Profile</members>
         <members>Chatter External User</members>
@@ -3650,7 +3727,6 @@
         <members>Forecasting</members>
         <members>Formula</members>
         <members>GoogleApps</members>
-        <members>HerokuAppLink</members>
         <members>HighVelocitySales</members>
         <members>Ideas</members>
         <members>IdentityProvider</members>
@@ -3819,6 +3895,7 @@
         <members>Event</members>
         <members>Incident</members>
         <members>Lead</members>
+        <members>Movie__c</members>
         <members>Opportunity</members>
         <members>Order</members>
         <members>Problem</members>
@@ -3826,6 +3903,8 @@
         <members>ResourcePreference</members>
         <members>ReturnOrder</members>
         <members>ReturnOrderLineItem</members>
+        <members>Review__c</members>
+        <members>ScoreCard__c</members>
         <members>ServiceAppointment</members>
         <members>ServiceResource</members>
         <members>ServiceResourceSkill</members>
