@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <version>63.0</version>
     <types>
+        <members>AccountController</members>
+        <members>AccountControllerTest</members>
         <members>ChangePasswordController</members>
         <members>ChangePasswordControllerTest</members>
         <members>CommunitiesLandingController</members>
@@ -11,6 +13,7 @@
         <members>CommunitiesSelfRegConfirmControllerTest</members>
         <members>CommunitiesSelfRegController</members>
         <members>CommunitiesSelfRegControllerTest</members>
+        <members>ContactController</members>
         <members>ForgotPasswordController</members>
         <members>ForgotPasswordControllerTest</members>
         <members>HeroDetailsPositionCustomPicklist</members>
@@ -18,6 +21,7 @@
         <members>MicrobatchSelfRegControllerTest</members>
         <members>MyProfilePageController</members>
         <members>MyProfilePageControllerTest</members>
+        <members>OpportunityController</members>
         <members>OrderController</members>
         <members>PagedResult</members>
         <members>ProductController</members>
@@ -3500,6 +3504,7 @@
         <members>DataGovernanceConsole_UtilityBar</members>
         <members>ExpressionSetConsole_UtilityBar</members>
         <members>FlowsApp_UtilityBar</members>
+        <members>Home_Page_Default</members>
         <members>LightningSalesConsole_UtilityBar</members>
         <members>LightningSales_UtilityBar</members>
         <members>LightningService_UtilityBar</members>
@@ -3508,6 +3513,7 @@
         <members>Product_Record_Page</members>
         <members>RevenueCloudConsole_UtilityBar</members>
         <members>SalesCloudMobile_UtilityBar</members>
+        <members>Support_Home_Page</members>
         <members>ctu__Clone_This_User</members>
         <members>ctu__Clone_This_User_Settings</members>
         <name>FlexiPage</name>
@@ -3713,6 +3719,7 @@
         <members>accountMap</members>
         <members>createCase</members>
         <members>errorPanel</members>
+        <members>helloWorld</members>
         <members>hero</members>
         <members>heroDetails</members>
         <members>ldsUtils</members>

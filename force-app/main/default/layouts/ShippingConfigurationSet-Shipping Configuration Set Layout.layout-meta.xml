@@ -10,11 +10,19 @@
                 <behavior>Required</behavior>
                 <field>TargetRecordId</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>ProcessTime</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>IsDefault</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>ProcessTimeUnit</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

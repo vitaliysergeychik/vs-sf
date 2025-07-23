@@ -18,6 +18,14 @@
                 <behavior>Required</behavior>
                 <field>ConditionRangeMax</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>TransitTimeMax</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>ShippingCarrierMethodId</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -27,6 +35,18 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>ConditionRangeMin</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>TransitTimeMin</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>TransitTimeUnit</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>WeightUnit</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
