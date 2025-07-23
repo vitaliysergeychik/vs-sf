@@ -1,0 +1,76 @@
+<apex:page showHeader="false" sidebar="false" controller="ctu.CloneThisUserList" lightningStyleSheets="true">
+    <apex:includeLightning />  
+    <apex:slds />
+    <style>
+        body.slds-scope {
+            display: flex;
+            margin: auto;
+            flex-direction: column;
+            width: 90vw;
+        }
+        .title{
+            text-align: center;
+            font-size: x-large;
+        }
+    </style>
+
+    <div class="demo-only slds-hidden" style="height: 4rem;" id='ToastMessage'>
+        <div class="slds-notify_container slds-is-relative">
+            <div class="slds-notify slds-notify_toast slds-theme_success" role="alert">
+                <span class="slds-assistive-text">success</span>
+                <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
+                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#success')}" />
+                    </svg>
+                </span>
+                <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small" id="ToastText"></h2>
+                </div>
+                <button class="slds-button slds-button_icon slds-notify__close slds-button_icon-inverse" title="Close" onclick='toastLaunch()'>
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/utility-sprite/svg/symbols.svg#close')}" />
+                    </svg>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <apex:form >
+        <div>
+            <apex:commandButton styleClass="btn btn-primary cloneBtn" style="margin-left: 3%;" value="Return to CTU" action="{!goBack}"></apex:commandButton>
+        </div>    
+    </apex:form>
+    
+    <div class="title"><h1>Clone This User Settings</h1></div>
+
+    <div id="CTUSettings" />
+
+    <script>
+        $Lightning.use("ctu:CloneThisUserSettingsApp", function() {
+            $Lightning.createComponent("ctu:CloneThisUserSettings",
+            {
+                'notVF' : false
+            },
+            "CTUSettings",
+            function(cmp) {
+                $A.eventService.addHandler({ "event": "ctu:ShowVFToast", "handler" : showToast});
+            });
+        });
+    </script>
+    <script>
+        var showToast = function(event){
+            debugger;
+            var msg = event.getParam("msg");
+            var element = document.getElementById('ToastMessage');
+            var textElement = document.getElementById('ToastText');
+            element.classList.toggle("slds-hidden");
+            if (textElement.innerHTML == '')
+                textElement.append(msg);
+        }
+        var toastLaunch = function(){
+            var element = document.getElementById('ToastMessage');
+            var textElement = document.getElementById('ToastText');
+            element.classList.add("slds-hidden");
+        }
+    </script>
+</apex:page>

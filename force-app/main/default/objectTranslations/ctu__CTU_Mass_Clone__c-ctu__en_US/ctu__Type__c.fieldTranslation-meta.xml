@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Type --></label>
+    <name>ctu__Type__c</name>
+    <picklistValues>
+        <masterLabel>Account Ownership</masterLabel>
+        <translation><!-- Account Ownership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Account Team</masterLabel>
+        <translation><!-- Account Team --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Account Team Membership</masterLabel>
+        <translation><!-- Account Team Membership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Case Ownership</masterLabel>
+        <translation><!-- Case Ownership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Case Team Membership</masterLabel>
+        <translation><!-- Case Team Membership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Chatter Group</masterLabel>
+        <translation><!-- Chatter Group --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Lead Ownership</masterLabel>
+        <translation><!-- Lead Ownership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Opportunity Ownership</masterLabel>
+        <translation><!-- Opportunity Ownership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Opportunity Team</masterLabel>
+        <translation><!-- Opportunity Team --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Opportunity Team Membership</masterLabel>
+        <translation><!-- Opportunity Team Membership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Permission Set Assignment</masterLabel>
+        <translation><!-- Permission Set Assignment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Permission Set License Assignment</masterLabel>
+        <translation><!-- Permission Set License Assignment --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Public Group Membership</masterLabel>
+        <translation><!-- Public Group Membership --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Queue Membership</masterLabel>
+        <translation><!-- Queue Membership --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

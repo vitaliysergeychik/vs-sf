@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>The lightning edition of Clone This User</description>
+    <flexiPage>ctu__Clone_This_User</flexiPage>
+    <icon>ctu__Clone_This_User/ctu__Tab_CTU.png</icon>
+    <label>Clone This User</label>
+    <motif>Custom270: TV Widescreen</motif>
+</CustomTab>
