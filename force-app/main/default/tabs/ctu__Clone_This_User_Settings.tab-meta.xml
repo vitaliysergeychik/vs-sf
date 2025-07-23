@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Created by Lightning App Builder</description>
-    <flexiPage>ctu__Clone_This_User_Settings</flexiPage>
-    <icon>ctu__Clone_This_User/ctu__Tab_CTU.png</icon>
-    <label>Clone This User - Settings</label>
-    <motif>Custom237: TV Widescreen</motif>
-</CustomTab>
