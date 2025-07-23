@@ -188,6 +188,7 @@
         <members>Account.AccountSource</members>
         <members>Account.Active__c</members>
         <members>Account.AnnualRevenue</members>
+        <members>Account.AutorabitExtId__c</members>
         <members>Account.BillingAddress</members>
         <members>Account.ChannelProgramLevelName</members>
         <members>Account.ChannelProgramName</members>
@@ -3747,6 +3748,7 @@
     </types>
     <types>
         <members>Account.AllAccounts</members>
+        <members>Account.Energy_and_Biotech_Accounts</members>
         <members>Account.MyAccounts</members>
         <members>Account.NewLastWeek</members>
         <members>Account.NewThisWeek</members>
@@ -4248,6 +4250,7 @@
         <members>Forecasting</members>
         <members>Formula</members>
         <members>GoogleApps</members>
+        <members>HerokuAppLink</members>
         <members>HighVelocitySales</members>
         <members>Ideas</members>
         <members>IdentityProvider</members>
@@ -4311,6 +4314,7 @@
         <members>Sharing</members>
         <members>Site</members>
         <members>SourceTracking</members>
+        <members>SubscriptionManagement</members>
         <members>Survey</members>
         <members>SystemNotification</members>
         <members>Territory2</members>
