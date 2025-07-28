@@ -66,11 +66,16 @@
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
+        <members>Partner__c.Name__c</members>
         <name>CustomField</name>
     </types>
     <types>
         <members>enablement_coaching_feedback_ready</members>
         <name>CustomNotificationType</name>
+    </types>
+    <types>
+        <members>Partner__c</members>
+        <name>CustomObject</name>
     </types>
     <types>
         <members>Enablement_sfdcSESv60/</members>
@@ -236,6 +241,7 @@
         <members>OpportunityLineItem-Opportunity Product Layout</members>
         <members>Order-Order Layout</members>
         <members>OrderItem-Order Product Layout</members>
+        <members>Partner__c-Partner Layout</members>
         <members>Payment-Payment Layout</members>
         <members>PaymentAuthAdjustment-Payment Authorization Adjustment Layout</members>
         <members>PaymentAuthorization-Payment Authorization Layout</members>
@@ -334,6 +340,31 @@
         <members>force__SubscriptionManagementSalesRep</members>
         <members>force__SubscriptionManagementTaxAdmin</members>
         <name>PermissionSetGroup</name>
+    </types>
+    <types>
+        <members>Admin</members>
+        <members>Analytics Cloud Integration User</members>
+        <members>Analytics Cloud Security User</members>
+        <members>Anypoint Integration</members>
+        <members>ContractManager</members>
+        <members>Cross Org Data Proxy User</members>
+        <members>Custom%3A Marketing Profile</members>
+        <members>Custom%3A Sales Profile</members>
+        <members>Custom%3A Support Profile</members>
+        <members>Force%2Ecom - App Subscription User</members>
+        <members>Force%2Ecom - Free User</members>
+        <members>Identity User</members>
+        <members>MarketingProfile</members>
+        <members>Minimum Access - API Only Integrations</members>
+        <members>Minimum Access - Salesforce</members>
+        <members>Partner App Subscription User</members>
+        <members>Read Only</members>
+        <members>Salesforce API Only System Integrations</members>
+        <members>SolutionManager</members>
+        <members>Standard</members>
+        <members>StandardAul</members>
+        <members>Work%2Ecom Only User</members>
+        <name>Profile</name>
     </types>
     <types>
         <members>Case.CloseCaseLightning</members>
