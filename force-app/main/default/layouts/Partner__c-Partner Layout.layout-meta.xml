@@ -18,6 +18,10 @@
                 <behavior>Edit</behavior>
                 <field>ParterPhone__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CellPhone__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

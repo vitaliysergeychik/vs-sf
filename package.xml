@@ -66,6 +66,7 @@
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
+        <members>Partner__c.CellPhone__c</members>
         <members>Partner__c.Name__c</members>
         <members>Partner__c.ParterPhone__c</members>
         <name>CustomField</name>
