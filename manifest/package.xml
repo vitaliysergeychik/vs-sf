@@ -69,6 +69,7 @@
         <members>Partner__c.CellPhone__c</members>
         <members>Partner__c.Name__c</members>
         <members>Partner__c.ParterPhone__c</members>
+        <members>Partner__c.Validated__c</members>
         <name>CustomField</name>
     </types>
     <types>
