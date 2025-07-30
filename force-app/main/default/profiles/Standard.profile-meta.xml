@@ -43,6 +43,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Partner__c.PartnerTargetNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Partner__c.PartnerWebsite__c</field>
         <readable>true</readable>
     </fieldPermissions>
