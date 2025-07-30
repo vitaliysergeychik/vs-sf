@@ -66,7 +66,6 @@
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
-        <members>Partner__c.BusinessPhone__c</members>
         <members>Partner__c.CellPhone__c</members>
         <members>Partner__c.Date_Validated__c</members>
         <members>Partner__c.Industry__c</members>
@@ -74,6 +73,7 @@
         <members>Partner__c.ParterPhone__c</members>
         <members>Partner__c.PartnerEmail__c</members>
         <members>Partner__c.PartnerRating__c</members>
+        <members>Partner__c.PartnerTargetNumber__c</members>
         <members>Partner__c.PartnerWebsite__c</members>
         <members>Partner__c.PercentClosed__c</members>
         <members>Partner__c.Validated__c</members>
