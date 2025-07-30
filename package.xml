@@ -85,13 +85,25 @@
         <name>Profile</name>
     </types>
     <types>
+        <members>AccountController</members>
+        <members>AccountControllerTest</members>
+        <members>ContactController</members>
+        <members>OpportunityController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>DataCloudGeoLocation</members>
+        <name>CleanDataService</name>
+    </types>
+    <types>
         <members>standard__AllTabSet</members>
         <members>standard__AppLauncher</members>
+        <members>standard__Approvals</members>
         <members>standard__Chatter</members>
         <members>standard__Community</members>
         <members>standard__Content</members>
+        <members>standard__DataGovernanceConsole</members>
         <members>standard__DataManager</members>
-        <members>standard__ExpressionSetConsole</members>
         <members>standard__FlowsApp</members>
         <members>standard__Insights</members>
         <members>standard__LightningBolt</members>
@@ -100,11 +112,13 @@
         <members>standard__LightningSalesConsole</members>
         <members>standard__LightningScheduler</members>
         <members>standard__LightningService</members>
+        <members>standard__MSJApp</members>
         <members>standard__Marketing</members>
         <members>standard__Platform</members>
         <members>standard__QueueManagement</members>
         <members>standard__RevenueCloudConsole</members>
         <members>standard__Sales</members>
+        <members>standard__SalesCloudMobile</members>
         <members>standard__SalesforceCMS</members>
         <members>standard__Service</members>
         <members>standard__ServiceConsole</members>
@@ -173,6 +187,55 @@
         <members>Contact.Standard_Contact_Duplicate_Rule</members>
         <members>Lead.Standard_Lead_Duplicate_Rule</members>
         <name>DuplicateRule</name>
+        <members>Account.Active__c</members>
+        <members>Account.AutorabitExtId__c</members>
+        <members>Account.CustomerPriority__c</members>
+        <members>Account.NumberofLocations__c</members>
+        <members>Account.SLAExpirationDate__c</members>
+        <members>Account.SLASerialNumber__c</members>
+        <members>Account.SLA__c</members>
+        <members>Account.UpsellOpportunity__c</members>
+        <members>Case.EngineeringReqNumber__c</members>
+        <members>Case.PotentialLiability__c</members>
+        <members>Case.Product__c</members>
+        <members>Case.SLAViolation__c</members>
+        <members>Contact.Languages__c</members>
+        <members>Contact.Level__c</members>
+        <members>Lead.CurrentGenerators__c</members>
+        <members>Lead.NumberofLocations__c</members>
+        <members>Lead.Primary__c</members>
+        <members>Lead.ProductInterest__c</members>
+        <members>Lead.SICCode__c</members>
+        <members>Opportunity.CurrentGenerators__c</members>
+        <members>Opportunity.DeliveryInstallationStatus__c</members>
+        <members>Opportunity.MainCompetitors__c</members>
+        <members>Opportunity.OrderNumber__c</members>
+        <members>Opportunity.TrackingNumber__c</members>
+        <members>Partner__c.BusinessPhone__c</members>
+        <members>Partner__c.CellPhone__c</members>
+        <members>Partner__c.Date_Validated__c</members>
+        <members>Partner__c.Industry__c</members>
+        <members>Partner__c.Name__c</members>
+        <members>Partner__c.ParterPhone__c</members>
+        <members>Partner__c.PartnerEmail__c</members>
+        <members>Partner__c.PartnerRating__c</members>
+        <members>Partner__c.PartnerWebsite__c</members>
+        <members>Partner__c.PercentClosed__c</members>
+        <members>Partner__c.Validated__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>enablement_coaching_feedback_ready</members>
+        <name>CustomNotificationType</name>
+    </types>
+    <types>
+        <members>Partner__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Enablement_sfdcSESv60/</members>
+        <members>Enablement_sfdcSESv61/</members>
+        <name>Dashboard</name>
     </types>
     <types>
         <members>enablement/sfdcEnablement_EnablementWorkspace.sfdc_cms__languageSettings/languages</members>
@@ -219,6 +282,41 @@
         <members>flow_orchestration_work_item_ootb_crt_two_four_eight</members>
         <members>screen_flows_prebuilt_crt</members>
         <name>ReportType</name>
+        <members>Account.Standard_Account_Duplicate_Rule</members>
+        <members>Contact.Standard_Contact_Duplicate_Rule</members>
+        <members>Lead.Standard_Lead_Duplicate_Rule</members>
+        <name>DuplicateRule</name>
+    </types>
+    <types>
+        <members>unfiled$public/CommerceReorderPortalInvitation</members>
+        <members>unfiled$public/MarketingProductInquiryResponse</members>
+        <members>unfiled$public/ModifyAppointmentEmailTemplateWithPaymentInfo</members>
+        <members>unfiled$public/ModifyAppointmentEmailTemplateWithPaymentInfoForGuest</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewCommentNotificationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceNewUserLoginInformationSAMPLE</members>
+        <members>unfiled$public/SUPPORTSelfServiceResetPasswordSAMPLE</members>
+        <members>unfiled$public/SalesNewCustomerEmail</members>
+        <members>unfiled$public/SalesforceSchedulerCancelApptEmailTemplate</members>
+        <members>unfiled$public/SalesforceSchedulerCreateApptEmailTemplate</members>
+        <members>unfiled$public/SalesforceSchedulerGroupApptEmailTemplate</members>
+        <members>unfiled$public/SalesforceSchedulerModifyApptEmailTemplate</members>
+        <members>unfiled$public/SchedulerPaymentApptCancellationEmailTemplate</members>
+        <members>unfiled$public/SchedulerPaymentApptConfirmationEmailTemplate</members>
+        <members>unfiled$public/SchedulerPaymentApptConfirmationEmailTemplateForGuest</members>
+        <members>unfiled$public/SchedulerPaymentReminderEmailTemplate</members>
+        <members>unfiled$public/SchedulerUnauthenticatedUserAppointmentTypeEmailTemplateForAmazonChime</members>
+        <members>unfiled$public/SchedulerUnauthenticatedUserAppointmentTypeEmailTemplateForThirdParty</members>
+        <members>unfiled$public/SchedulerUnauthenticatedUserEngagementChannelEmailTemplateForAmazonChime</members>
+        <members>unfiled$public/SchedulerUnauthenticatedUserEngagementChannelEmailTemplateForThirdParty</members>
+        <members>unfiled$public/SupportCaseAssignmentNotification</members>
+        <members>unfiled$public/SupportCaseCreatedPhoneInquiries</members>
+        <members>unfiled$public/SupportCaseCreatedWebInquiries</members>
+        <members>unfiled$public/SupportCaseResponse</members>
+        <members>unfiled$public/SupportEscalatedCaseNotification</members>
+        <members>unfiled$public/SupportEscalatedCaseReassignment</members>
+        <members>unfiled$public/SupportSelfServiceNewLoginandPassword</members>
+        <members>unfiled$public/SupportSelfServiceResetPassword</members>
+        <name>EmailTemplate</name>
     </types>
     <types>
         <members>ContactCenter_UtilityBar</members>
@@ -339,22 +437,11 @@
         <members>AssignedResource-Assigned Resource Layout</members>
         <members>AssociatedLocation-Associated Location Layout</members>
         <members>AsyncOperationLog-Async Operation Log Layout</members>
-        <members>AsyncOperationTracker-Async Operation Tracker Layout</members>
         <members>AuthorizationForm-Authorization Form Layout</members>
         <members>AuthorizationFormConsent-Authorization Form Consent Layout</members>
         <members>AuthorizationFormDataUse-Authorization Form Data Use Layout</members>
         <members>AuthorizationFormText-Authorization Form Text Layout</members>
         <members>BusinessBrand-Business Brand Layout</members>
-        <members>CalcMatrixColumnRange-Decision Matrix Column Range Layout</members>
-        <members>CalcProcStepRelationship-Expression Set Step Relationship Layout</members>
-        <members>CalculationMatrix-Decision Matrix Layout</members>
-        <members>CalculationMatrixColumn-Decision Matrix Column Layout</members>
-        <members>CalculationMatrixRow-Decision Matrix Row Layout</members>
-        <members>CalculationMatrixVersion-Decision Matrix Version Layout</members>
-        <members>CalculationProcedure-Calculation Procedure Layout</members>
-        <members>CalculationProcedureStep-Calculation Procedure Step Layout</members>
-        <members>CalculationProcedureVariable-Calculation Procedure Variable Layout</members>
-        <members>CalculationProcedureVersion-Calculation Procedure Version Layout</members>
         <members>Campaign-Campaign Layout</members>
         <members>CampaignMember-Campaign Member Page Layout</members>
         <members>CardPaymentMethod-Card Payment Method Layout</members>
@@ -370,7 +457,6 @@
         <members>Case-Case Layout</members>
         <members>CaseClose-Close Case Layout</members>
         <members>CaseMilestone-Case Milestone Layout</members>
-        <members>CollaborationGroup-Group Layout</members>
         <members>CommunityMemberLayout-Community Member Layout</members>
         <members>ConsumptionRate-Consumption Rate Layout</members>
         <members>ConsumptionSchedule-Consumption Schedule Layout</members>
@@ -400,8 +486,6 @@
         <members>Entitlement-Entitlement Layout</members>
         <members>EntityMilestone-Object Milestone Layout</members>
         <members>Event-Event Layout</members>
-        <members>ExpressionSet-Expression Set Layout</members>
-        <members>ExpressionSetVersion-Expression Set Version Layout</members>
         <members>FeedItem-Feed Item Layout</members>
         <members>FinanceBalanceSnapshot-Finance Balance Snapshot Layout</members>
         <members>FinanceTransaction-Finance Transaction Layout</members>
@@ -433,6 +517,7 @@
         <members>OpportunityLineItem-Opportunity Product Layout</members>
         <members>Order-Order Layout</members>
         <members>OrderItem-Order Product Layout</members>
+        <members>Partner__c-Partner Layout</members>
         <members>Payment-Payment Layout</members>
         <members>PaymentAuthAdjustment-Payment Authorization Adjustment Layout</members>
         <members>PaymentAuthorization-Payment Authorization Layout</members>
@@ -503,6 +588,16 @@
     </types>
     <types>
         <members>API_Enabled</members>
+        <members>helloWorld</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>cms_document</members>
+        <members>cms_image</members>
+        <members>news</members>
+        <name>ManagedContentType</name>
+    </types>
+    <types>
         <members>Experience_Profile_Manager</members>
         <members>New_Standard_PS</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
@@ -541,6 +636,92 @@
         <members>Opportunity.TrackingNumber__c</members>
         <members>Review__c.Product_Name__c</members>
         <name>CustomField</name>
+        <members>force__Commerce_Shopper</members>
+        <members>force__Enablement_Admin</members>
+        <members>force__Enablement_Resources_Manager</members>
+        <members>force__Enablement_User</members>
+        <members>force__Partner_Enablement_User</members>
+        <members>force__SubscriptionManagementBillingAdmin</members>
+        <members>force__SubscriptionManagementBillingOperations</members>
+        <members>force__SubscriptionManagementBuyerIntegrationUser</members>
+        <members>force__SubscriptionManagementCollections</members>
+        <members>force__SubscriptionManagementCreditMemoAdjustmentsOperations</members>
+        <members>force__SubscriptionManagementPaymentAdministrator</members>
+        <members>force__SubscriptionManagementPaymentOperations</members>
+        <members>force__SubscriptionManagementProductAndPricingAdmin</members>
+        <members>force__SubscriptionManagementSalesOperationsRep</members>
+        <members>force__SubscriptionManagementSalesRep</members>
+        <members>force__SubscriptionManagementTaxAdmin</members>
+        <name>PermissionSetGroup</name>
+    </types>
+    <types>
+        <members>Admin</members>
+        <members>Analytics Cloud Integration User</members>
+        <members>Analytics Cloud Security User</members>
+        <members>Anypoint Integration</members>
+        <members>ContractManager</members>
+        <members>Cross Org Data Proxy User</members>
+        <members>Custom%3A Marketing Profile</members>
+        <members>Custom%3A Sales Profile</members>
+        <members>Custom%3A Support Profile</members>
+        <members>Force%2Ecom - App Subscription User</members>
+        <members>Force%2Ecom - Free User</members>
+        <members>Identity User</members>
+        <members>MarketingProfile</members>
+        <members>Minimum Access - API Only Integrations</members>
+        <members>Minimum Access - Salesforce</members>
+        <members>Partner App Subscription User</members>
+        <members>Read Only</members>
+        <members>Salesforce API Only System Integrations</members>
+        <members>SolutionManager</members>
+        <members>Standard</members>
+        <members>StandardAul</members>
+        <members>Work%2Ecom Only User</members>
+        <name>Profile</name>
+    </types>
+    <types>
+        <members>Case.CloseCaseLightning</members>
+        <members>Case.LogACall</members>
+        <members>Case.NewChildCase</members>
+        <members>CollaborationGroup.NewGroupMember</members>
+        <members>CollaborationGroup.NewGroupRecord</members>
+        <members>FeedItem.NewTaskFromFeedItem</members>
+        <members>LogACall</members>
+        <members>NewAccount</members>
+        <members>NewCase</members>
+        <members>NewContact</members>
+        <members>NewEvent</members>
+        <members>NewGroup</members>
+        <members>NewLead</members>
+        <members>NewNote</members>
+        <members>NewOpportunity</members>
+        <members>NewTask</members>
+        <members>SendEmail</members>
+        <members>Task.Defer</members>
+        <members>Task.EditDescription</members>
+        <members>Task.UpdatePriority</members>
+        <members>Task.UpdateStatus</members>
+        <name>QuickAction</name>
+    </types>
+    <types>
+        <members>ApexDevNet</members>
+        <name>RemoteSiteSetting</name>
+    </types>
+    <types>
+        <members>EBotR_v3/</members>
+        <members>EBotR_v4/</members>
+        <members>EBotR_v5/</members>
+        <members>EinsteinBotReports/</members>
+        <members>EinsteinBotReports_v2/</members>
+        <members>EnablementDashboardReports_sfdcSESv60/</members>
+        <members>EnablementDashboardReports_sfdcSESv61/</members>
+        <members>unfiled$public/flow_orchestration_log_ootb_report_two_four_eight</members>
+        <members>unfiled$public/flow_orchestration_run_ootb_report_two_four_eight</members>
+        <members>unfiled$public/flow_orchestration_stage_run_ootb_report_two_four_eight</members>
+        <members>unfiled$public/flow_orchestration_step_run_ootb_report_two_four_eight</members>
+        <members>unfiled$public/flow_orchestration_work_item_ootb_report_two_four_eight</members>
+        <members>unfiled$public/flow_screen_prebuilt_report</members>
+        <name>Report</name>
     </types>
     <types>
         <members>unfiled$public/CommerceReorderPortalInvitation</members>
