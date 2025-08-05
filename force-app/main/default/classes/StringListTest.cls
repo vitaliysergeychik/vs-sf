@@ -1,4 +1,10 @@
 public with sharing class StringListTest {
+    
+    public StringListTest(){
+        //Constructor logic, none needed
+    }
+
+
     public generateStringList(Integer numberOfStr) {
         List<string> myList = new List<string>();
         for (Integer x = 0; x < numberOfStr; x++){
