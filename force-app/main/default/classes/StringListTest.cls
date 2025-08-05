@@ -1,15 +1,13 @@
-public with sharing class StringListTest {
-    
-    public StringListTest(){
-        //Constructor logic, none needed
+public class StringListTest {
+    public StringListTest() {
+        // Default constructor
     }
 
-
-    public generateStringList(Integer numberOfStr) {
-        List<string> myList = new List<string>();
-        for (Integer x = 0; x < numberOfStr; x++){
-            myList.add('Test ' + x);
+    public List<String> generateStringList(Integer count) {
+        List<String> result = new List<String>();
+        for (Integer i = 0; i < count; i++) {
+            result.add('Test ' + i);
         }
-        return myList;
+        return result;
     }
 }
