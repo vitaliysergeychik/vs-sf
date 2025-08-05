@@ -1,5 +1,5 @@
 public with sharing class StringListTest {
-    public StringListTest(Integer numberOfStr) {
+    public generateStringList(Integer numberOfStr) {
         List<string> myList = new List<string>();
         for (Integer x = 0; x < numberOfStr; x++){
             myList.add('Test ' + x);
