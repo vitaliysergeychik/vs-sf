@@ -1,10 +1,6 @@
-// Use .apex files to store anonymous Apex.
-// You can execute anonymous Apex in VS Code by selecting the
-//     apex text and running the command:
-//     SFDX: Execute Anonymous Apex with Currently Selected Text
-// You can also execute the entire file by running the command:
-//     SFDX: Execute Anonymous Apex with Editor Contents
+//List<Contact> contacts = [SELECT Id, FirstName, LastName, MailingPostalCode FROM Contact];
+//System.debug(contacts);
 
-StringListTest slt = new StringListTest();
-List<String> myList = slt.generateStringList(5);
-System.debug(myList);
+
+List<Contact> contacts = ContactSearch.searchForContact('Nedaerk', '94087');
+System.debug(contacts);
