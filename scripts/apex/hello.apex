@@ -1,10 +1,6 @@
-//List<Contact> contacts = [SELECT Id, FirstName, LastName, MailingPostalCode FROM Contact];
-//System.debug(contacts);
+Account acct = [SELECT Id FROM Account WHERE Name = 'SFDC Computing' LIMIT 1];
+List<Contact> contacts = [SELECT Id, FirstName, LastName, Email, Department FROM Contact WHERE AccountId = :acct.Id];
 
-string LastName = 'Nedaerk';
-string postalCode = '94087';
-
-List<Contact> matchedContacts = [SELECT Id, FirstName, LastName 
-                                         FROM Contact
-                                         WHERE LastName = :LastName AND MailingPostalCode = :postalCode];
-System.debug(matchedContacts);
+for (Contact c : contacts) {
+    System.debug('Contact: ' + c.FirstName + ' ' + c.LastName + ', Department: ' + c.Department);
+}
