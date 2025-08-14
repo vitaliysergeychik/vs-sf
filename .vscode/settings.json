@@ -6,6 +6,6 @@
   },
   "codescan.connectedMode.project": {
     "connectionId": "githubrepos-vs-ide",
-    "projectKey": "vs-sf_githubrepos"
+    "projectKey": "vs-sf"
   }
 }
