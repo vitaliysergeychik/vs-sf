@@ -67,6 +67,10 @@
                 <behavior>Edit</behavior>
                 <field>NumEployees__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>DealsClosedPercent__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
