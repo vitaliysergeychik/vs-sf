@@ -59,6 +59,10 @@
                 <behavior>Edit</behavior>
                 <field>Birthdate__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Notes__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
