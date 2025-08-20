@@ -71,6 +71,8 @@
         <members>Partner__c.Date_Validated__c</members>
         <members>Partner__c.Industry__c</members>
         <members>Partner__c.Name__c</members>
+        <members>Partner__c.Notes__c</members>
+        <members>Partner__c.NumEployees__c</members>
         <members>Partner__c.ParterPhone__c</members>
         <members>Partner__c.PartnerEmail__c</members>
         <members>Partner__c.PartnerRating__c</members>
