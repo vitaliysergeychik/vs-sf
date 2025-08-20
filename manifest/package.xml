@@ -76,6 +76,7 @@
         <members>Partner__c.NumEployees__c</members>
         <members>Partner__c.ParterPhone__c</members>
         <members>Partner__c.PartnerEmail__c</members>
+        <members>Partner__c.PartnerObjective__c</members>
         <members>Partner__c.PartnerRating__c</members>
         <members>Partner__c.PartnerTargetNumber__c</members>
         <members>Partner__c.PartnerWebsite__c</members>
