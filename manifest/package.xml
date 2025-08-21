@@ -69,6 +69,7 @@
         <members>Partner__c.Birthdate__c</members>
         <members>Partner__c.CellPhone__c</members>
         <members>Partner__c.Date_Validated__c</members>
+        <members>Partner__c.DealerContact__c</members>
         <members>Partner__c.DealsClosedPercent__c</members>
         <members>Partner__c.Industry__c</members>
         <members>Partner__c.Name__c</members>
