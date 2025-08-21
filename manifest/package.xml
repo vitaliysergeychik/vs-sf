@@ -82,6 +82,7 @@
         <members>Partner__c.PartnerTargetNumber__c</members>
         <members>Partner__c.PartnerWebsite__c</members>
         <members>Partner__c.PercentClosed__c</members>
+        <members>Partner__c.Use_Cases__c</members>
         <members>Partner__c.Validated__c</members>
         <name>CustomField</name>
     </types>
