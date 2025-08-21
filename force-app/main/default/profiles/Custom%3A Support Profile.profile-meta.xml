@@ -104,6 +104,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Partner__c.Use_Cases__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Partner__c.Validated__c</field>
         <readable>true</readable>
     </fieldPermissions>
