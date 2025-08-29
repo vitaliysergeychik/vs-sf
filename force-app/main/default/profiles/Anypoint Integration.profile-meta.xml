@@ -16,7 +16,7 @@
         <apexClass>OpportunityController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
-    <custom>true</custom>
+    <custom>false</custom>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.AutorabitExtId__c</field>
@@ -70,6 +70,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Partner__c.ParterPhone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Partner__c.PartnerEmailField__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
