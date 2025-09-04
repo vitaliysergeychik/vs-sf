@@ -4,12 +4,12 @@ public with sharing class AccountController {
       return [
       SELECT Id, Name, Active__c
       FROM Account
-      WHERE Active__c = 'No'];
+      WHERE Active__c = 'Yes'];
     }
 
     //Gets all inactive accounts
     public static List<Account> getAllInactiveAccounts() {
-        return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
+        return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'Yes'];
     }
 
     //Gets all the accounts, active and inactive.

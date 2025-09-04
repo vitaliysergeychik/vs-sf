@@ -1,7 +1,24 @@
 @isTest
 private class AccountControllerTest {
 
-    
+    @isTest
+    static void testGetAllActiveAccounts() {
+        // Create test data
+        List<Account> testAccounts = new List<Account>();
+        for (Integer i = 0; i < 10; i++) {
+            testAccounts.add(new Account(Name = 'Test Account ' + i, Active__c = 'Yes'));
+        }
+        insert testAccounts;
+
+        List<Account> allActiveAccounts = new List<Account>();
+        Test.startTest();
+        allActiveAccounts = AccountController.getAllActiveAccounts();
+        Test.stopTest();
+        // Print the size of the list
+        System.debug('Size of allActiveAccounts: ' + allActiveAccounts.size());
+        // Assert the size of the list
+        System.assertEquals(10, allActiveAccounts.size());
+    }
 
     @isTest
     static void testGetAllInactiveAccounts() {
