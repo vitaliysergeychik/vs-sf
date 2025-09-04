@@ -1,8 +1,5 @@
 public with sharing class AccountHandler {
-    public AccountHandler() {
-
-    }
-
+    
     public static Account insertNewAccount(String name){
         try{
             Account newAccount = new Account(Name = name);
