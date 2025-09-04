@@ -8,4 +8,12 @@ private class AccountHandlerTest {
         System.assertNotEquals(null, testAcc.Id, 'Account insertion failed, Id is null');
         System.assertEquals('Test Account', testAcc.Name, 'Account name does not match');
     }
+
+    @isTest
+    static void testInsertNewAccountFailure(){
+        // Simulate failure by passing null name (which is not allowed)
+        Account testAcc = AccountHandler.insertNewAccount(null);
+        System.debug('Inserted Account: ' + testAcc);
+        System.assertEquals(null, testAcc, 'Account insertion should fail and return null');
+    }
 }
