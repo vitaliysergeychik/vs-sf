@@ -37,5 +37,19 @@ private class AccountControllerTest {
         System.assertEquals(3, inactiveAccounts.size());
     }
 
-   
+   @isTest
+   static void testGetAllAccounts(){
+    //Create test data
+    List<Account> testAccounts = new List<Account>();
+    for (Integer i = 0; i < 5; i++) {
+        testAccounts.add(new Account(Name = 'Active Account ' + i, Active__c = 'Yes'));
+    }
+    for (Integer j = 0; j < 4; j++) {
+        testAccounts.add(new Account(Name = 'Inactive Account ' + j, Active__c = 'No'));
+    }
+    insert testAccounts;
+    testAccounts = AccountController.getAllAccounts();
+    System.debug('Size of allAccounts: ' + testAccounts.size());
+    System.assertEquals(9, testAccounts.size());
+   }
 }
