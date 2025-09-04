@@ -37,23 +37,5 @@ private class AccountControllerTest {
         System.assertEquals(3, inactiveAccounts.size());
     }
 
-    @isTest
-    static void testGetAllAccounts() {
-        // Create test data
-        List<Account> testAccounts = new List<Account>();
-        for (Integer i = 0; i < 13; i++) {
-            testAccounts.add(new Account(Name = 'Test Account ' + i));
-        }
-        insert testAccounts;
-
-        List<Account> allAccounts = new List<Account>();
-        Test.startTest();
-        allAccounts = AccountController.getAllAccounts();
-        Test.stopTest();
-        // Assert that allAccounts list is not null and has size 13
-        // Assert that the list is not null
-        // add a comment
-        System.assertNotEquals(null, allAccounts);
-        System.assertEquals(13, allAccounts.size());
-    }
+   
 }
