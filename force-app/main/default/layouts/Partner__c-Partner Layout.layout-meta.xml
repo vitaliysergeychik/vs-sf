@@ -83,6 +83,10 @@
                 <behavior>Edit</behavior>
                 <field>Use_Cases__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Closed_Won_Deals__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
