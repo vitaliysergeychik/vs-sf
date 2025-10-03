@@ -68,6 +68,7 @@
         <members>Opportunity.TrackingNumber__c</members>
         <members>Partner__c.Birthdate__c</members>
         <members>Partner__c.CellPhone__c</members>
+        <members>Partner__c.Closed_Won_Deals__c</members>
         <members>Partner__c.Date_Validated__c</members>
         <members>Partner__c.DealerContact__c</members>
         <members>Partner__c.DealsClosedPercent__c</members>
@@ -372,6 +373,7 @@
         <members>Force%2Ecom - Free User</members>
         <members>Identity User</members>
         <members>MarketingProfile</members>
+        <members>Marketing_Custom</members>
         <members>Minimum Access - API Only Integrations</members>
         <members>Minimum Access - Salesforce</members>
         <members>Partner App Subscription User</members>

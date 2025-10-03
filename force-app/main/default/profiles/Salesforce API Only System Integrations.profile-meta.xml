@@ -34,6 +34,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Partner__c.Closed_Won_Deals__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Partner__c.Date_Validated__c</field>
         <readable>true</readable>
     </fieldPermissions>
