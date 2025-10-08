@@ -85,6 +85,7 @@
         <members>Partner__c.PercentClosed__c</members>
         <members>Partner__c.Use_Cases__c</members>
         <members>Partner__c.Validated__c</members>
+        <members>Vendor__c.Phone__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -92,7 +93,9 @@
         <name>CustomNotificationType</name>
     </types>
     <types>
+        <members>Manufacturer__c</members>
         <members>Partner__c</members>
+        <members>Vendor__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -251,6 +254,7 @@
         <members>LocationGroup-Location Group Layout</members>
         <members>LocationGroupAssignment-Location Group Assignment Layout</members>
         <members>Macro-Macro Layout</members>
+        <members>Manufacturer__c-Manufacturer Layout</members>
         <members>OperatingHours-Operating Hours Layout</members>
         <members>Opportunity-Opportunity %28Marketing%29 Layout</members>
         <members>Opportunity-Opportunity %28Sales%29 Layout</members>
@@ -308,6 +312,7 @@
         <members>UserProvAccount-User Provisioning Account Layout</members>
         <members>UserProvisioningLog-User Provisioning Log Layout</members>
         <members>UserProvisioningRequest-User Provisioning Request Layout</members>
+        <members>Vendor__c-Vendor Layout</members>
         <members>Waitlist-%5F%5FMISSING LABEL%5F%5F PropertyFile - val Waitlist not found in section StandardLayouts</members>
         <members>WebCart-Cart Layout</members>
         <members>WebCartAdjustmentBasis-Cart Adjustment Basis Layout</members>

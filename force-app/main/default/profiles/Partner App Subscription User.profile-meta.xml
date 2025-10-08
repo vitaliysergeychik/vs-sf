@@ -117,8 +117,19 @@
         <field>Partner__c.Validated__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Vendor__c.Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <layoutAssignments>
+        <layout>Manufacturer__c-Manufacturer Layout</layout>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Partner__c-Partner Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Vendor__c-Vendor Layout</layout>
     </layoutAssignments>
     <userLicense>Partner App Subscription</userLicense>
     <userPermissions>
