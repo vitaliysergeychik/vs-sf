@@ -6,4 +6,7 @@
 //     SFDX: Execute Anonymous Apex with Editor Contents
 
 String searchTerm = 'Smith';
-ContactAndLeadSearch.searchContactsAndLeads(searchTerm);
+List<List<sObject>> myList = ContactAndLeadSearch.searchContactsAndLeads(searchTerm);
+System.debug('==============================Search Results=========================== ' );
+System.debug(myList);
+System.debug('=======================================================================' );
