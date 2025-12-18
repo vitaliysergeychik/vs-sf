@@ -5,6 +5,7 @@
         <members>AccountControllerTest</members>
         <members>CommunitiesLandingController</members>
         <members>CommunitiesLandingControllerTest</members>
+        <members>ContactAndLeadSearch</members>
         <members>HeroDetailsPositionCustomPicklist</members>
         <members>PagedResult</members>
         <members>PagedResultTest</members>
@@ -69,6 +70,7 @@
         <members>Account.Active__c</members>
         <members>Account.CustomerPriority__c</members>
         <members>Account.NumberofLocations__c</members>
+        <members>Account.SE_Partner__c</members>
         <members>Account.SE__c</members>
         <members>Account.SLAExpirationDate__c</members>
         <members>Account.SLASerialNumber__c</members>
@@ -121,6 +123,10 @@
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
         <name>CustomField</name>
+    </types>
+    <types>
+        <members>AppURL</members>
+        <name>CustomLabel</name>
     </types>
     <types>
         <members>enablement_coaching_feedback_ready</members>
