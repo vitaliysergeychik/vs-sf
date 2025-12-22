@@ -105,10 +105,6 @@
         <type>CustomApplication</type>
     </appMenuItems>
     <appMenuItems>
-        <name>ARVault</name>
-        <type>ConnectedApp</type>
-    </appMenuItems>
-    <appMenuItems>
         <name>CodeScan_Cloud</name>
         <type>ConnectedApp</type>
     </appMenuItems>
