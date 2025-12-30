@@ -17,6 +17,50 @@
         <name>AuthProvider</name>
     </types>
     <types>
+        <members>StaticCurrencyRates_Home__dlm.DataSourceId__c</members>
+        <members>StaticCurrencyRates_Home__dlm.DataSourceObjectId__c</members>
+        <members>StaticCurrencyRates_Home__dlm.FromISOCurrencyCode__c</members>
+        <members>StaticCurrencyRates_Home__dlm.Id__c</members>
+        <members>StaticCurrencyRates_Home__dlm.InternalOrganizationId__c</members>
+        <members>StaticCurrencyRates_Home__dlm.RateDenominatorNumber__c</members>
+        <members>StaticCurrencyRates_Home__dlm.RateNumeratorNumber__c</members>
+        <members>StaticCurrencyRates_Home__dlm.ToISOCurrencyCode__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>StaticCurrencyRates_Home__dlm</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>UploadedFiles</members>
+        <name>DataKitObjectTemplate</name>
+    </types>
+    <types>
+        <members>DataKit_Test_v1</members>
+        <name>DataPackageKitDefinition</name>
+    </types>
+    <types>
+        <members>DataKit_Test_v1_1767108104888</members>
+        <members>DataKit_Test_v1_1767108134070</members>
+        <members>DataKit_Test_v1_1767108135044</members>
+        <name>DataPackageKitObject</name>
+    </types>
+    <types>
+        <members>StaticCurrencyRates_Home</members>
+        <name>DataSourceObject</name>
+    </types>
+    <types>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeDataSourceObjectStaticCurrencyRates_HomeDataSourceObjectIdxXtGSsZjLZwClBV</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeDataSourceStaticCurrencyRates_HomeDataSourceIdhvjKVGlRzbMHrwu</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeFromISOCurrencyCodeStaticCurrencyRates_HomeFromISOCurrencyCodeHJkrHEIlaNvkQFH</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeIdStaticCurrencyRates_HomeIdzMKlRsroDSBwNve</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeInternalOrganizationStaticCurrencyRates_HomeInternalOrganizationIdYknHHqHqSoWuQWB</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeRateDenominatorNumberStaticCurrencyRates_HomeRateDenominatorNumberANySshwTasBzRZE</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeRateNumeratorNumberStaticCurrencyRates_HomeRateNumeratorNumberTfUWYRCAhspjNrz</members>
+        <members>DataKit_Test_v1StaticCurrencyRates_HomeToISOCurrencyCodeStaticCurrencyRates_HomeToISOCurrencyCodeFbNLdkWrnYJmqlA</members>
+        <name>DataSrcDataModelFieldMap</name>
+    </types>
+    <types>
         <members>AccountContactRole</members>
         <members>AccountOwnership</members>
         <members>AccountRating</members>
