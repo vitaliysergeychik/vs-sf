@@ -7,6 +7,7 @@
         <members>CommunitiesLandingControllerTest</members>
         <members>ContactAndLeadSearch</members>
         <members>HeroDetailsPositionCustomPicklist</members>
+        <members>OlderAccountsUtility</members>
         <members>PagedResult</members>
         <members>PagedResultTest</members>
         <members>ProductController</members>
@@ -67,15 +68,50 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>Account.AccountNumber</members>
+        <members>Account.AccountSource</members>
         <members>Account.Active__c</members>
+        <members>Account.AnnualRevenue</members>
+        <members>Account.AutorabitExtId__c</members>
+        <members>Account.BillingAddress</members>
+        <members>Account.CleanStatus</members>
+        <members>Account.CurrencyIsoCode</members>
         <members>Account.CustomerPriority__c</members>
+        <members>Account.DandbCompanyId</members>
+        <members>Account.Description</members>
+        <members>Account.DunsNumber</members>
+        <members>Account.Fax</members>
+        <members>Account.Industry</members>
+        <members>Account.Jigsaw</members>
+        <members>Account.NaicsCode</members>
+        <members>Account.NaicsDesc</members>
+        <members>Account.Name</members>
+        <members>Account.NumberOfEmployees</members>
         <members>Account.NumberofLocations__c</members>
+        <members>Account.OperatingHoursId</members>
+        <members>Account.OwnerId</members>
+        <members>Account.Ownership</members>
+        <members>Account.ParentId</members>
+        <members>Account.Phone</members>
+        <members>Account.Potential_Value__c</members>
+        <members>Account.Rating</members>
         <members>Account.SE_Partner__c</members>
         <members>Account.SE__c</members>
         <members>Account.SLAExpirationDate__c</members>
         <members>Account.SLASerialNumber__c</members>
         <members>Account.SLA__c</members>
+        <members>Account.ShippingAddress</members>
+        <members>Account.Sic</members>
+        <members>Account.SicDesc</members>
+        <members>Account.Site</members>
+        <members>Account.Sum_of_Opportunities__c</members>
+        <members>Account.TickerSymbol</members>
+        <members>Account.Tier</members>
+        <members>Account.Tradestyle</members>
+        <members>Account.Type</members>
         <members>Account.UpsellOpportunity__c</members>
+        <members>Account.Website</members>
+        <members>Account.YearStarted</members>
         <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
         <members>Case.PotentialLiability__c</members>
@@ -133,6 +169,7 @@
         <name>CustomNotificationType</name>
     </types>
     <types>
+        <members>Account</members>
         <members>Manufacturing_Event__e</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
@@ -492,6 +529,7 @@
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
         <members>View_All_Data</members>
+        <members>View_All_With_API</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>

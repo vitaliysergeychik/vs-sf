@@ -1,6 +1,7 @@
 public with sharing class AccountController {
   //Another comment. Changing one comment to test incremental build.
-  //Changing one class to test inc build.//update
+  //Changing one class to test inc build.//
+  //adding a comment
   public static List<Account> getAllActiveAccounts() {
     return [
     SELECT Id, Name, Active__c
