@@ -3,30 +3,14 @@
     <types>
         <members>AccountController</members>
         <members>AccountControllerTest</members>
-        <members>AccountHandler</members>
-        <members>AccountHandlerTest</members>
         <members>CommunitiesLandingController</members>
         <members>CommunitiesLandingControllerTest</members>
         <members>ContactAndLeadSearch</members>
-        <members>ContactController</members>
-        <members>ContactControllerTest</members>
-        <members>ContactSearch</members>
         <members>HeroDetailsPositionCustomPicklist</members>
-        <members>HouseService</members>
-        <members>OlderAccountsUtility</members>
-        <members>OpportunityController</members>
         <members>PagedResult</members>
         <members>PagedResultTest</members>
         <members>ProductController</members>
         <members>ProductRecordInfoController</members>
-        <members>SOSL</members>
-        <members>StringListTest</members>
-        <members>sgengolden__AuthController</members>
-        <members>sgengolden__AuthControllerTests</members>
-        <members>sgengolden__PostInstallClass</members>
-        <members>sgengolden__PostInstallClassTest</members>
-        <members>sgengolden__PostUninstallClass</members>
-        <members>sgengolden__PostUninstallClassTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -54,10 +38,6 @@
     <types>
         <members>Internal Zone</members>
         <name>Community</name>
-    </types>
-    <types>
-        <members>House__c.Custom_Compact_Layout</members>
-        <name>CompactLayout</name>
     </types>
     <types>
         <members>standard__AllTabSet</members>
@@ -88,34 +68,21 @@
     </types>
     <types>
         <members>Account.Active__c</members>
-        <members>Account.AutorabitExtId__c</members>
         <members>Account.CustomerPriority__c</members>
         <members>Account.NumberofLocations__c</members>
-        <members>Account.Potential_Value__c</members>
         <members>Account.SE_Partner__c</members>
         <members>Account.SE__c</members>
         <members>Account.SLAExpirationDate__c</members>
         <members>Account.SLASerialNumber__c</members>
         <members>Account.SLA__c</members>
-        <members>Account.Sum_of_Opportunities__c</members>
         <members>Account.UpsellOpportunity__c</members>
         <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
         <members>Case.PotentialLiability__c</members>
         <members>Case.Product__c</members>
         <members>Case.SLAViolation__c</members>
-        <members>Contact.Account_Number__c</members>
         <members>Contact.Languages__c</members>
         <members>Contact.Level__c</members>
-        <members>Contract.Days_Remaining__c</members>
-        <members>House__c.Address__c</members>
-        <members>House__c.Bathrooms__c</members>
-        <members>House__c.Bedroom__c</members>
-        <members>House__c.City__c</members>
-        <members>House__c.Picture__c</members>
-        <members>House__c.Price__c</members>
-        <members>House__c.State__c</members>
-        <members>House__c.Zip__c</members>
         <members>Lead.CurrentGenerators__c</members>
         <members>Lead.NumberofLocations__c</members>
         <members>Lead.Primary__c</members>
@@ -123,10 +90,7 @@
         <members>Lead.SICCode__c</members>
         <members>Manufacturing_Event__e.Order_Id__c</members>
         <members>Manufacturing_Event__e.Status__c</members>
-        <members>Movie__c.Genre__c</members>
-        <members>Movie__c.Score__c</members>
         <members>Opportunity.CurrentGenerators__c</members>
-        <members>Opportunity.Days_to_Close__c</members>
         <members>Opportunity.DeliveryInstallationStatus__c</members>
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
@@ -139,25 +103,6 @@
         <members>Order_Item__c.Qty_S__c</members>
         <members>Order__c.Account__c</members>
         <members>Order__c.Status__c</members>
-        <members>Partner__c.Birthdate__c</members>
-        <members>Partner__c.CellPhone__c</members>
-        <members>Partner__c.Date_Validated__c</members>
-        <members>Partner__c.DealerContact__c</members>
-        <members>Partner__c.DealsClosedPercent__c</members>
-        <members>Partner__c.Industry__c</members>
-        <members>Partner__c.Name__c</members>
-        <members>Partner__c.Notes__c</members>
-        <members>Partner__c.NumEployees__c</members>
-        <members>Partner__c.ParterPhone__c</members>
-        <members>Partner__c.PartnerEmailField__c</members>
-        <members>Partner__c.PartnerEmail__c</members>
-        <members>Partner__c.PartnerObjective__c</members>
-        <members>Partner__c.PartnerRating__c</members>
-        <members>Partner__c.PartnerTargetNumber__c</members>
-        <members>Partner__c.PartnerWebsite__c</members>
-        <members>Partner__c.PercentClosed__c</members>
-        <members>Partner__c.Use_Cases__c</members>
-        <members>Partner__c.Validated__c</members>
         <members>Product_Family__c.Category__c</members>
         <members>Product_Family__c.Description__c</members>
         <members>Product__c.Battery__c</members>
@@ -177,12 +122,6 @@
         <members>Product__c.Rear_Brakes__c</members>
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
-        <members>Project__c.Budget__c</members>
-        <members>Project__c.Project_ID__c</members>
-        <members>Project__c.Solutions_Architect__c</members>
-        <members>Project__c.Start_Date__c</members>
-        <members>Review__c.Product_Name__c</members>
-        <members>ScoreCard__c.Score__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -194,17 +133,11 @@
         <name>CustomNotificationType</name>
     </types>
     <types>
-        <members>House__c</members>
         <members>Manufacturing_Event__e</members>
-        <members>Movie__c</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
-        <members>Partner__c</members>
         <members>Product_Family__c</members>
         <members>Product__c</members>
-        <members>Project__c</members>
-        <members>Review__c</members>
-        <members>ScoreCard__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -514,7 +447,6 @@
         <members>Contract.MyActivatedContracts</members>
         <members>Contract.MyDraftContracts</members>
         <members>Contract.MyInApprovalContracts</members>
-        <members>House__c.All</members>
         <members>Lead.AllOpenLeads</members>
         <members>Lead.MyUnreadLeads</members>
         <members>Lead.TodaysLeads</members>
