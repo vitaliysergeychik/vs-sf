@@ -529,6 +529,7 @@
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
         <members>View_All_Data</members>
+        <members>View_All_With_API</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>
