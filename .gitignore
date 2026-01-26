@@ -44,3 +44,4 @@ $RECYCLE.BIN/
 **/.venv/
 **/venv/
 .vscode/settings.json
+.vscode/settings.json

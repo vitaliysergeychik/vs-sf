@@ -5,7 +5,8 @@
     "**/.sfdx": true
   },
   "codescan.connectedMode.project": {
-    "connectionId": "githubrepos-vscode",
+    "connectionId": "githubrepos-vs-ide",
     "projectKey": "vs-sf_githubrepos"
-  }
+  },
+  "xml.preferences.showSchemaDocumentationType": "none"
 }
