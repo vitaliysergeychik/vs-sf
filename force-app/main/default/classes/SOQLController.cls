@@ -20,7 +20,7 @@ public with sharing class SOQLController {
 		Database.query(field2 + field1);
 		
 		//Good: the function result is cleaned
-		String field3 = '\'' + String.escapeSingleQuotes(getSomeId()) + '\'';
+		String field3 = '\'' + String.escapeSingleQuotes(field1) + '\'';
 		String field4 = 'SELECT Id FROM Account WHERE isPublic = true and Id = ';
 		Database.query(field4 + field3);
 		
