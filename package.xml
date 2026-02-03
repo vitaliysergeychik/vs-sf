@@ -12,6 +12,7 @@
         <members>PagedResultTest</members>
         <members>ProductController</members>
         <members>ProductRecordInfoController</members>
+        <members>SOQLController</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -139,6 +140,8 @@
         <members>Order_Item__c.Qty_S__c</members>
         <members>Order__c.Account__c</members>
         <members>Order__c.Status__c</members>
+        <members>Partner__c.DateCreated__c</members>
+        <members>Partner__c.NumCustomers__c</members>
         <members>Product_Family__c.Category__c</members>
         <members>Product_Family__c.Description__c</members>
         <members>Product__c.Battery__c</members>
@@ -369,6 +372,7 @@
         <members>OrderItem-Order Product Layout</members>
         <members>Order_Item__c-Order Item Layout</members>
         <members>Order__c-Order Layout</members>
+        <members>Partner__c-Partner Layout</members>
         <members>Payment-Payment Layout</members>
         <members>PaymentAuthAdjustment-Payment Authorization Adjustment Layout</members>
         <members>PaymentAuthorization-Payment Authorization Layout</members>
