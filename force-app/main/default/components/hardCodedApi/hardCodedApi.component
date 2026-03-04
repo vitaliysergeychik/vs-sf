@@ -2,5 +2,5 @@
     <apex:attribute name="apikey" description="This is the value for the component." type="String" default="secretapikey" required="true"/>
     <apex:attribute name="passwordIndex" description="This is color for the border." type="Integer" default="2" required="true"/>
     <apex:attribute name="showpassword" description="This is color for the border." type="Boolean" default="true" required="true"/>
-    <c:myComponent apikey="Hardcoded secret api key here" />
+    <c:myComponent apikey="vgAT64XXKfj77RSKZJtz" />
 </apex:component>
