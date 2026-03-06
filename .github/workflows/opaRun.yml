@@ -1,3 +1,11 @@
+name: Workflow B
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Convert Salesforce Metadata in force-app to JSON"]
+    types: [completed]
+
 jobs:
   run-opa:
     if: |
