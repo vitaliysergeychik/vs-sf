@@ -1,0 +1,42 @@
+name: Run OPA Policies on Salesforce Metadata
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Convert Salesforce Metadata in force-app to JSON"]
+    types: [completed]
+
+jobs:
+  run-opa:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download JSON artifact from previous workflow
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: salesforce-json
+          path: json
+
+      - name: Install OPA
+        run: |
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod +x opa
+          sudo mv opa /usr/local/bin/
+
+      - name: Evaluate OPA Policies
+        run: |
+          echo "Running OPA..."
+          for file in $(find json -name "*.json"); do
+            echo "Evaluating $file"
+            opa eval --format pretty \
+              --input "$file" \
+              --data policies \
+              "data"
+          done
