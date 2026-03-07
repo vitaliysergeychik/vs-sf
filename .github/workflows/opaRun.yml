@@ -1,6 +1,9 @@
 name: Workflow B - OPA Evaluation
 
 on:
+  pull_request:
+    branches:
+      - main
   workflow_run:
     workflows: ["Workflow A"]
     types:
@@ -19,9 +22,21 @@ jobs:
       PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
 
     steps:
+      # ------------------------------------------------------------
+      # Prevent double-runs: if triggered directly by PR, exit early
+      # ------------------------------------------------------------
+      - name: Skip direct PR trigger
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Workflow B triggered directly by PR — waiting for Workflow A."
+          exit 0
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ------------------------------------------------------------
+      # Download artifact from Workflow A
+      # ------------------------------------------------------------
       - name: Download artifact from Workflow A run
         run: |
           echo "Downloading artifact from Workflow A run ID: ${{ github.event.workflow_run.id }}"
@@ -50,12 +65,18 @@ jobs:
           echo "Extracted artifact:"
           ls -R json
 
+      # ------------------------------------------------------------
+      # Install OPA
+      # ------------------------------------------------------------
       - name: Install OPA
         run: |
           curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
           chmod +x opa
           sudo mv opa /usr/local/bin/
 
+      # ------------------------------------------------------------
+      # Evaluate OPA policies
+      # ------------------------------------------------------------
       - name: Evaluate OPA Policies (Permission Sets Only)
         run: |
           echo "Running OPA on permission sets only..."
@@ -68,7 +89,6 @@ jobs:
             exit 0
           fi
 
-          # Start JSON array
           echo "[" > opa-results/results.json
           first=true
 
@@ -89,9 +109,11 @@ jobs:
             echo "$result" >> opa-results/results.json
           done
 
-          # Close JSON array
           echo "]" >> opa-results/results.json
 
+      # ------------------------------------------------------------
+      # Parse OPA results
+      # ------------------------------------------------------------
       - name: Parse OPA Results
         id: parse
         run: |
@@ -105,7 +127,6 @@ jobs:
           denies=$(jq '[.. | .deny? // empty] | add | unique' opa-results/results.json)
           warns=$(jq '[.. | .warn? // empty] | add | unique' opa-results/results.json)
 
-          # Safely write JSON to GITHUB_OUTPUT
           {
             echo "denies<<EOF"
             echo "$denies"
@@ -124,6 +145,9 @@ jobs:
             echo "no_violations=true" >> $GITHUB_OUTPUT
           fi
 
+      # ------------------------------------------------------------
+      # Comment on PR
+      # ------------------------------------------------------------
       - name: Comment on PR with OPA results
         if: env.PR_NUMBER != ''
         uses: actions/github-script@v7
@@ -155,6 +179,9 @@ jobs:
               body
             });
 
+      # ------------------------------------------------------------
+      # Fail PR if deny violations exist
+      # ------------------------------------------------------------
       - name: Fail if deny violations exist
         if: steps.parse.outputs.no_violations == 'false'
         run: |
