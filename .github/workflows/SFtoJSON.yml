@@ -1,11 +1,8 @@
-name: CICD Policies
+name: Workflow A
 
 on:
-  pull_request:
-    branches:
-      - main
-
-
+  workflow_dispatch:
+    
 jobs:
   convert-metadata:
     runs-on: ubuntu-latest

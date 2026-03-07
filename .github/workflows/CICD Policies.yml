@@ -1,0 +1,62 @@
+name: CICD Policies
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Workflow A
+        run: |
+          echo "Triggering Workflow A..."
+
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/workflow-a.yml/dispatches \
+            -d '{"ref": "${{ github.head_ref }}"}'
+
+      - name: Wait for Workflow A to complete
+        run: |
+          echo "Waiting for Workflow A to complete..."
+
+          repo="${{ github.repository }}"
+          branch="${{ github.head_ref }}"
+
+          while true; do
+            runs=$(curl -s \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$repo/actions/runs?branch=$branch&status=completed")
+
+            match=$(echo "$runs" | jq -r '.workflow_runs[] | select(.name=="Workflow A") | .id' | head -n 1)
+
+            if [ -n "$match" ]; then
+              echo "Workflow A completed (run ID: $match)."
+              break
+            fi
+
+            echo "Workflow A not finished yet. Sleeping 10 seconds..."
+            sleep 10
+          done
+
+      - name: Trigger Workflow B
+        run: |
+          echo "Triggering Workflow B..."
+
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/workflow-b.yml/dispatches \
+            -d '{"ref": "${{ github.head_ref }}"}'
+
+      - name: Complete
+        run: echo "Workflow C completed successfully."
