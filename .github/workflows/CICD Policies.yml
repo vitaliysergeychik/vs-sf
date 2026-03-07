@@ -1,4 +1,4 @@
-name: CICD Policies
+name: Salesforce Security Check
 
 on:
   pull_request:
@@ -6,57 +6,137 @@ on:
       - main
 
 permissions:
-  actions: write
   contents: read
+  pull-requests: write
 
 jobs:
-  orchestrate:
+  security-check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Workflow A
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------
+      # STEP 1 — Extract Salesforce metadata (former Workflow A)
+      # ------------------------------------------------------------
+      - name: Extract Salesforce Metadata
         run: |
-          echo "Triggering Workflow A..."
+          echo "Extracting Salesforce metadata..."
+          mkdir -p json
 
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/workflow-a.yml/dispatches \
-            -d '{"ref": "${{ github.head_ref }}"}'
+          # Your extraction logic here
+          # Example:
+          # sf sobject metadata retrieve ...
+          # unzip into json/
 
-      - name: Wait for Workflow A to complete
+          echo "Metadata extraction complete."
+
+      # ------------------------------------------------------------
+      # STEP 2 — Install OPA
+      # ------------------------------------------------------------
+      - name: Install OPA
         run: |
-          echo "Waiting for Workflow A to complete..."
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod +x opa
+          sudo mv opa /usr/local/bin/
 
-          repo="${{ github.repository }}"
-          branch="${{ github.head_ref }}"
+      # ------------------------------------------------------------
+      # STEP 3 — Evaluate OPA policies (former Workflow B)
+      # ------------------------------------------------------------
+      - name: Evaluate OPA Policies
+        run: |
+          echo "Running OPA on permission sets..."
+          mkdir -p opa-results
 
-          while true; do
-            runs=$(curl -s \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/$repo/actions/runs?branch=$branch&status=completed")
+          files=$(find json -type f -name "*permissionset-meta.json")
 
-            match=$(echo "$runs" | jq -r '.workflow_runs[] | select(.name=="Workflow A") | .id' | head -n 1)
+          if [ -z "$files" ]; then
+            echo "No permission set metadata found."
+            echo "[]" > opa-results/results.json
+            exit 0
+          fi
 
-            if [ -n "$match" ]; then
-              echo "Workflow A completed (run ID: $match)."
-              break
+          echo "[" > opa-results/results.json
+          first=true
+
+          for file in $files; do
+            echo "Evaluating $file"
+
+            result=$(opa eval --format=json \
+              --input "$file" \
+              --data OPApolicies \
+              "data.salesforce.security")
+
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> opa-results/results.json
             fi
 
-            echo "Workflow A not finished yet. Sleeping 10 seconds..."
-            sleep 10
+            echo "$result" >> opa-results/results.json
           done
 
-      - name: Trigger Workflow B
+          echo "]" >> opa-results/results.json
+
+      # ------------------------------------------------------------
+      # STEP 4 — Parse OPA results
+      # ------------------------------------------------------------
+      - name: Parse OPA Results
+        id: parse
         run: |
-          echo "Triggering Workflow B..."
+          echo "Parsing OPA results..."
 
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/workflow-b.yml/dispatches \
-            -d '{"ref": "${{ github.head_ref }}"}'
+          denies=$(jq '[.. | .deny? // empty] | add | unique' opa-results/results.json)
+          warns=$(jq '[.. | .warn? // empty] | add | unique' opa-results/results.json)
 
-      - name: Complete
-        run: echo "Workflow C completed successfully."
+          {
+            echo "denies<<EOF"
+            echo "$denies"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          {
+            echo "warns<<EOF"
+            echo "$warns"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      # ------------------------------------------------------------
+      # STEP 5 — Comment on PR
+      # ------------------------------------------------------------
+      - name: Comment on PR with OPA results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request.number;
+
+            const denies = JSON.parse(String.raw`${{ steps.parse.outputs.denies }}`);
+            const warns = JSON.parse(String.raw`${{ steps.parse.outputs.warns }}`);
+
+            let body = "### 🔍 OPA Policy Evaluation Results\n";
+
+            if (Array.isArray(denies) && denies.length > 0) {
+              body += "#### ❌ Violations Found\n";
+              denies.forEach(v => body += `- ${v}\n`);
+            } else {
+              body += "#### ✅ No Deny Violations Found\n";
+            }
+
+            if (Array.isArray(warns) && warns.length > 0) {
+              body += "\n#### ⚠️ Warnings\n";
+              warns.forEach(v => body += `- ${v}\n`);
+            }
+
+            github.rest.issues.createComment({
+              issue_number: pr,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+
+      # ------------------------------------------------------------
+      # STEP 6 — Always succeed
+      # ------------------------------------------------------------
+      - name: Complete Successfully
+        run: echo "Security check completed successfully."
