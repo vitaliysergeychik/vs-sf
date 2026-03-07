@@ -6,7 +6,7 @@ package salesforce.security
 
 # ViewAllData is dangerous
 deny[msg] {
-  some perm in input.PermissionSet.userPermissions
+  perm := input.PermissionSet.userPermissions[_]
   perm.name == "ViewAllData"
   perm.enabled == "true"
 
@@ -30,7 +30,7 @@ warn[msg] {
 # Guest User dangerous permissions
 deny[msg] {
   input.PermissionSet.label == "Guest User"
-  some perm in input.PermissionSet.userPermissions
+  perm := input.PermissionSet.userPermissions[_]
   perm.enabled == "true"
 
   msg := "SECURITY VIOLATION: Guest User PermissionSet grants dangerous permissions. [OWASP A01: Broken Access Control]"
