@@ -63,14 +63,28 @@ jobs:
             exit 1
           fi
 
-      - name: Evaluate OPA Policies
+      - name: Evaluate OPA Policies (Permission Sets Only)
         run: |
-          echo "Running OPA..."
-          for file in $(find json -name "*.json"); do
+          echo "Running OPA on permission sets only..."
+
+          # Find only permission set metadata JSON files
+          files=$(find json -type f -name "*permissionset-meta.json")
+
+          if [ -z "$files" ]; then
+            echo "No permission set metadata found in artifact."
+            exit 0
+          fi
+
+          # Ensure OPApolicies folder exists
+          if [ ! -d "OPApolicies" ]; then
+            echo "OPApolicies folder not found in repo."
+            exit 1
+          fi
+
+          for file in $files; do
             echo "Evaluating $file"
             opa eval --format pretty \
               --input "$file" \
               --data OPApolicies \
               "data"
           done
-
