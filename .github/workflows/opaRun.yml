@@ -69,3 +69,8 @@ jobs:
           for file in $(find json -name "*.json"); do
             echo "Evaluating $file"
             opa eval --format pretty \
+              --input "$file" \
+              --data policies \
+              "data"
+          done
+
