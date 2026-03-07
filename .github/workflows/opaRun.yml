@@ -1,49 +1,53 @@
-name: Workflow B
+name: Workflow B - OPA Evaluation
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Workflow A"]
+    types:
+      - completed
 
 permissions:
-  actions: read
   contents: read
+  actions: read
+  pull-requests: write
 
 jobs:
-  run-opa:
+  opa-eval:
     runs-on: ubuntu-latest
+
+    env:
+      PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download latest salesforce-json artifact via API
+      - name: Download artifact from Workflow A run
         run: |
-          echo "Finding latest 'salesforce-json' artifact..."
-          artifact=$(curl -s \
+          echo "Downloading artifact from Workflow A run ID: ${{ github.event.workflow_run.id }}"
+
+          artifacts=$(curl -s \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/artifacts \
-            | jq -r '.artifacts
-              | map(select(.name=="salesforce-json" and .expired==false))
-              | sort_by(.created_at)
-              | last')
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/artifacts")
 
-          if [ "$artifact" = "null" ] || [ -z "$artifact" ]; then
-            echo "No active 'salesforce-json' artifact found. Run Workflow A first."
+          artifact_id=$(echo "$artifacts" | jq -r '.artifacts | map(select(.name=="salesforce-json")) | first.id')
+
+          if [ "$artifact_id" = "null" ] || [ -z "$artifact_id" ]; then
+            echo "No salesforce-json artifact found for this run."
             exit 1
           fi
 
-          artifact_id=$(echo "$artifact" | jq -r '.id')
-          echo "Downloading artifact ID: $artifact_id"
+          echo "Found artifact ID: $artifact_id"
 
           curl -L -s \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$artifact_id/zip \
-            -o artifact.zip
+            -o artifact.zip \
+            "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$artifact_id/zip"
 
           mkdir -p json
           unzip -q artifact.zip -d json
-          echo "Downloaded and extracted artifact:"
+          echo "Extracted artifact:"
           ls -R json
 
       - name: Install OPA
@@ -52,39 +56,17 @@ jobs:
           chmod +x opa
           sudo mv opa /usr/local/bin/
 
-      - name: Ensure JSON exists
-        run: |
-          if [ ! -d "json" ]; then
-            echo "No JSON directory after download."
-            exit 1
-          fi
-          if ! find json -name "*.json" | grep -q .; then
-            echo "No JSON files found in json/."
-            exit 1
-          fi
-
       - name: Evaluate OPA Policies (Permission Sets Only)
         run: |
           echo "Running OPA on permission sets only..."
+          mkdir -p opa-results
 
-          # Find only permission set metadata JSON files
           files=$(find json -type f -name "*permissionset-meta.json")
 
           if [ -z "$files" ]; then
-            echo "No permission set metadata found in artifact."
+            echo "No permission set metadata found."
             exit 0
-          fi
-
-          # Ensure OPApolicies folder exists
-          if [ ! -d "OPApolicies" ]; then
-            echo "OPApolicies folder not found in repo."
-            exit 1
           fi
 
           for file in $files; do
             echo "Evaluating $file"
-            opa eval --format pretty \
-              --input "$file" \
-              --data OPApolicies \
-              "data"
-          done

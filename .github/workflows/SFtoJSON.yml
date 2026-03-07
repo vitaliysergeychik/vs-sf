@@ -1,7 +1,10 @@
-name: Convert Salesforce Metadata in force-app to JSON
+name: Workflow A
 
 on:
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
 
 jobs:
   convert-metadata:
