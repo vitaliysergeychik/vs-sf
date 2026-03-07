@@ -68,13 +68,29 @@ jobs:
             exit 0
           fi
 
+          # Start JSON array
+          echo "[" > opa-results/results.json
+          first=true
+
           for file in $files; do
             echo "Evaluating $file"
-            opa eval --format=json \
+
+            result=$(opa eval --format=json \
               --input "$file" \
               --data OPApolicies \
-              "data.salesforce.security" >> opa-results/results.json
+              "data.salesforce.security")
+
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> opa-results/results.json
+            fi
+
+            echo "$result" >> opa-results/results.json
           done
+
+          # Close JSON array
+          echo "]" >> opa-results/results.json
 
       - name: Parse OPA Results
         id: parse
