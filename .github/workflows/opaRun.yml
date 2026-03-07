@@ -86,4 +86,61 @@ jobs:
             exit 0
           fi
 
-          denies
+          denies=$(jq '[.. | .deny? // empty] | add | unique' opa-results/results.json)
+          warns=$(jq '[.. | .warn? // empty] | add | unique' opa-results/results.json)
+
+          # Safely write JSON to GITHUB_OUTPUT
+          {
+            echo "denies<<EOF"
+            echo "$denies"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          {
+            echo "warns<<EOF"
+            echo "$warns"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          if [ "$denies" != "null" ] && [ "$denies" != "[]" ]; then
+            echo "no_violations=false" >> $GITHUB_OUTPUT
+          else
+            echo "no_violations=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR with OPA results
+        if: env.PR_NUMBER != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = process.env.PR_NUMBER;
+
+            const denies = JSON.parse(String.raw`${{ steps.parse.outputs.denies }}`);
+            const warns = JSON.parse(String.raw`${{ steps.parse.outputs.warns }}`);
+
+            let body = "### 🔍 OPA Policy Evaluation Results\n";
+
+            if (Array.isArray(denies) && denies.length > 0) {
+              body += "#### ❌ Violations Found\n";
+              denies.forEach(v => body += `- ${v}\n`);
+            } else {
+              body += "#### ✅ No Deny Violations Found\n";
+            }
+
+            if (Array.isArray(warns) && warns.length > 0) {
+              body += "\n#### ⚠️ Warnings\n";
+              warns.forEach(v => body += `- ${v}\n`);
+            }
+
+            github.rest.issues.createComment({
+              issue_number: pr,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+
+      - name: Fail if deny violations exist
+        if: steps.parse.outputs.no_violations == 'false'
+        run: |
+          echo "Deny violations detected. Failing workflow."
+          exit 1
