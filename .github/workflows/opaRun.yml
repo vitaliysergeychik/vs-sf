@@ -43,7 +43,14 @@ jobs:
 
           mkdir -p json
           unzip -q artifact.zip -d json
+          echo "Downloaded and extracted artifact:"
           ls -R json
+
+      - name: Install OPA
+        run: |
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod +x opa
+          sudo mv opa /usr/local/bin/
 
       - name: Ensure JSON exists
         run: |
@@ -62,7 +69,3 @@ jobs:
           for file in $(find json -name "*.json"); do
             echo "Evaluating $file"
             opa eval --format pretty \
-              --input "$file" \
-              --data policies \
-              "data"
-          done
