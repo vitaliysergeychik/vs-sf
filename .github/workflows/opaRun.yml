@@ -48,25 +48,3 @@ jobs:
           mkdir -p json
           unzip -q artifact.zip -d json
           echo "Extracted artifact:"
-          ls -R json
-
-      - name: Install OPA
-        run: |
-          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
-          chmod +x opa
-          sudo mv opa /usr/local/bin/
-
-      - name: Evaluate OPA Policies (Permission Sets Only)
-        run: |
-          echo "Running OPA on permission sets only..."
-          mkdir -p opa-results
-
-          files=$(find json -type f -name "*permissionset-meta.json")
-
-          if [ -z "$files" ]; then
-            echo "No permission set metadata found."
-            exit 0
-          fi
-
-          for file in $files; do
-            echo "Evaluating $file"
