@@ -1,0 +1,1 @@
+FIND {Wingo} IN ALL FIELDS RETURNING Account(Name), Contact(Department)
