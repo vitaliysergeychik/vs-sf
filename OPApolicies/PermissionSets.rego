@@ -1,29 +1,37 @@
 package salesforce.security
+
 #####################################
 # PERMISSION SET RULES
 #####################################
 
 # ViewAllData is dangerous
-deny[msg] if {
-  some ps in input.PermissionSet
-  some p in ps.userPermissions
-  p.name == "ViewAllData"
-  p.enabled == "true"
-  msg := sprintf("SECURITY VIOLATION: PermissionSet '%s' grants dangerous ViewAllData permission. [OWASP A01: Broken Access Control]", [ps.label])
+deny[msg] {
+  some perm in input.PermissionSet.userPermissions
+  perm.name == "ViewAllData"
+  perm.enabled == "true"
+
+  msg := sprintf(
+    "SECURITY VIOLATION: PermissionSet '%s' grants dangerous ViewAllData permission. [OWASP A01: Broken Access Control]",
+    [input.PermissionSet.label]
+  )
 }
 
 # Warning on suspicious descriptions
-warn[msg] if {
-  some ps in input.PermissionSet
-  contains(lower(ps.description), "all data")
-  msg := sprintf("WARNING: PermissionSet '%s' description suggests overly broad data access. [OWASP A01: Broken Access Control]", [ps.label])
+warn[msg] {
+  input.PermissionSet.description != ""
+  contains(lower(input.PermissionSet.description), "all data")
+
+  msg := sprintf(
+    "WARNING: PermissionSet '%s' description suggests overly broad data access. [OWASP A01: Broken Access Control]",
+    [input.PermissionSet.label]
+  )
 }
 
 # Guest User dangerous permissions
-deny[msg] if {
-  some ps in input.PermissionSet
-  ps.label == "Guest User"
-  some p in ps.userPermissions
-  p.enabled == "true"
+deny[msg] {
+  input.PermissionSet.label == "Guest User"
+  some perm in input.PermissionSet.userPermissions
+  perm.enabled == "true"
+
   msg := "SECURITY VIOLATION: Guest User PermissionSet grants dangerous permissions. [OWASP A01: Broken Access Control]"
 }
