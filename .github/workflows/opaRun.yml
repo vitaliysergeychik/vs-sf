@@ -70,7 +70,7 @@ jobs:
             echo "Evaluating $file"
             opa eval --format pretty \
               --input "$file" \
-              --data policies \
+              --data OPApolicies \
               "data"
           done
 
