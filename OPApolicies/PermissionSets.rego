@@ -5,7 +5,7 @@ package salesforce.security
 #####################################
 
 # ViewAllData is dangerous
-deny[msg] {
+deny contains msg if {
   perm := input.PermissionSet.userPermissions[_]
   perm.name == "ViewAllData"
   perm.enabled == "true"
@@ -17,7 +17,7 @@ deny[msg] {
 }
 
 # Warning on suspicious descriptions
-warn[msg] {
+warn contains msg if {
   input.PermissionSet.description != ""
   contains(lower(input.PermissionSet.description), "all data")
 
@@ -28,7 +28,7 @@ warn[msg] {
 }
 
 # Guest User dangerous permissions
-deny[msg] {
+deny contains msg if {
   input.PermissionSet.label == "Guest User"
   perm := input.PermissionSet.userPermissions[_]
   perm.enabled == "true"
