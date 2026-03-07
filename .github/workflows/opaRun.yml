@@ -2,7 +2,7 @@ name: OPA Evaluation
 
 on:
   workflow_run:
-    workflows: ["Workflow A"]
+    workflows: ["CICD Policies"]
     types:
       - completed
 
