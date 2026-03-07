@@ -2,26 +2,27 @@ name: Workflow B
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Convert Salesforce Metadata in force-app to JSON"]
-    types: [completed]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   run-opa:
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'workflow_run'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List available artifacts
+      - name: List artifacts via API (debug)
         run: |
-          echo "Listing artifacts..."
-          gh run artifacts
-
+          echo "Listing artifacts via GitHub API..."
+          curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/artifacts \
+            | jq '.artifacts[] | {name: .name, expired: .expired, size_in_bytes: .size_in_bytes}'
 
       - name: Download JSON artifact
         uses: actions/download-artifact@v4
@@ -32,7 +33,7 @@ jobs:
       - name: Ensure JSON exists
         run: |
           if [ ! -d "json" ]; then
-            echo "No JSON artifact found. Run WA first."
+            echo "No JSON artifact found. Run Workflow A first."
             exit 1
           fi
 
