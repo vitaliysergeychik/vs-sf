@@ -23,20 +23,42 @@ jobs:
 
     steps:
       # ------------------------------------------------------------
-      # Prevent double-runs: if triggered directly by PR, exit early
+      # PR-triggered run: wait for Workflow A to finish, then exit
       # ------------------------------------------------------------
-      - name: Skip direct PR trigger
+      - name: Wait for Workflow A to finish
         if: github.event_name == 'pull_request'
         run: |
-          echo "Workflow B triggered directly by PR — waiting for Workflow A."
+          echo "Workflow B triggered by PR — waiting for Workflow A to complete..."
+
+          repo="${{ github.repository }}"
+          pr_number="${{ github.event.pull_request.number }}"
+
+          while true; do
+            runs=$(curl -s \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$repo/actions/runs?event=pull_request&status=completed")
+
+            match=$(echo "$runs" | jq -r '.workflow_runs[] | select(.name=="Workflow A") | .id' | head -n 1)
+
+            if [ -n "$match" ]; then
+              echo "Workflow A has completed (run ID: $match)."
+              break
+            fi
+
+            echo "Workflow A not finished yet. Sleeping 10 seconds..."
+            sleep 10
+          done
+
+          echo "Exiting PR-triggered run. Real evaluation will run via workflow_run."
           exit 0
 
+      # ------------------------------------------------------------
+      # Real evaluation begins here (workflow_run trigger)
+      # ------------------------------------------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ------------------------------------------------------------
-      # Download artifact from Workflow A
-      # ------------------------------------------------------------
       - name: Download artifact from Workflow A run
         run: |
           echo "Downloading artifact from Workflow A run ID: ${{ github.event.workflow_run.id }}"
@@ -63,18 +85,12 @@ jobs:
           mkdir -p json
           unzip -q artifact.zip -d json
 
-      # ------------------------------------------------------------
-      # Install OPA
-      # ------------------------------------------------------------
       - name: Install OPA
         run: |
           curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
           chmod +x opa
           sudo mv opa /usr/local/bin/
 
-      # ------------------------------------------------------------
-      # Evaluate OPA policies
-      # ------------------------------------------------------------
       - name: Evaluate OPA Policies (Permission Sets Only)
         run: |
           echo "Running OPA on permission sets only..."
@@ -109,9 +125,6 @@ jobs:
 
           echo "]" >> opa-results/results.json
 
-      # ------------------------------------------------------------
-      # Parse OPA results
-      # ------------------------------------------------------------
       - name: Parse OPA Results
         id: parse
         run: |
@@ -144,9 +157,6 @@ jobs:
             echo "no_violations=true" >> $GITHUB_OUTPUT
           fi
 
-      # ------------------------------------------------------------
-      # Comment on PR
-      # ------------------------------------------------------------
       - name: Comment on PR with OPA results
         if: env.PR_NUMBER != ''
         uses: actions/github-script@v7
@@ -178,8 +188,5 @@ jobs:
               body
             });
 
-      # ------------------------------------------------------------
-      # No failure step — workflow always succeeds
-      # ------------------------------------------------------------
       - name: Complete Successfully
         run: echo "Workflow completed successfully, regardless of violations."
