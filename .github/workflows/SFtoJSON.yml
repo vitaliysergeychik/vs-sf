@@ -1,4 +1,4 @@
-name: Workflow A
+name: CICD Policies
 
 on:
   pull_request:

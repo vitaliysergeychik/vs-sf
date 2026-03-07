@@ -1,9 +1,6 @@
-name: Workflow B - OPA Evaluation
+name: OPA Evaluation
 
 on:
-  pull_request:
-    branches:
-      - main
   workflow_run:
     workflows: ["Workflow A"]
     types:
