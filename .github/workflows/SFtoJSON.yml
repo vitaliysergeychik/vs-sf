@@ -1,12 +1,7 @@
 name: Convert Salesforce Metadata in force-app to JSON
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
-
 
 jobs:
   convert-metadata:
@@ -16,26 +11,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install yq (official binary that includes XML parsing)
-      - name: Install yq/xq
+      - name: Install yq
         run: |
-          YQ_VERSION=v4.44.1
-          sudo wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64 -O /usr/bin/yq
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
           sudo chmod +x /usr/bin/yq
 
-      # Confirm yq can parse XML and output JSON
-      - name: Verify yq XML→JSON capability
-        run: |
-          echo "<root><test>ok</test></root>" | yq -p=xml -o=json
-
-      # Convert all XML files under force-app to JSON
-      - name: Convert XML metadata to JSON
+      - name: Convert XML to JSON
         run: |
           mkdir -p json
-          find force-app -name "*.xml" | while read xmlfile; do
-            jsonfile="json/${xmlfile#force-app/}.json"
-            mkdir -p "$(dirname "$jsonfile")"
-            yq -p=xml -o=json < "$xmlfile" > "$jsonfile"
+          find force-app -name "*.xml" | while read xml; do
+            json_file="json/$(basename "$xml" .xml).json"
+            echo "Converting $xml -> $json_file"
+            yq -o=json "$xml" > "$json_file"
+          done
+
+      - name: Delete old artifacts
+        run: |
+          echo "Deleting old artifacts named 'salesforce-json'..."
+          artifacts=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/artifacts \
+            | jq -r '.artifacts[] | select(.name=="salesforce-json") | .id')
+
+          for artifact_id in $artifacts; do
+            echo "Deleting artifact ID: $artifact_id"
+            curl -s -X DELETE \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$artifact_id
           done
 
       - name: Upload JSON artifact
