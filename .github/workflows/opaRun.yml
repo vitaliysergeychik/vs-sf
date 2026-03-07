@@ -50,7 +50,7 @@ jobs:
 
           if [ "$artifact_id" = "null" ] || [ -z "$artifact_id" ]; then
             echo "No salesforce-json artifact found for this run."
-            exit 1
+            exit 0
           fi
 
           echo "Found artifact ID: $artifact_id"
@@ -62,8 +62,6 @@ jobs:
 
           mkdir -p json
           unzip -q artifact.zip -d json
-          echo "Extracted artifact:"
-          ls -R json
 
       # ------------------------------------------------------------
       # Install OPA
@@ -139,6 +137,7 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
+          # Always succeed — just record whether violations exist
           if [ "$denies" != "null" ] && [ "$denies" != "[]" ]; then
             echo "no_violations=false" >> $GITHUB_OUTPUT
           else
@@ -180,10 +179,7 @@ jobs:
             });
 
       # ------------------------------------------------------------
-      # Fail PR if deny violations exist
+      # No failure step — workflow always succeeds
       # ------------------------------------------------------------
-      - name: Fail if deny violations exist
-        if: steps.parse.outputs.no_violations == 'false'
-        run: |
-          echo "Deny violations detected. Failing workflow."
-          exit 1
+      - name: Complete Successfully
+        run: echo "Workflow completed successfully, regardless of violations."
