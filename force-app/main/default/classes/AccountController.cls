@@ -14,7 +14,7 @@ public with sharing class AccountController {
   }
   //Gets all the accounts, active and inactive.//
   public static List<Account> getAllAccounts() {
-      return [SELECT Id, Name, Active__c FROM Account];
+      return [SELECT Id, Name, Active__c, CreditCard__c FROM Account];
   }
 
 
