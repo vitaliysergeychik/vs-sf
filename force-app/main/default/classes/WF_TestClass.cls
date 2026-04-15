@@ -1,9 +1,6 @@
 public with sharing class WF_TestClass {
     public WF_TestClass() {
-        return [
-        SELECT Id, Name, Active__c
-        FROM Account
-        WHERE Active__c = 'Yes'];
+        //Constructor (Empty)
     }
 
     //Another comment. Changing one comment to test incremental build.
