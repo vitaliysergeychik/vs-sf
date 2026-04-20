@@ -140,6 +140,9 @@
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
+        <members>OrderForm__c.Notes__c</members>
+        <members>OrderForm__c.OrderDate__c</members>
+        <members>OrderForm__c.Verified__c</members>
         <members>Order_Item__c.Order__c</members>
         <members>Order_Item__c.Price__c</members>
         <members>Order_Item__c.Product__c</members>
@@ -189,6 +192,7 @@
     <types>
         <members>Account</members>
         <members>Manufacturing_Event__e</members>
+        <members>OrderForm__c</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
         <members>Product_Family__c</members>
@@ -384,6 +388,7 @@
         <members>Opportunity-Opportunity Layout</members>
         <members>OpportunityLineItem-Opportunity Product Layout</members>
         <members>Order-Order Layout</members>
+        <members>OrderForm__c-OrderForm Layout</members>
         <members>OrderItem-Order Product Layout</members>
         <members>Order_Item__c-Order Item Layout</members>
         <members>Order__c-Order Layout</members>
@@ -547,6 +552,7 @@
     <types>
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
+        <members>IntegrationUser_New</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
