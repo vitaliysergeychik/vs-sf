@@ -11,7 +11,7 @@
                 <field>DocumentNumber</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Edit</behavior>
                 <field>InvoiceNumber</field>
             </layoutItems>
             <layoutItems>
