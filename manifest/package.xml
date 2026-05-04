@@ -6,6 +6,7 @@
         <members>CommunitiesLandingController</members>
         <members>CommunitiesLandingControllerTest</members>
         <members>ContactAndLeadSearch</members>
+        <members>ContactAndLeadSearchTest</members>
         <members>HeroDetailsPositionCustomPicklist</members>
         <members>OlderAccountsUtility</members>
         <members>PagedResult</members>
@@ -14,11 +15,6 @@
         <members>ProductRecordInfoController</members>
         <members>SOQLController</members>
         <name>ApexClass</name>
-    </types>
-    <types>
-        <members>hardCodedApi</members>
-        <members>myComponent</members>
-        <name>ApexComponent</name>
     </types>
     <types>
         <members>CommunitiesLanding</members>
@@ -135,11 +131,16 @@
         <members>Lead.SICCode__c</members>
         <members>Manufacturing_Event__e.Order_Id__c</members>
         <members>Manufacturing_Event__e.Status__c</members>
+        <members>Movie__c.Genre__c</members>
+        <members>Movie__c.Score__c</members>
         <members>Opportunity.CurrentGenerators__c</members>
         <members>Opportunity.DeliveryInstallationStatus__c</members>
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
+        <members>OrderForm__c.Notes__c</members>
+        <members>OrderForm__c.OrderDate__c</members>
+        <members>OrderForm__c.Verified__c</members>
         <members>Order_Item__c.Order__c</members>
         <members>Order_Item__c.Price__c</members>
         <members>Order_Item__c.Product__c</members>
@@ -189,6 +190,8 @@
     <types>
         <members>Account</members>
         <members>Manufacturing_Event__e</members>
+        <members>Movie__c</members>
+        <members>OrderForm__c</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
         <members>Product_Family__c</members>
@@ -384,6 +387,7 @@
         <members>Opportunity-Opportunity Layout</members>
         <members>OpportunityLineItem-Opportunity Product Layout</members>
         <members>Order-Order Layout</members>
+        <members>OrderForm__c-OrderForm Layout</members>
         <members>OrderItem-Order Product Layout</members>
         <members>Order_Item__c-Order Item Layout</members>
         <members>Order__c-Order Layout</members>
@@ -547,6 +551,7 @@
     <types>
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
+        <members>IntegrationUser_New</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
@@ -622,10 +627,12 @@
     </types>
     <types>
         <members>New_SF_Admin_profilePasswordPolicy1749837839264</members>
+        <members>New_Standard_User_profilePasswordPolicy1777040314285</members>
         <name>ProfilePasswordPolicy</name>
     </types>
     <types>
         <members>New_SF_Admin_profileSessionSetting1749837839432</members>
+        <members>New_Standard_User_profileSessionSetting1777040314385</members>
         <name>ProfileSessionSetting</name>
     </types>
     <types>
