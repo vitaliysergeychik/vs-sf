@@ -2,6 +2,7 @@ public with sharing class AccountController {
   //Another comment. Changing one comment to test incremental build.
   //Changing one class to test inc build.//
   //adding a comment
+  //adding another comment
   public static List<Account> getAllActiveAccounts() {
     return [
     SELECT Id, Name, Active__c
@@ -14,7 +15,7 @@ public with sharing class AccountController {
   }
   //Gets all the accounts, active and inactive.//
   public static List<Account> getAllAccounts() {
-      return [SELECT Id, Name, Active__c, CreditCard__c FROM Account];
+      return [SELECT Id, Name, Active__c, Credit_Card__c FROM Account];
   }
 
 
