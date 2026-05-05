@@ -1,5 +1,5 @@
 public with sharing class OlderAccountsUtility {
-
+    // Method to update the 5 oldest accounts
     public static void updateOlderAccounts() {
       // Get the 5 oldest accounts
       Account[] oldAccounts = [SELECT Id, Description FROM Account ORDER BY CreatedDate ASC LIMIT 5];
