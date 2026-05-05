@@ -1,6 +1,5 @@
 public with sharing class ProductController {
     //Comment
-    //New Comment
     
     static Integer PAGE_SIZE = 9;
 
@@ -64,7 +63,6 @@ public with sharing class ProductController {
                 ' WITH SECURITY_ENFORCED' +
                 ' ORDER BY Name LIMIT :pageSize OFFSET :offset'
         );
-        
         return result;
     }
 
