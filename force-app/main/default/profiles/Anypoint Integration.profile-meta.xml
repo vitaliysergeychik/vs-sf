@@ -14,11 +14,29 @@
         <field>Account.SE__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderForm__c.Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderForm__c.OrderDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>OrderForm__c.Verified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-Group Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>OrderForm__c-OrderForm Layout</layout>
     </layoutAssignments>
     <userLicense>Identity</userLicense>
     <userPermissions>
