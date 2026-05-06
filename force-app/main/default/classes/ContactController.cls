@@ -1,6 +1,6 @@
 public with sharing class ContactController {
     public ContactController() {
-
+        //empty contstructor
     }
 
     @AuraEnabled(cacheable=true)
@@ -16,7 +16,7 @@ public with sharing class ContactController {
     @AuraEnabled(cacheable=true)
     public static List<Contact> getContactsByState(String state) {
         List<Contact> opps = Database.query(
-            'SELECT Id, FirstName, LastName, Email FROM Contact WHERE MailingState = ' + state
+            'SELECT Id, FirstName, LastName, Email, MailingState FROM Contact WHERE MailingState = :state'
         );
         return opps;
         

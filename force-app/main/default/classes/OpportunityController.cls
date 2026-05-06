@@ -13,11 +13,6 @@ public with sharing class OpportunityController {
         return [SELECT Id, Name, StageName, CloseDate FROM Opportunity WHERE StageName = :stageName];
     }
 
-    @AuraEnabled(cacheable=true)
-    public static List<Opportunity> getOpportunitiesByCloseDate(Date closeDate) {
-        List<Opportunity> opps = Database.query('SELECT Id, Name, StageName, CloseDate FROM Opportunity WHERE CloseDate = ' + closeDate);
-        return opps;
-        
-    }
+    
     
 }
