@@ -1,4 +1,5 @@
 public with sharing class AccountController {
+  //Gets all active accounts
   public static List<Account> getAllActiveAccounts() {
     return [
     SELECT Id, Name, Active__c
@@ -14,9 +15,4 @@ public with sharing class AccountController {
       List<List<sObject>> searchResults = ContactAndLeadSearch.searchContactsAndLeads('Vitaliy');
       return [SELECT Id, Name, Active__c, Credit_Card__c FROM Account];
   }
-
-
-
-
-
 }
