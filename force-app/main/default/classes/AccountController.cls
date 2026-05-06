@@ -1,5 +1,4 @@
 public with sharing class AccountController {
-  //new comment
   public static List<Account> getAllActiveAccounts() {
     return [
     SELECT Id, Name, Active__c
