@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <version>65.0</version>
+    <version>63.0</version>
     <types>
         <members>AccountController</members>
         <members>AccountControllerTest</members>
-        <members>CommunitiesLandingController</members>
-        <members>CommunitiesLandingControllerTest</members>
-        <members>ContactAndLeadSearch</members>
-        <members>HeroDetailsPositionCustomPicklist</members>
-        <members>OlderAccountsUtility</members>
-        <members>PagedResult</members>
-        <members>PagedResultTest</members>
-        <members>ProductController</members>
-        <members>ProductRecordInfoController</members>
-        <members>SOQLController</members>
+        <members>ContactController</members>
+        <members>OpportunityController</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>hardCodedApi</members>
-        <members>myComponent</members>
-        <name>ApexComponent</name>
+        <members>ContactCount</members>
+        <name>ApexTrigger</name>
     </types>
     <types>
-        <members>CommunitiesLanding</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>default_appointment_scheduling_policy</members>
-        <name>AppointmentSchedulingPolicy</name>
+        <members>AppSwitcher</members>
+        <members>Salesforce1</members>
+        <name>AppMenu</name>
     </types>
     <types>
         <members>Case.Standard</members>
@@ -39,8 +27,8 @@
         <name>AssignmentRules</name>
     </types>
     <types>
-        <members>pageTemplate_2_7_3</members>
-        <name>AuraDefinitionBundle</name>
+        <members>DataCloudGeoLocation</members>
+        <name>CleanDataService</name>
     </types>
     <types>
         <members>Internal Zone</members>
@@ -49,11 +37,12 @@
     <types>
         <members>standard__AllTabSet</members>
         <members>standard__AppLauncher</members>
+        <members>standard__Approvals</members>
         <members>standard__Chatter</members>
         <members>standard__Community</members>
         <members>standard__Content</members>
+        <members>standard__DataGovernanceConsole</members>
         <members>standard__DataManager</members>
-        <members>standard__ExpressionSetConsole</members>
         <members>standard__FlowsApp</members>
         <members>standard__Insights</members>
         <members>standard__LightningBolt</members>
@@ -62,11 +51,13 @@
         <members>standard__LightningSalesConsole</members>
         <members>standard__LightningScheduler</members>
         <members>standard__LightningService</members>
+        <members>standard__MSJApp</members>
         <members>standard__Marketing</members>
         <members>standard__Platform</members>
         <members>standard__QueueManagement</members>
         <members>standard__RevenueCloudConsole</members>
         <members>standard__Sales</members>
+        <members>standard__SalesCloudMobile</members>
         <members>standard__SalesforceCMS</members>
         <members>standard__Service</members>
         <members>standard__ServiceConsole</members>
@@ -74,58 +65,20 @@
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>Account.AccountNumber</members>
-        <members>Account.AccountSource</members>
         <members>Account.Active__c</members>
-        <members>Account.AnnualRevenue</members>
         <members>Account.AutorabitExtId__c</members>
-        <members>Account.BillingAddress</members>
-        <members>Account.CleanStatus</members>
-        <members>Account.Credit_Card__c</members>
-        <members>Account.CurrencyIsoCode</members>
         <members>Account.CustomerPriority__c</members>
-        <members>Account.DandbCompanyId</members>
-        <members>Account.Description</members>
-        <members>Account.DunsNumber</members>
-        <members>Account.Fax</members>
-        <members>Account.Industry</members>
-        <members>Account.Jigsaw</members>
-        <members>Account.NaicsCode</members>
-        <members>Account.NaicsDesc</members>
-        <members>Account.Name</members>
-        <members>Account.Notes__c</members>
-        <members>Account.NumberOfEmployees</members>
+        <members>Account.Number_of_Contacts__c</members>
         <members>Account.NumberofLocations__c</members>
-        <members>Account.OperatingHoursId</members>
-        <members>Account.OwnerId</members>
-        <members>Account.Ownership</members>
-        <members>Account.ParentId</members>
-        <members>Account.Phone</members>
-        <members>Account.Potential_Value__c</members>
-        <members>Account.Rating</members>
-        <members>Account.SE_Partner__c</members>
-        <members>Account.SE__c</members>
         <members>Account.SLAExpirationDate__c</members>
         <members>Account.SLASerialNumber__c</members>
         <members>Account.SLA__c</members>
-        <members>Account.ShippingAddress</members>
-        <members>Account.Sic</members>
-        <members>Account.SicDesc</members>
-        <members>Account.Site</members>
-        <members>Account.Sum_of_Opportunities__c</members>
-        <members>Account.TickerSymbol</members>
-        <members>Account.Tier</members>
-        <members>Account.Tradestyle</members>
-        <members>Account.Type</members>
+        <members>Account.Solutions_Engineer__c</members>
         <members>Account.UpsellOpportunity__c</members>
-        <members>Account.Website</members>
-        <members>Account.YearStarted</members>
-        <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
         <members>Case.PotentialLiability__c</members>
         <members>Case.Product__c</members>
         <members>Case.SLAViolation__c</members>
-        <members>Contact.Account_Number__c</members>
         <members>Contact.Languages__c</members>
         <members>Contact.Level__c</members>
         <members>Lead.CurrentGenerators__c</members>
@@ -133,30 +86,30 @@
         <members>Lead.Primary__c</members>
         <members>Lead.ProductInterest__c</members>
         <members>Lead.SICCode__c</members>
-        <members>Manufacturing_Event__e.Order_Id__c</members>
-        <members>Manufacturing_Event__e.Status__c</members>
         <members>Opportunity.CurrentGenerators__c</members>
         <members>Opportunity.DeliveryInstallationStatus__c</members>
         <members>Opportunity.MainCompetitors__c</members>
         <members>Opportunity.OrderNumber__c</members>
         <members>Opportunity.TrackingNumber__c</members>
-        <members>Order_Item__c.Order__c</members>
-        <members>Order_Item__c.Price__c</members>
-        <members>Order_Item__c.Product__c</members>
-        <members>Order_Item__c.Qty_L__c</members>
-        <members>Order_Item__c.Qty_M__c</members>
-        <members>Order_Item__c.Qty_S__c</members>
-        <members>Order__c.Account__c</members>
-        <members>Order__c.Status__c</members>
         <members>Partner__c.Birthdate__c</members>
         <members>Partner__c.CellPhone__c</members>
-        <members>Partner__c.DateCreated__c</members>
+        <members>Partner__c.Closed_Won_Deals__c</members>
+        <members>Partner__c.Date_Validated__c</members>
         <members>Partner__c.DealerContact__c</members>
+        <members>Partner__c.DealsClosedPercent__c</members>
+        <members>Partner__c.Industry__c</members>
         <members>Partner__c.Name__c</members>
-        <members>Partner__c.NumCustomers__c</members>
+        <members>Partner__c.Notes__c</members>
+        <members>Partner__c.NumEployees__c</members>
         <members>Partner__c.ParterPhone__c</members>
-        <members>Partner__c.PartnerEmailField__c</members>
         <members>Partner__c.PartnerEmail__c</members>
+        <members>Partner__c.PartnerObjective__c</members>
+        <members>Partner__c.PartnerRating__c</members>
+        <members>Partner__c.PartnerTargetNumber__c</members>
+        <members>Partner__c.PartnerWebsite__c</members>
+        <members>Partner__c.PercentClosed__c</members>
+        <members>Partner__c.Use_Cases__c</members>
+        <members>Partner__c.Validated__c</members>
         <members>Product_Family__c.Category__c</members>
         <members>Product_Family__c.Description__c</members>
         <members>Product__c.Battery__c</members>
@@ -176,24 +129,35 @@
         <members>Product__c.Rear_Brakes__c</members>
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
+        <members>Vendor__c.Phone__c</members>
+        <members>matts_test_object__c.wallet__c</members>
         <name>CustomField</name>
-    </types>
-    <types>
-        <members>AppURL</members>
-        <name>CustomLabel</name>
     </types>
     <types>
         <members>enablement_coaching_feedback_ready</members>
         <name>CustomNotificationType</name>
     </types>
     <types>
-        <members>Account</members>
-        <members>Manufacturing_Event__e</members>
-        <members>Order_Item__c</members>
-        <members>Order__c</members>
+        <members>Employee__c</members>
+        <members>Manufacturer__c</members>
+        <members>Partner__c</members>
         <members>Product_Family__c</members>
         <members>Product__c</members>
+        <members>Vendor__c</members>
+        <members>matts_test__c</members>
+        <members>matts_test_object__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Employee__c-en_US</members>
+        <members>Manufacturer__c-en_US</members>
+        <members>Partner__c-en_US</members>
+        <members>Product_Family__c-en_US</members>
+        <members>Product__c-en_US</members>
+        <members>Vendor__c-en_US</members>
+        <members>matts_test__c-en_US</members>
+        <members>matts_test_object__c-en_US</members>
+        <name>CustomObjectTranslation</name>
     </types>
     <types>
         <members>Enablement_sfdcSESv60/</members>
@@ -246,10 +210,6 @@
         <name>EmailTemplate</name>
     </types>
     <types>
-        <members>standard case</members>
-        <name>EntitlementProcess</name>
-    </types>
-    <types>
         <members>Case.Standard</members>
         <name>EscalationRule</name>
     </types>
@@ -264,6 +224,8 @@
         <members>ExpressionSetConsole_UtilityBar</members>
         <members>FlowsApp_UtilityBar</members>
         <members>Home_Page_Default</members>
+        <members>Home_Page_Default1</members>
+        <members>Home_Page_Default2</members>
         <members>LightningSalesConsole_UtilityBar</members>
         <members>LightningSales_UtilityBar</members>
         <members>LightningService_UtilityBar</members>
@@ -292,22 +254,11 @@
         <members>AssignedResource-Assigned Resource Layout</members>
         <members>AssociatedLocation-Associated Location Layout</members>
         <members>AsyncOperationLog-Async Operation Log Layout</members>
-        <members>AsyncOperationTracker-Async Operation Tracker Layout</members>
         <members>AuthorizationForm-Authorization Form Layout</members>
         <members>AuthorizationFormConsent-Authorization Form Consent Layout</members>
         <members>AuthorizationFormDataUse-Authorization Form Data Use Layout</members>
         <members>AuthorizationFormText-Authorization Form Text Layout</members>
         <members>BusinessBrand-Business Brand Layout</members>
-        <members>CalcMatrixColumnRange-Decision Matrix Column Range Layout</members>
-        <members>CalcProcStepRelationship-Expression Set Step Relationship Layout</members>
-        <members>CalculationMatrix-Decision Matrix Layout</members>
-        <members>CalculationMatrixColumn-Decision Matrix Column Layout</members>
-        <members>CalculationMatrixRow-Decision Matrix Row Layout</members>
-        <members>CalculationMatrixVersion-Decision Matrix Version Layout</members>
-        <members>CalculationProcedure-Calculation Procedure Layout</members>
-        <members>CalculationProcedureStep-Calculation Procedure Step Layout</members>
-        <members>CalculationProcedureVariable-Calculation Procedure Variable Layout</members>
-        <members>CalculationProcedureVersion-Calculation Procedure Version Layout</members>
         <members>Campaign-Campaign Layout</members>
         <members>CampaignMember-Campaign Member Page Layout</members>
         <members>CardPaymentMethod-Card Payment Method Layout</members>
@@ -323,7 +274,6 @@
         <members>Case-Case Layout</members>
         <members>CaseClose-Close Case Layout</members>
         <members>CaseMilestone-Case Milestone Layout</members>
-        <members>CollaborationGroup-Group Layout</members>
         <members>CommunityMemberLayout-Community Member Layout</members>
         <members>ConsumptionRate-Consumption Rate Layout</members>
         <members>ConsumptionSchedule-Consumption Schedule Layout</members>
@@ -349,12 +299,11 @@
         <members>DigitalWallet-Digital Wallet Layout</members>
         <members>DuplicateRecordSet-Duplicate Record Set Layout</members>
         <members>EmailMessage-Email Message Layout</members>
+        <members>Employee__c-Employee Layout</members>
         <members>EngagementChannelType-Engagement Channel Type Layout</members>
         <members>Entitlement-Entitlement Layout</members>
         <members>EntityMilestone-Object Milestone Layout</members>
         <members>Event-Event Layout</members>
-        <members>ExpressionSet-Expression Set Layout</members>
-        <members>ExpressionSetVersion-Expression Set Version Layout</members>
         <members>FeedItem-Feed Item Layout</members>
         <members>FinanceBalanceSnapshot-Finance Balance Snapshot Layout</members>
         <members>FinanceTransaction-Finance Transaction Layout</members>
@@ -377,6 +326,7 @@
         <members>LocationGroup-Location Group Layout</members>
         <members>LocationGroupAssignment-Location Group Assignment Layout</members>
         <members>Macro-Macro Layout</members>
+        <members>Manufacturer__c-Manufacturer Layout</members>
         <members>OperatingHours-Operating Hours Layout</members>
         <members>Opportunity-Opportunity %28Marketing%29 Layout</members>
         <members>Opportunity-Opportunity %28Sales%29 Layout</members>
@@ -385,8 +335,6 @@
         <members>OpportunityLineItem-Opportunity Product Layout</members>
         <members>Order-Order Layout</members>
         <members>OrderItem-Order Product Layout</members>
-        <members>Order_Item__c-Order Item Layout</members>
-        <members>Order__c-Order Layout</members>
         <members>Partner__c-Partner Layout</members>
         <members>Payment-Payment Layout</members>
         <members>PaymentAuthAdjustment-Payment Authorization Adjustment Layout</members>
@@ -412,8 +360,6 @@
         <members>ReturnOrderItemAdjustment-Return Order Item Adjustment Layout</members>
         <members>ReturnOrderItemTax-Return Order Item Tax Layout</members>
         <members>ReturnOrderLineItem-Return Order Line Item Layout</members>
-        <members>RevenueAsyncOperation-Revenue Async Operation Layout</members>
-        <members>RevenueTransactionErrorLog-Revenue Transaction Error Log Layout</members>
         <members>Scorecard-Scorecard Layout</members>
         <members>ScorecardAssociation-Scorecard Association Layout</members>
         <members>ScorecardMetric-Scorecard Metric Layout</members>
@@ -440,6 +386,7 @@
         <members>UserProvAccount-User Provisioning Account Layout</members>
         <members>UserProvisioningLog-User Provisioning Log Layout</members>
         <members>UserProvisioningRequest-User Provisioning Request Layout</members>
+        <members>Vendor__c-Vendor Layout</members>
         <members>Waitlist-%5F%5FMISSING LABEL%5F%5F PropertyFile - val Waitlist not found in section StandardLayouts</members>
         <members>WebCart-Cart Layout</members>
         <members>WebCartAdjustmentBasis-Cart Adjustment Basis Layout</members>
@@ -455,20 +402,12 @@
         <members>WorkType-Work Type Layout</members>
         <members>WorkTypeGroup-Work Type Group Layout</members>
         <members>WorkTypeGroupMember-Work Type Group Member Layout</members>
+        <members>matts_test__c-matts_test Layout</members>
+        <members>matts_test_object__c-matts_test_object Layout</members>
         <name>Layout</name>
     </types>
     <types>
-        <members>accountMap</members>
-        <members>alert</members>
-        <members>badge</members>
-        <members>createCase</members>
-        <members>errorPanel</members>
         <members>helloWorld</members>
-        <members>heroDetails</members>
-        <members>ldsUtils</members>
-        <members>orderItemTile</members>
-        <members>orderStatusPath</members>
-        <members>productListItem</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
@@ -489,7 +428,6 @@
         <members>Case.AllOpenCases</members>
         <members>Case.MyCases</members>
         <members>Case.MyOpenCases</members>
-        <members>Case.My_Cases</members>
         <members>Contact.AllContacts</members>
         <members>Contact.BirthdaysThisMonth</members>
         <members>Contact.BulkMessageContacts</members>
@@ -521,7 +459,6 @@
         <members>Order.AllActivatedOrders</members>
         <members>Order.AllDraftOrders</members>
         <members>Order.AllOrders</members>
-        <members>Order__c.All_Orders</members>
         <members>Product2.AllProducts</members>
         <members>Product_Family__c.All_Product_Families</members>
         <members>Product__c.ProductList</members>
@@ -539,16 +476,10 @@
         <name>ManagedContentType</name>
     </types>
     <types>
-        <members>Close Case</members>
-        <members>Escalate Case</members>
-        <members>First Response to Customer</members>
-        <name>MilestoneType</name>
-    </types>
-    <types>
-        <members>API_Is_Enabled</members>
+        <members>Approve_Connected_Apps</members>
         <members>Experience_Profile_Manager</members>
-        <members>View_All_Data</members>
-        <members>View_Modify_All_And_API</members>
+        <members>Guard</members>
+        <members>New_Guard</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>
@@ -569,7 +500,6 @@
         <members>force__SubscriptionManagementSalesOperationsRep</members>
         <members>force__SubscriptionManagementSalesRep</members>
         <members>force__SubscriptionManagementTaxAdmin</members>
-        <members>view_and_api</members>
         <name>PermissionSetGroup</name>
     </types>
     <types>
@@ -579,9 +509,6 @@
         <members>Anypoint Integration</members>
         <members>Authenticated Website</members>
         <members>B2B Reordering Portal Buyer Profile</members>
-        <members>Chatter External User</members>
-        <members>Chatter Free User</members>
-        <members>Chatter Moderator User</members>
         <members>ContractManager</members>
         <members>Cross Org Data Proxy User</members>
         <members>Custom%3A Marketing Profile</members>
@@ -602,11 +529,9 @@
         <members>HighVolumePortal</members>
         <members>Identity User</members>
         <members>MarketingProfile</members>
+        <members>Marketing_Custom</members>
         <members>Minimum Access - API Only Integrations</members>
         <members>Minimum Access - Salesforce</members>
-        <members>New_Marketing_User</members>
-        <members>New_SF_Admin</members>
-        <members>New_Standard_User</members>
         <members>Partner App Subscription User</members>
         <members>Partner Community Login User</members>
         <members>Partner Community User</members>
@@ -621,14 +546,15 @@
         <name>Profile</name>
     </types>
     <types>
-        <members>New_SF_Admin_profilePasswordPolicy1749837839264</members>
+        <members>Marketing_Custom_profilePasswordPolicy1758656226033</members>
         <name>ProfilePasswordPolicy</name>
     </types>
     <types>
-        <members>New_SF_Admin_profileSessionSetting1749837839432</members>
+        <members>Marketing_Custom_profileSessionSetting1758656226141</members>
         <name>ProfileSessionSetting</name>
     </types>
     <types>
+        <members>Case.CloseCaseLightning</members>
         <members>Case.LogACall</members>
         <members>Case.NewChildCase</members>
         <members>CollaborationGroup.NewGroupMember</members>
@@ -708,14 +634,90 @@
         <name>Role</name>
     </types>
     <types>
+        <members>AccountContactRole</members>
+        <members>AccountOwnership</members>
+        <members>AccountRating</members>
+        <members>AccountType</members>
+        <members>AssetActionCategory</members>
+        <members>AssetRelationshipType</members>
+        <members>AssetStatus</members>
+        <members>CampaignMemberStatus</members>
+        <members>CampaignStatus</members>
+        <members>CampaignType</members>
+        <members>CardType</members>
+        <members>CaseContactRole</members>
+        <members>CaseOrigin</members>
+        <members>CasePriority</members>
+        <members>CaseReason</members>
+        <members>CaseStatus</members>
+        <members>CaseType</members>
+        <members>ContactPointUsageType</members>
+        <members>ContactRole</members>
+        <members>ContractContactRole</members>
+        <members>ContractStatus</members>
+        <members>EntitlementType</members>
+        <members>EventSubject</members>
+        <members>EventType</members>
+        <members>FinanceEventAction</members>
+        <members>FinanceEventType</members>
+        <members>FiscalYearPeriodName</members>
+        <members>FiscalYearPeriodPrefix</members>
+        <members>FiscalYearQuarterName</members>
+        <members>FiscalYearQuarterPrefix</members>
+        <members>FulfillmentStatus</members>
+        <members>FulfillmentType</members>
+        <members>IdeaMultiCategory</members>
+        <members>IdeaStatus</members>
+        <members>Industry</members>
+        <members>LeadSource</members>
+        <members>LeadStatus</members>
+        <members>LocationType</members>
+        <members>MilitaryService</members>
+        <members>OpportunityCompetitor</members>
+        <members>OpportunityStage</members>
+        <members>OpportunityType</members>
+        <members>OrderStatus</members>
+        <members>OrderType</members>
+        <members>PartnerRole</members>
+        <members>ProcessExceptionCategory</members>
+        <members>ProcessExceptionPriority</members>
+        <members>ProcessExceptionSeverity</members>
+        <members>ProcessExceptionStatus</members>
+        <members>Product2Family</members>
+        <members>QuantityUnitOfMeasure</members>
+        <members>QuickTextCategory</members>
+        <members>QuickTextChannel</members>
+        <members>ResourceAbsenceType</members>
+        <members>ReturnOrderLineItemProcessPlan</members>
+        <members>ReturnOrderLineItemReasonForRejection</members>
+        <members>ReturnOrderLineItemReasonForReturn</members>
+        <members>ReturnOrderLineItemRepaymentMethod</members>
+        <members>ReturnOrderShipmentType</members>
+        <members>ReturnOrderStatus</members>
+        <members>Salutation</members>
+        <members>ServTerrMemRoleType</members>
+        <members>ServiceAppointmentStatus</members>
+        <members>ServiceContractApprovalStatus</members>
+        <members>SolutionStatus</members>
+        <members>StatusReason</members>
+        <members>TaskPriority</members>
+        <members>TaskStatus</members>
+        <members>TaskSubject</members>
+        <members>TaskType</members>
+        <members>UnitOfMeasure</members>
+        <members>WorkOrderLineItemStatus</members>
+        <members>WorkOrderPriority</members>
+        <members>WorkOrderStatus</members>
+        <members>WorkStepStatus</members>
+        <members>WorkTypeDefApptType</members>
+        <members>WorkTypeGroupAddInfo</members>
+        <name>StandardValueSet</name>
+    </types>
+    <types>
         <members>Account.Billing</members>
         <members>Campaign.ViewCampaignInfluenceReport</members>
         <members>Case.UpsellCrosssellOpportunity</members>
         <members>Opportunity.DeliveryStatus</members>
         <name>WebLink</name>
-    </types>
-    <types>
-        <members>Case.ChangePriorityToHigh</members>
-        <name>WorkflowFieldUpdate</name>
     </types>
 </Package>
