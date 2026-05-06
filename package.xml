@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <version>63.0</version>
+    <version>65.0</version>
     <types>
         <members>AccountController</members>
         <members>AccountControllerTest</members>
@@ -12,7 +12,13 @@
         <members>PagedResultTest</members>
         <members>ProductController</members>
         <members>ProductRecordInfoController</members>
+        <members>SOQLController</members>
         <name>ApexClass</name>
+    </types>
+    <types>
+        <members>hardCodedApi</members>
+        <members>myComponent</members>
+        <name>ApexComponent</name>
     </types>
     <types>
         <members>CommunitiesLanding</members>
@@ -75,6 +81,7 @@
         <members>Account.AutorabitExtId__c</members>
         <members>Account.BillingAddress</members>
         <members>Account.CleanStatus</members>
+        <members>Account.Credit_Card__c</members>
         <members>Account.CurrencyIsoCode</members>
         <members>Account.CustomerPriority__c</members>
         <members>Account.DandbCompanyId</members>
@@ -86,6 +93,7 @@
         <members>Account.NaicsCode</members>
         <members>Account.NaicsDesc</members>
         <members>Account.Name</members>
+        <members>Account.Notes__c</members>
         <members>Account.NumberOfEmployees</members>
         <members>Account.NumberofLocations__c</members>
         <members>Account.OperatingHoursId</members>
@@ -117,6 +125,7 @@
         <members>Case.PotentialLiability__c</members>
         <members>Case.Product__c</members>
         <members>Case.SLAViolation__c</members>
+        <members>Contact.Account_Number__c</members>
         <members>Contact.Languages__c</members>
         <members>Contact.Level__c</members>
         <members>Lead.CurrentGenerators__c</members>
@@ -139,6 +148,15 @@
         <members>Order_Item__c.Qty_S__c</members>
         <members>Order__c.Account__c</members>
         <members>Order__c.Status__c</members>
+        <members>Partner__c.Birthdate__c</members>
+        <members>Partner__c.CellPhone__c</members>
+        <members>Partner__c.DateCreated__c</members>
+        <members>Partner__c.DealerContact__c</members>
+        <members>Partner__c.Name__c</members>
+        <members>Partner__c.NumCustomers__c</members>
+        <members>Partner__c.ParterPhone__c</members>
+        <members>Partner__c.PartnerEmailField__c</members>
+        <members>Partner__c.PartnerEmail__c</members>
         <members>Product_Family__c.Category__c</members>
         <members>Product_Family__c.Description__c</members>
         <members>Product__c.Battery__c</members>
@@ -369,6 +387,7 @@
         <members>OrderItem-Order Product Layout</members>
         <members>Order_Item__c-Order Item Layout</members>
         <members>Order__c-Order Layout</members>
+        <members>Partner__c-Partner Layout</members>
         <members>Payment-Payment Layout</members>
         <members>PaymentAuthAdjustment-Payment Authorization Adjustment Layout</members>
         <members>PaymentAuthorization-Payment Authorization Layout</members>
@@ -529,6 +548,7 @@
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
         <members>View_All_Data</members>
+        <members>View_Modify_All_And_API</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>

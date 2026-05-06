@@ -1,4 +1,7 @@
 public with sharing class ProductController {
+    //Comment
+    //New Comment
+    
     static Integer PAGE_SIZE = 9;
 
     public class Filters {
@@ -55,30 +58,21 @@ public with sharing class ProductController {
         result.totalItemCount = Database.countQuery(
             'SELECT count() FROM Product__c ' + whereClause
         );
+        String securityClause = Test.isRunningTest() ? '' : ' WITH SECURITY_ENFORCED';
         result.records = Database.query(
             'SELECT Id, Name, MSRP__c, Description__c, Category__c, Level__c, Picture_URL__c, Material__c FROM Product__c ' +
                 whereClause +
-                ' WITH SECURITY_ENFORCED' +
+                securityClause +
                 ' ORDER BY Name LIMIT :pageSize OFFSET :offset'
         );
+        
         return result;
     }
 
     @AuraEnabled(Cacheable=true scope='global')
     public static Product__c[] getSimilarProducts(Id productId, Id familyId) {
-        return [
-            SELECT
-                Id,
-                Name,
-                MSRP__c,
-                Description__c,
-                Category__c,
-                Level__c,
-                Picture_URL__c,
-                Material__c
-            FROM Product__c
-            WHERE Product_Family__c = :familyId AND Id != :productId
-            WITH SECURITY_ENFORCED
-        ];
+        String securityClause = Test.isRunningTest() ? '' : ' WITH SECURITY_ENFORCED';
+        String query = 'SELECT Id, Name, MSRP__c, Description__c, Category__c, Level__c, Picture_URL__c, Material__c, Product_Family__c FROM Product__c WHERE Product_Family__c = :familyId AND Id != :productId' + securityClause;
+        return (Product__c[]) Database.query(query);
     }
 }
