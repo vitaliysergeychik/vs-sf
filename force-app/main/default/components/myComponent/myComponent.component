@@ -1,6 +1,0 @@
-<apex:component>
-    <apex:attribute name="apikey" description="API Key for the component" type="String" required="true"/>
-    
-    <!-- Example usage: Display the API key (for demo purposes only - never do this in production!) -->
-    <p>API Key: {!apikey}</p>
-</apex:component>
