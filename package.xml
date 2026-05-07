@@ -567,6 +567,7 @@
     <types>
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
+        <members>ExternalUser_PS</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
