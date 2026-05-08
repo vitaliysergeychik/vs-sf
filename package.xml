@@ -284,10 +284,12 @@
         <name>FlexiPage</name>
     </types>
     <types>
+        <members>AnnuelRevFlow</members>
         <members>Update_Campaign_Name</members>
         <name>Flow</name>
     </types>
     <types>
+        <members>AnnuelRevFlow</members>
         <members>Update_Campaign_Name</members>
         <name>FlowDefinition</name>
     </types>
