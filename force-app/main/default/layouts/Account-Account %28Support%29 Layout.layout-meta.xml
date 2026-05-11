@@ -55,6 +55,10 @@
                 <behavior>Edit</behavior>
                 <field>SE__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>gd_Text__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
