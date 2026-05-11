@@ -16,6 +16,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.gd_Text__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Campaign__c.StartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
