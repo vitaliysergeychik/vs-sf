@@ -561,6 +561,7 @@
         <members>Experience_Profile_Manager</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
+        <members>Volunteer</members>
         <members>sfdcInternalInt__sfdc_scrt2</members>
         <name>PermissionSet</name>
     </types>
