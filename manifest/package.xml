@@ -186,6 +186,9 @@
         <members>Product__c.Rear_Brakes__c</members>
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
+        <members>Voter__c.Address__c</members>
+        <members>Voter__c.BirthDate__c</members>
+        <members>Voter__c.PhoneNumber__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -204,6 +207,7 @@
         <members>Order__c</members>
         <members>Product_Family__c</members>
         <members>Product__c</members>
+        <members>Voter__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -285,11 +289,13 @@
     </types>
     <types>
         <members>AnnuelRevFlow</members>
+        <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>Flow</name>
     </types>
     <types>
         <members>AnnuelRevFlow</members>
+        <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>FlowDefinition</name>
     </types>
@@ -462,6 +468,7 @@
         <members>UserProvAccount-User Provisioning Account Layout</members>
         <members>UserProvisioningLog-User Provisioning Log Layout</members>
         <members>UserProvisioningRequest-User Provisioning Request Layout</members>
+        <members>Voter__c-Voter Layout</members>
         <members>Waitlist-%5F%5FMISSING LABEL%5F%5F PropertyFile - val Waitlist not found in section StandardLayouts</members>
         <members>WebCart-Cart Layout</members>
         <members>WebCartAdjustmentBasis-Cart Adjustment Basis Layout</members>
@@ -570,6 +577,7 @@
         <members>API_Is_Enabled</members>
         <members>Experience_Profile_Manager</members>
         <members>ExternalUser_PS</members>
+        <members>ModifyAllAccounts_PS</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
         <members>Volunteer</members>
