@@ -129,6 +129,7 @@
         <members>Account.UpsellOpportunity__c</members>
         <members>Account.Website</members>
         <members>Account.YearStarted</members>
+        <members>Account.gd_Text__c</members>
         <members>Campaign__c.StartDate__c</members>
         <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
