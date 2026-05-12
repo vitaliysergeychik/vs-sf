@@ -7,7 +7,7 @@ on:
 jobs:
   codescan:
     runs-on: ubuntu-latest
-    environment: main   # <-- pulls secrets from the 'main' environment
+    environment: main   # Load secrets from the 'main' environment
 
     env:
       CODESCAN_URL: ${{ secrets.CODESCAN_URL }}
@@ -33,21 +33,21 @@ jobs:
 
           echo "API Response: $RESPONSE"
 
-          echo "critical=$(echo $RESPONSE | jq '.criticalCount')" >> $GITHUB_OUTPUT
-          echo "high=$(echo $RESPONSE | jq '.highCount')" >> $GITHUB_OUTPUT
-          echo "medium=$(echo $RESPONSE | jq '.mediumCount')" >> $GITHUB_OUTPUT
-          echo "low=$(echo $RESPONSE | jq '.lowCount')" >> $GITHUB_OUTPUT
-          echo "scanId=$(echo $RESPONSE | jq -r '.scanId')" >> $GITHUB_OUTPUT
+          echo "critical=$(echo $RESPONSE | jq '.criticalCount // 0')" >> $GITHUB_OUTPUT
+          echo "high=$(echo $RESPONSE | jq '.highCount // 0')" >> $GITHUB_OUTPUT
+          echo "medium=$(echo $RESPONSE | jq '.mediumCount // 0')" >> $GITHUB_OUTPUT
+          echo "low=$(echo $RESPONSE | jq '.lowCount // 0')" >> $GITHUB_OUTPUT
+          echo "scanId=$(echo $RESPONSE | jq -r '.scanId // "N/A"')" >> $GITHUB_OUTPUT
 
       - name: Comment PR with results
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const critical = ${{ steps.scan.outputs.critical }};
-            const high = ${{ steps.scan.outputs.high }};
-            const medium = ${{ steps.scan.outputs.medium }};
-            const low = ${{ steps.scan.outputs.low }};
+            const critical = Number("${{ steps.scan.outputs.critical }}");
+            const high = Number("${{ steps.scan.outputs.high }}");
+            const medium = Number("${{ steps.scan.outputs.medium }}");
+            const low = Number("${{ steps.scan.outputs.low }}");
             const scanId = "${{ steps.scan.outputs.scanId }}";
 
             const body = `
