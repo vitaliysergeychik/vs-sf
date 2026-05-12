@@ -79,32 +79,34 @@ jobs:
             INFO=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
 
             # Build table
-            printf "| File | Line | Issue | Severity |\n" > issue_table.md
-            printf "|------|------|--------|----------|\n" >> issue_table.md
+            printf "%s\n" "| File | Line | Issue | Severity |" > issue_table.md
+            printf "%s\n" "|------|------|--------|----------|" >> issue_table.md
 
             echo "$RESPONSE" | jq -r '
               .issues[] |
-              "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message) | \(.severity) |"
+              "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message | gsub("\n"; " ")) | \(.severity) |"
             ' >> issue_table.md
 
-            # Build comment using printf (NO HEREDOCS)
+            # Build comment safely
             {
-              printf "### 🔍 CodeScan SCA Summary for PR #%s\n\n" "$PR"
-              printf "**Critical:** %s  \n" "$CRITICAL"
-              printf "**Major:** %s  \n" "$MAJOR"
-              printf "**Minor:** %s  \n" "$MINOR"
-              printf "**Info:** %s  \n\n" "$INFO"
+              printf "%s\n\n" "### 🔍 CodeScan SCA Summary for PR #$PR"
 
-              printf "---\n\n### 📄 Issue Details\n"
+              printf "%s\n" "**Critical:** $CRITICAL  "
+              printf "%s\n" "**Major:** $MAJOR  "
+              printf "%s\n" "**Minor:** $MINOR  "
+              printf "%s\n\n" "**Info:** $INFO  "
+
+              printf "%s\n" "---"
+              printf "%s\n\n" "### 📄 Issue Details"
               cat issue_table.md
-              printf "\n---\n\n"
+              printf "\n%s\n\n" "---"
 
-              printf "### 🧩 ARM Metadata\n"
-              printf "**Project Name:** %s  \n" "${{ github.event.inputs.projectName }}"
-              printf "**Build Number:** %s  \n" "${{ github.event.inputs.buildNumber }}"
-              printf "**Salesforce Org:** %s  \n\n" "${{ github.event.inputs.sforgName }}"
+              printf "%s\n" "### 🧩 ARM Metadata"
+              printf "%s\n" "**Project Name:** ${{ github.event.inputs.projectName }}  "
+              printf "%s\n" "**Build Number:** ${{ github.event.inputs.buildNumber }}  "
+              printf "%s\n\n" "**Salesforce Org:** ${{ github.event.inputs.sforgName }}  "
 
-              printf "_This report was generated automatically by GitHub Actions._\n"
+              printf "%s\n" "_This report was generated automatically by GitHub Actions._"
             } > comment.md
 
             echo "Posting comment to PR #$PR"
