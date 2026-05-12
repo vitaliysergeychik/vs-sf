@@ -164,6 +164,7 @@
         <members>Partner__c.DateCreated__c</members>
         <members>Partner__c.DealerContact__c</members>
         <members>Partner__c.Name__c</members>
+        <members>Partner__c.Notes__c</members>
         <members>Partner__c.NumCustomers__c</members>
         <members>Partner__c.ParterPhone__c</members>
         <members>Partner__c.PartnerEmailField__c</members>
@@ -187,6 +188,7 @@
         <members>Product__c.Rear_Brakes__c</members>
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
+        <members>Project__c.Solutions_Architect__c</members>
         <members>Voter__c.Address__c</members>
         <members>Voter__c.BirthDate__c</members>
         <members>Voter__c.PhoneNumber__c</members>
