@@ -1,4 +1,4 @@
-name: ARM Trigger + Latest PR CodeScan Fetch
+name: ARM Trigger + Latest PR CodeScan Fetch (Debug Enabled)
 
 on:
   workflow_dispatch:
@@ -35,7 +35,7 @@ jobs:
           echo "===================="
 
       # -----------------------------
-      # 2. Checkout repo (required for gh CLI)
+      # 2. Checkout repo
       # -----------------------------
       - name: Checkout vs-sf repository
         uses: actions/checkout@v4
@@ -72,7 +72,37 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # -----------------------------
-      # 4. Fetch CodeScan SCA results
+      # 4. DEBUG: List all CodeScan projects
+      # -----------------------------
+      - name: DEBUG - List CodeScan Projects
+        run: |
+          echo "=== Listing CodeScan Projects ==="
+          curl -s -u "$CODESCAN_TOKEN:" "$CODESCAN_URL/api/projects/search" | jq .
+          echo "================================="
+
+      # -----------------------------
+      # 5. DEBUG: Test both componentKeys and projectKeys
+      # -----------------------------
+      - name: DEBUG - Test CodeScan API with both key types
+        run: |
+          PR=${{ steps.pr.outputs.pr_number }}
+
+          echo "=== Testing CodeScan API ==="
+          echo "Using PR: $PR"
+          echo "Using Project Key: $CODESCAN_PROJECT_KEY"
+
+          echo "--- componentKeys test ---"
+          curl -i -u "$CODESCAN_TOKEN:" \
+            "$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
+
+          echo "--- projectKeys test ---"
+          curl -i -u "$CODESCAN_TOKEN:" \
+            "$CODESCAN_URL/api/issues/search?projectKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
+
+          echo "=========================="
+
+      # -----------------------------
+      # 6. Fetch CodeScan SCA results (real logic)
       # -----------------------------
       - name: Fetch CodeScan SCA results for PR
         if: steps.pr.outputs.pr_number != ''
@@ -100,7 +130,7 @@ jobs:
           echo "Info:     $info"
 
       # -----------------------------
-      # 5. No PR fallback
+      # 7. No PR fallback
       # -----------------------------
       - name: No PR found message
         if: steps.pr.outputs.pr_number == ''
