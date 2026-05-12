@@ -12,8 +12,6 @@ on:
       sforgName:
         required: false
         type: string
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   scan-all-prs:
