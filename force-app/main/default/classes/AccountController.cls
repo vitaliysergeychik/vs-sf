@@ -27,4 +27,8 @@ public with sharing class AccountController {
   public static List<Account> getAllInactiveAccounts4() {
       return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
   }
+
+  public static List<Account> getAllInactiveAccounts5() {
+      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
+  }
 }
