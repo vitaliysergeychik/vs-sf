@@ -12,8 +12,6 @@ on:
       sforgName:
         required: false
         type: string
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 jobs:
   scan-all-prs:
@@ -29,6 +27,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Print ARM metadata
+        run: |
+          echo "=== ARM Metadata ==="
+          echo "Project Name: ${{ github.event.inputs.projectName }}"
+          echo "Build Number: ${{ github.event.inputs.buildNumber }}"
+          echo "Salesforce Org: ${{ github.event.inputs.sforgName }}"
+          echo "===================="
+
       - name: Get all open PR numbers
         id: prs
         run: |
@@ -37,9 +43,6 @@ jobs:
             --state open \
             --json number \
             --jq '.[].number')
-
-          echo "Found PRs:"
-          echo "$PR_LIST"
 
           echo "pr_list<<EOF" >> $GITHUB_OUTPUT
           echo "$PR_LIST" >> $GITHUB_OUTPUT
@@ -67,6 +70,12 @@ jobs:
 
             echo "SCA issues found for PR #$PR — generating table."
 
+            # Extract counts
+            CRITICAL=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
+            MAJOR=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MAJOR")] | length')
+            MINOR=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MINOR")] | length')
+            INFO=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
+
             # Build table
             echo "| File | Line | Issue | Severity |" > issue_table.md
             echo "|------|------|--------|----------|" >> issue_table.md
@@ -80,7 +89,10 @@ jobs:
             cat > comment.md <<EOF
             ### 🔍 CodeScan SCA Summary for PR #$PR
 
-            **Total Issues:** $ISSUE_COUNT  
+            **Critical:** $CRITICAL  
+            **Major:** $MAJOR  
+            **Minor:** $MINOR  
+            **Info:** $INFO  
 
             ---
 
@@ -88,6 +100,11 @@ jobs:
             $(cat issue_table.md)
 
             ---
+
+            ### 🧩 ARM Metadata
+            **Project Name:** ${ARM_PROJECT:-${{ github.event.inputs.projectName }}}
+            **Build Number:** ${ARM_BUILD:-${{ github.event.inputs.buildNumber }}}
+            **Salesforce Org:** ${ARM_ORG:-${{ github.event.inputs.sforgName }}}
 
             _This report was generated automatically by GitHub Actions._
             EOF
@@ -102,3 +119,6 @@ jobs:
 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARM_PROJECT: ${{ github.event.inputs.projectName }}
+          ARM_BUILD: ${{ github.event.inputs.buildNumber }}
+          ARM_ORG: ${{ github.event.inputs.sforgName }}
