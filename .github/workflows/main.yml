@@ -3,8 +3,16 @@ name: ARM Trigger Test
 on:
   workflow_dispatch:
     inputs:
-      armRunId:
-        description: "Optional ARM run ID"
+      projectName:
+        description: "ARM project name"
+        required: false
+        type: string
+      buildNumber:
+        description: "ARM build number"
+        required: false
+        type: string
+      sforgName:
+        description: "Salesforce org name"
         required: false
         type: string
 
@@ -15,4 +23,6 @@ jobs:
       - name: Print success message
         run: |
           echo "GitHub Actions workflow triggered successfully."
-          echo "ARM Run ID: ${{ github.event.inputs.armRunId }}"
+          echo "Project Name: ${{ github.event.inputs.projectName }}"
+          echo "Build Number: ${{ github.event.inputs.buildNumber }}"
+          echo "Salesforce Org: ${{ github.event.inputs.sforgName }}"
