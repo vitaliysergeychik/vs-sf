@@ -1,8 +1,17 @@
-name: Fetch Latest PR CodeScan Results (main branch only)
+name: ARM Trigger + Latest PR CodeScan Fetch
 
 on:
   workflow_dispatch:
-  pull_request:
+    inputs:
+      projectName:
+        required: false
+        type: string
+      buildNumber:
+        required: false
+        type: string
+      sforgName:
+        required: false
+        type: string
 
 jobs:
   fetch-codescan:
@@ -14,12 +23,41 @@ jobs:
       CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
 
     steps:
-      - name: Determine latest open PR for main branch
+      # -----------------------------
+      # 1. ARM metadata (optional)
+      # -----------------------------
+      - name: Print ARM metadata (if provided)
+        run: |
+          echo "=== ARM Metadata ==="
+          echo "Project Name: ${{ github.event.inputs.projectName }}"
+          echo "Build Number: ${{ github.event.inputs.buildNumber }}"
+          echo "Salesforce Org: ${{ github.event.inputs.sforgName }}"
+          echo "===================="
+
+      # -----------------------------
+      # 2. Checkout repo (required for gh CLI)
+      # -----------------------------
+      - name: Checkout vs-sf repository
+        uses: actions/checkout@v4
+        with:
+          repository: vitaliysergeychik/vs-sf
+          ref: main
+
+      # -----------------------------
+      # 3. Find latest open PR targeting main
+      # -----------------------------
+      - name: Determine latest open PR targeting main
         id: pr
         run: |
           echo "Finding latest open PR targeting main..."
 
-          PR=$(gh pr list --state open --base main --limit 1 --json number --jq '.[0].number')
+          PR=$(gh pr list \
+                --repo vitaliysergeychik/vs-sf \
+                --state open \
+                --base main \
+                --limit 1 \
+                --json number \
+                --jq '.[0].number')
 
           if [ -z "$PR" ]; then
             echo "No open PRs found for main."
@@ -33,12 +71,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fetch CodeScan issues
+      # -----------------------------
+      # 4. Fetch CodeScan SCA results
+      # -----------------------------
+      - name: Fetch CodeScan SCA results for PR
         if: steps.pr.outputs.pr_number != ''
         run: |
           PR=${{ steps.pr.outputs.pr_number }}
 
-          echo "Fetching CodeScan issues for PR $PR"
+          echo "Fetching CodeScan SCA results for PR $PR"
 
           API_URL="$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
 
@@ -52,11 +93,15 @@ jobs:
           minor=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MINOR")] | length')
           info=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
 
+          echo "=== CodeScan SCA Summary for PR $PR ==="
           echo "Critical: $critical"
-          echo "Major: $major"
-          echo "Minor: $minor"
-          echo "Info: $info"
+          echo "Major:    $major"
+          echo "Minor:    $minor"
+          echo "Info:     $info"
 
+      # -----------------------------
+      # 5. No PR fallback
+      # -----------------------------
       - name: No PR found message
         if: steps.pr.outputs.pr_number == ''
         run: echo "No open PR found for main — nothing to scan."
