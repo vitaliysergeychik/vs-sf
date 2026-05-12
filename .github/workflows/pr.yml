@@ -17,7 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 1) Query CodeScan for PR issues
       - name: Fetch SCA issues from CodeScan
         id: sca
         run: |
@@ -25,10 +24,6 @@ jobs:
 
           RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" \
             "$CODESCAN_URL/api/issues/search?projectKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR&types=VULNERABILITY")
-
-          echo "raw_response<<EOF" >> $GITHUB_OUTPUT
-          echo "$RESPONSE" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
 
           critical=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
           high=$(echo "$RESPONSE"     | jq '[.issues[] | select(.severity=="MAJOR")]   | length')
@@ -40,7 +35,6 @@ jobs:
           echo "medium=$medium"     >> $GITHUB_OUTPUT
           echo "low=$low"           >> $GITHUB_OUTPUT
 
-      # 2) Quality Gate for the PR
       - name: Fetch quality gate status
         id: qg
         run: |
@@ -52,7 +46,6 @@ jobs:
           quality=$(echo "$QG" | jq -r '.projectStatus.status')
           echo "quality=$quality" >> $GITHUB_OUTPUT
 
-      # 3) Comment results on PR
       - name: Comment SCA results on PR
         uses: actions/github-script@v7
         with:
@@ -64,19 +57,17 @@ jobs:
             const low      = Number("${{ steps.sca.outputs.low }}");
             const quality  = "${{ steps.qg.outputs.quality }}";
 
-            const body = `
-### 🔍 CodeScan SCA Results (app.codescan.io)
-
-**Quality Gate:** ${quality}
-
-#### Vulnerabilities
-- 🔴 Critical: ${critical}
-- 🟠 High: ${high}
-- 🟡 Medium: ${medium}
-- 🟢 Low: ${low}
-
-_Reported by CodeScan for project \`${process.env.CODESCAN_PROJECT_KEY}\`._
-`;
+            const body = [
+              "### 🔍 CodeScan SCA Results",
+              "",
+              `**Quality Gate:** ${quality}`,
+              "",
+              "#### Vulnerabilities",
+              `- 🔴 Critical: ${critical}`,
+              `- 🟠 High: ${high}`,
+              `- 🟡 Medium: ${medium}`,
+              `- 🟢 Low: ${low}`
+            ].join("\n");
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -85,7 +76,6 @@ _Reported by CodeScan for project \`${process.env.CODESCAN_PROJECT_KEY}\`._
               body
             });
 
-      # 4) Fail on Critical/High (optional)
       - name: Fail on Critical/High vulnerabilities
         run: |
           if [ ${{ steps.sca.outputs.critical }} -gt 0 ] || [ ${{ steps.sca.outputs.high }} -gt 0 ]; then
