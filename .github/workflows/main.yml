@@ -1,4 +1,4 @@
-name: ARM Trigger + Latest PR CodeScan Fetch (Debug Enabled)
+name: ARM Trigger + Latest PR CodeScan Fetch
 
 on:
   workflow_dispatch:
@@ -16,6 +16,7 @@ on:
 jobs:
   fetch-codescan:
     runs-on: ubuntu-latest
+    environment: main   # <-- THIS IS THE FIX
 
     env:
       CODESCAN_URL: "https://app.codescan.io"
@@ -23,9 +24,6 @@ jobs:
       CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
 
     steps:
-      # -----------------------------
-      # 1. ARM metadata (optional)
-      # -----------------------------
       - name: Print ARM metadata (if provided)
         run: |
           echo "=== ARM Metadata ==="
@@ -34,18 +32,12 @@ jobs:
           echo "Salesforce Org: ${{ github.event.inputs.sforgName }}"
           echo "===================="
 
-      # -----------------------------
-      # 2. Checkout repo
-      # -----------------------------
       - name: Checkout vs-sf repository
         uses: actions/checkout@v4
         with:
           repository: vitaliysergeychik/vs-sf
           ref: main
 
-      # -----------------------------
-      # 3. Find latest open PR targeting main
-      # -----------------------------
       - name: Determine latest open PR targeting main
         id: pr
         run: |
@@ -71,39 +63,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # -----------------------------
-      # 4. DEBUG: List all CodeScan projects
-      # -----------------------------
-      - name: DEBUG - List CodeScan Projects
-        run: |
-          echo "=== Listing CodeScan Projects ==="
-          curl -s -u "$CODESCAN_TOKEN:" "$CODESCAN_URL/api/projects/search" | jq .
-          echo "================================="
-
-      # -----------------------------
-      # 5. DEBUG: Test both componentKeys and projectKeys
-      # -----------------------------
-      - name: DEBUG - Test CodeScan API with both key types
-        run: |
-          PR=${{ steps.pr.outputs.pr_number }}
-
-          echo "=== Testing CodeScan API ==="
-          echo "Using PR: $PR"
-          echo "Using Project Key: $CODESCAN_PROJECT_KEY"
-
-          echo "--- componentKeys test ---"
-          curl -i -u "$CODESCAN_TOKEN:" \
-            "$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
-
-          echo "--- projectKeys test ---"
-          curl -i -u "$CODESCAN_TOKEN:" \
-            "$CODESCAN_URL/api/issues/search?projectKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
-
-          echo "=========================="
-
-      # -----------------------------
-      # 6. Fetch CodeScan SCA results (real logic)
-      # -----------------------------
       - name: Fetch CodeScan SCA results for PR
         if: steps.pr.outputs.pr_number != ''
         run: |
@@ -129,9 +88,6 @@ jobs:
           echo "Minor:    $minor"
           echo "Info:     $info"
 
-      # -----------------------------
-      # 7. No PR fallback
-      # -----------------------------
       - name: No PR found message
         if: steps.pr.outputs.pr_number == ''
         run: echo "No open PR found for main — nothing to scan."
