@@ -25,7 +25,7 @@ jobs:
           PR="${{ github.event.pull_request.number }}"
 
           RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" \
-            "$CODESCAN_URL/api/issues/search?projectKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR&types=VULNERABILITY")
+            "$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR&types=VULNERABILITY")
 
           critical=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
           high=$(echo "$RESPONSE"     | jq '[.issues[] | select(.severity=="MAJOR")]   | length')
