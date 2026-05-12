@@ -1,4 +1,4 @@
-name: ARM Trigger + Latest PR CodeScan Fetch
+name: CodeScan SCA Report for All Open PRs
 
 on:
   workflow_dispatch:
@@ -12,9 +12,11 @@ on:
       sforgName:
         required: false
         type: string
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
-  fetch-codescan:
+  scan-all-prs:
     runs-on: ubuntu-latest
     environment: main
 
@@ -24,117 +26,79 @@ jobs:
       CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
 
     steps:
-      - name: Print ARM metadata (if provided)
-        run: |
-          echo "=== ARM Metadata ==="
-          echo "Project Name: ${{ github.event.inputs.projectName }}"
-          echo "Build Number: ${{ github.event.inputs.buildNumber }}"
-          echo "Salesforce Org: ${{ github.event.inputs.sforgName }}"
-          echo "===================="
-
-      - name: Checkout vs-sf repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          repository: vitaliysergeychik/vs-sf
-          ref: main
 
-      - name: Determine latest open PR targeting main
-        id: pr
+      - name: Get all open PR numbers
+        id: prs
         run: |
-          PR=$(gh pr list \
-                --repo vitaliysergeychik/vs-sf \
-                --state open \
-                --base main \
-                --limit 1 \
-                --json number \
-                --jq '.[0].number')
+          PR_LIST=$(gh pr list \
+            --repo ${{ github.repository }} \
+            --state open \
+            --json number \
+            --jq '.[].number')
 
-          if [ -z "$PR" ]; then
-            echo "pr_number=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          echo "Found PRs:"
+          echo "$PR_LIST"
 
-          echo "pr_number=$PR" >> "$GITHUB_OUTPUT"
+          echo "pr_list<<EOF" >> $GITHUB_OUTPUT
+          echo "$PR_LIST" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fetch CodeScan SCA results for PR
-        id: sca
-        if: steps.pr.outputs.pr_number != ''
+      - name: Process each PR
         run: |
-          PR=${{ steps.pr.outputs.pr_number }}
+          while read -r PR; do
+            [ -z "$PR" ] && continue
 
-          API_URL="$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
-          RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" "$API_URL")
+            echo "Checking CodeScan results for PR #$PR"
 
-          # Extract counts
-          critical=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
-          major=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MAJOR")] | length')
-          minor=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MINOR")] | length')
-          info=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
+            API_URL="$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
+            RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" "$API_URL")
 
-          echo "critical=$critical" >> "$GITHUB_OUTPUT"
-          echo "major=$major"       >> "$GITHUB_OUTPUT"
-          echo "minor=$minor"       >> "$GITHUB_OUTPUT"
-          echo "info=$info"         >> "$GITHUB_OUTPUT"
+            ISSUE_COUNT=$(echo "$RESPONSE" | jq '.issues | length')
 
-          # Build table into a file
-          echo "| File | Line | Issue | Severity |" > issue_table.md
-          echo "|------|------|--------|----------|" >> issue_table.md
+            if [ "$ISSUE_COUNT" -eq 0 ]; then
+              echo "No SCA issues found for PR #$PR — skipping."
+              continue
+            fi
 
-          echo "$RESPONSE" | jq -r '
-            .issues[] |
-            "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message) | \(.severity) |"
-          ' >> issue_table.md
+            echo "SCA issues found for PR #$PR — generating table."
 
-          # Encode table for safe output
-          TABLE_B64=$(base64 -w 0 issue_table.md)
-          echo "table_b64=$TABLE_B64" >> "$GITHUB_OUTPUT"
+            # Build table
+            echo "| File | Line | Issue | Severity |" > issue_table.md
+            echo "|------|------|--------|----------|" >> issue_table.md
 
-      - name: Comment on PR with CodeScan Summary
-        if: steps.pr.outputs.pr_number != ''
+            echo "$RESPONSE" | jq -r '
+              .issues[] |
+              "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message) | \(.severity) |"
+            ' >> issue_table.md
+
+            # Build comment
+            cat > comment.md <<EOF
+            ### 🔍 CodeScan SCA Summary for PR #$PR
+
+            **Total Issues:** $ISSUE_COUNT  
+
+            ---
+
+            ### 📄 Issue Details  
+            $(cat issue_table.md)
+
+            ---
+
+            _This report was generated automatically by GitHub Actions._
+            EOF
+
+            echo "Posting comment to PR #$PR"
+
+            gh pr comment "$PR" \
+              --repo ${{ github.repository }} \
+              --body-file comment.md
+
+          done <<< "${{ steps.prs.outputs.pr_list }}"
+
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
-          CRITICAL: ${{ steps.sca.outputs.critical }}
-          MAJOR: ${{ steps.sca.outputs.major }}
-          MINOR: ${{ steps.sca.outputs.minor }}
-          INFO: ${{ steps.sca.outputs.info }}
-          TABLE_B64: ${{ steps.sca.outputs.table_b64 }}
-          ARM_PROJECT: ${{ github.event.inputs.projectName }}
-          ARM_BUILD: ${{ github.event.inputs.buildNumber }}
-          ARM_ORG: ${{ github.event.inputs.sforgName }}
-        run: |
-          # Decode table
-          base64 -d <<< "$TABLE_B64" > decoded_table.md
-
-          cat > comment.md <<HEREDOC_EOF
-          ### 🔍 CodeScan SCA Summary
-          **Critical:** ${CRITICAL:-0}  
-          **Major:** ${MAJOR:-0}  
-          **Minor:** ${MINOR:-0}  
-          **Info:** ${INFO:-0}  
-
-          ---
-
-          ### 📄 Issue Details  
-          $(cat decoded_table.md)
-
-          ---
-
-          ### 🧩 ARM Metadata
-          **Project Name:** ${ARM_PROJECT:-_not provided_}  
-          **Build Number:** ${ARM_BUILD:-_not provided_}  
-          **Salesforce Org:** ${ARM_ORG:-_not provided_}  
-
-          _This report was generated automatically by GitHub Actions._
-          HEREDOC_EOF
-
-          gh pr comment "$PR_NUMBER" \
-            --repo vitaliysergeychik/vs-sf \
-            --body-file comment.md
-
-      - name: No PR found message
-        if: steps.pr.outputs.pr_number == ''
-        run: echo "No open PR found for main — nothing to scan."
