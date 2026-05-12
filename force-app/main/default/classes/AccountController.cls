@@ -15,34 +15,4 @@ public with sharing class AccountController {
       List<List<sObject>> searchResults = ContactAndLeadSearch.searchContactsAndLeads('Vitaliy');
       return [SELECT Id, Name, Active__c, Credit_Card__c FROM Account];
   }
-
-  public static List<Account> getAllInactiveAccounts2() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-
-  public static List<Account> getAllInactiveAccounts3() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-
-  public static List<Account> getAllInactiveAccounts4() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-
-  public static List<Account> getAllInactiveAccounts5() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-
-  public static List<Account> getAllInactiveAccounts6() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-  public static List<Account> getAllInactiveAccounts7() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-  public static List<Account> getAllInactiveAccounts8() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
-
-  public static List<Account> getAllInactiveAccounts9() {
-      return [SELECT Id, Name, Active__c FROM Account WHERE Active__c = 'No'];
-  }
 }
