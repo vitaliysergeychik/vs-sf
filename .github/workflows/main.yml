@@ -109,7 +109,7 @@ jobs:
         run: |
           echo "Posting comment to PR #$PR_NUMBER"
           
-          cat > comment.md <<'HEREDOC_EOF'
+          cat > comment.md <<HEREDOC_EOF
           ### 🔍 CodeScan SCA Summary
           **Critical:** ${CRITICAL:-0}  
           **Major:** ${MAJOR:-0}  
