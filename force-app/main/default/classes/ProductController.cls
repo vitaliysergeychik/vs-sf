@@ -1,5 +1,6 @@
 public with sharing class ProductController {
     // Define a constant for page size to ensure consistency across the application
+    //new change
     static Integer PAGE_SIZE = 9;
 
     public class Filters {
