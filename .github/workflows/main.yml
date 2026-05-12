@@ -16,7 +16,7 @@ on:
 jobs:
   fetch-codescan:
     runs-on: ubuntu-latest
-    environment: main   # <-- THIS IS THE FIX
+    environment: main
 
     env:
       CODESCAN_URL: "https://app.codescan.io"
@@ -53,17 +53,18 @@ jobs:
 
           if [ -z "$PR" ]; then
             echo "No open PRs found for main."
-            echo "pr_number=" >> $GITHUB_OUTPUT
+            echo "pr_number=" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "Latest open PR for main: $PR"
-          echo "pr_number=$PR" >> $GITHUB_OUTPUT
+          echo "pr_number=$PR" >> "$GITHUB_OUTPUT"
 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fetch CodeScan SCA results for PR
+        id: sca
         if: steps.pr.outputs.pr_number != ''
         run: |
           PR=${{ steps.pr.outputs.pr_number }}
@@ -82,11 +83,52 @@ jobs:
           minor=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MINOR")] | length')
           info=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
 
+          echo "critical=$critical" >> "$GITHUB_OUTPUT"
+          echo "major=$major"       >> "$GITHUB_OUTPUT"
+          echo "minor=$minor"       >> "$GITHUB_OUTPUT"
+          echo "info=$info"         >> "$GITHUB_OUTPUT"
+
           echo "=== CodeScan SCA Summary for PR $PR ==="
           echo "Critical: $critical"
           echo "Major:    $major"
           echo "Minor:    $minor"
           echo "Info:     $info"
+
+      - name: Comment on PR with CodeScan Summary
+        if: steps.pr.outputs.pr_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
+          CRITICAL: ${{ steps.sca.outputs.critical }}
+          MAJOR: ${{ steps.sca.outputs.major }}
+          MINOR: ${{ steps.sca.outputs.minor }}
+          INFO: ${{ steps.sca.outputs.info }}
+          ARM_PROJECT: ${{ github.event.inputs.projectName }}
+          ARM_BUILD: ${{ github.event.inputs.buildNumber }}
+          ARM_ORG: ${{ github.event.inputs.sforgName }}
+        run: |
+          echo "Posting comment to PR #$PR_NUMBER"
+          
+          cat > comment.md <<'HEREDOC_EOF'
+          ### 🔍 CodeScan SCA Summary
+          **Critical:** ${CRITICAL:-0}  
+          **Major:** ${MAJOR:-0}  
+          **Minor:** ${MINOR:-0}  
+          **Info:** ${INFO:-0}  
+          
+          ---
+          
+          ### 🧩 ARM Metadata
+          **Project Name:** ${ARM_PROJECT:-_not provided_}  
+          **Build Number:** ${ARM_BUILD:-_not provided_}  
+          **Salesforce Org:** ${ARM_ORG:-_not provided_}  
+          
+          _This report was generated automatically by GitHub Actions._
+          HEREDOC_EOF
+
+          gh pr comment "$PR_NUMBER" \
+            --repo vitaliysergeychik/vs-sf \
+            --body-file comment.md
 
       - name: No PR found message
         if: steps.pr.outputs.pr_number == ''
