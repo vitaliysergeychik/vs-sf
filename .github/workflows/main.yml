@@ -1,79 +1,15 @@
-name: AutoRABIT CodeScan on PR
+name: ARM Trigger Test
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      armRunId:
+        required: false
+        type: string
 
 jobs:
-  codescan:
+  run-test:
     runs-on: ubuntu-latest
-    environment: main   # Load secrets from the 'main' environment
-
-    env:
-      CODESCAN_URL: ${{ secrets.CODESCAN_URL }}
-      CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run AutoRABIT CodeScan
-        id: scan
-        run: |
-          echo "Starting CodeScan PR scan..."
-
-          RESPONSE=$(curl -s -X POST "$CODESCAN_URL/api/v1/sca/scan" \
-            -H "Authorization: Bearer $CODESCAN_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "{
-                  \"repoUrl\": \"${{ github.repository }}\",
-                  \"branch\": \"${{ github.head_ref }}\",
-                  \"commitId\": \"${{ github.sha }}\"
-                }")
-
-          echo "API Response: $RESPONSE"
-
-          echo "critical=$(echo $RESPONSE | jq '.criticalCount // 0')" >> $GITHUB_OUTPUT
-          echo "high=$(echo $RESPONSE | jq '.highCount // 0')" >> $GITHUB_OUTPUT
-          echo "medium=$(echo $RESPONSE | jq '.mediumCount // 0')" >> $GITHUB_OUTPUT
-          echo "low=$(echo $RESPONSE | jq '.lowCount // 0')" >> $GITHUB_OUTPUT
-          echo "scanId=$(echo $RESPONSE | jq -r '.scanId // "N/A"')" >> $GITHUB_OUTPUT
-
-      - name: Comment PR with results
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const critical = Number("${{ steps.scan.outputs.critical }}");
-            const high = Number("${{ steps.scan.outputs.high }}");
-            const medium = Number("${{ steps.scan.outputs.medium }}");
-            const low = Number("${{ steps.scan.outputs.low }}");
-            const scanId = "${{ steps.scan.outputs.scanId }}";
-
-            const body = `
-### 🔍 AutoRABIT CodeScan Results
-
-**Scan ID:** ${scanId}
-
-#### Vulnerabilities Found
-- 🔴 Critical: ${critical}
-- 🟠 High: ${high}
-- 🟡 Medium: ${medium}
-- 🟢 Low: ${low}
-
-View full scan details in AutoRABIT.
-`;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body
-            });
-
-      - name: Block PR on critical/high issues
-        run: |
-          if [ ${{ steps.scan.outputs.critical }} -gt 0 ] || [ ${{ steps.scan.outputs.high }} -gt 0 ]; then
-            echo "Critical/High issues found — blocking merge"
-            exit 1
-          fi
+      - name: Print success message
+        run: echo "GitHub Actions workflow triggered successfully. ARM Run ID: ${{ github.event.inputs.armRunId }}"
