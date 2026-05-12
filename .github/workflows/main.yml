@@ -87,8 +87,9 @@ jobs:
               "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message | gsub("\n"; " ")) | \(.severity) |"
             ' >> issue_table.md
 
-            # Build comment safely
+            # Build comment with PR-specific marker
             {
+              printf "%s\n" "<!-- codescan-sca-report PR=$PR -->"
               printf "%s\n\n" "### 🔍 CodeScan SCA Summary for PR #$PR"
 
               printf "%s\n" "**Critical:** $CRITICAL  "
@@ -109,7 +110,27 @@ jobs:
               printf "%s\n" "_This report was generated automatically by GitHub Actions._"
             } > comment.md
 
-            echo "Posting comment to PR #$PR"
+            echo "Checking for existing comment on PR #$PR"
+
+            # Fetch last comment for THIS PR from THIS workflow
+            gh pr comment list "$PR" \
+              --repo ${{ github.repository }} \
+              --json body \
+              --jq ".[] | select(.body | contains(\"codescan-sca-report PR=$PR\")) | .body" \
+              | head -n 1 > last_comment.md
+
+            if [ -s last_comment.md ]; then
+              echo "Existing comment found — comparing…"
+
+              if cmp -s comment.md last_comment.md; then
+                echo "No changes since last comment — skipping."
+                continue
+              else
+                echo "Changes detected — posting updated comment."
+              fi
+            else
+              echo "No previous comment found — posting new comment."
+            fi
 
             gh pr comment "$PR" \
               --repo ${{ github.repository }} \
