@@ -1,68 +1,119 @@
 name: CodeScan SCA on PR
 
+# Trigger ONLY on pull requests
 on:
-  workflow_dispatch:     # allows manual run
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
   codescan-sca:
     runs-on: ubuntu-latest
-    environment: main     # <-- uses your 'main' environment + its secrets
 
+    # Use your GitHub Environment named "main"
+    environment: main
+
+    # Environment variables (URLs + secrets)
     env:
       CODESCAN_URL: "https://app.codescan.io"
       CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
       CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
 
     steps:
-      - name: Checkout
+
+      ###########################################################################
+      # STEP 1 — CHECKOUT CODE
+      ###########################################################################
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      ###########################################################################
+      # STEP 2 — FETCH ISSUES FROM CODESCAN
+      ###########################################################################
       - name: Fetch SCA issues from CodeScan
         id: sca
         run: |
+          echo "=== STEP 2: Fetching issues from CodeScan ==="
+          echo "Project Key: $CODESCAN_PROJECT_KEY"
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          echo "Calling CodeScan API..."
+
           PR="${{ github.event.pull_request.number }}"
 
-          # IMPORTANT: Use componentKeys (works for CodeScan SaaS)
-          RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" \
-            "$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR")
+          # Use componentKeys (required for CodeScan SaaS)
+          API_URL="$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
 
-          # Count issues by severity (no type filter)
+          echo "API URL: $API_URL"
+
+          RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" "$API_URL")
+
+          echo "Raw API Response:"
+          echo "$RESPONSE"
+
+          # Count issues by severity
           critical=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
           high=$(echo "$RESPONSE"     | jq '[.issues[] | select(.severity=="MAJOR")]   | length')
           medium=$(echo "$RESPONSE"   | jq '[.issues[] | select(.severity=="MINOR")]   | length')
           low=$(echo "$RESPONSE"      | jq '[.issues[] | select(.severity=="INFO")]    | length')
 
+          echo "Critical count: $critical"
+          echo "High count: $high"
+          echo "Medium count: $medium"
+          echo "Low count: $low"
+
+          # Export values to next steps
           echo "critical=$critical" >> $GITHUB_OUTPUT
           echo "high=$high"         >> $GITHUB_OUTPUT
           echo "medium=$medium"     >> $GITHUB_OUTPUT
           echo "low=$low"           >> $GITHUB_OUTPUT
 
+      ###########################################################################
+      # STEP 3 — FETCH QUALITY GATE STATUS
+      ###########################################################################
       - name: Fetch quality gate status
         id: qg
         run: |
-          PR="${{ github.event.pull_request.number }}"
+          echo "=== STEP 3: Fetching Quality Gate Status ==="
 
-          QG=$(curl -s -u "$CODESCAN_TOKEN:" \
-            "$CODESCAN_URL/api/qualitygates/project_status?projectKey=$CODESCAN_PROJECT_KEY&pullRequest=$PR")
+          PR="${{ github.event.pull_request.number }}"
+          QG_URL="$CODESCAN_URL/api/qualitygates/project_status?projectKey=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
+
+          echo "Quality Gate API URL: $QG_URL"
+
+          QG=$(curl -s -u "$CODESCAN_TOKEN:" "$QG_URL")
+
+          echo "Raw Quality Gate Response:"
+          echo "$QG"
 
           quality=$(echo "$QG" | jq -r '.projectStatus.status')
+
+          echo "Quality Gate Status: $quality"
+
           echo "quality=$quality" >> $GITHUB_OUTPUT
 
+      ###########################################################################
+      # STEP 4 — COMMENT RESULTS ON THE PULL REQUEST
+      ###########################################################################
       - name: Comment SCA results on PR
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log("=== STEP 4: Commenting on PR ===");
+
             const critical = Number("${{ steps.sca.outputs.critical }}");
             const high     = Number("${{ steps.sca.outputs.high }}");
             const medium   = Number("${{ steps.sca.outputs.medium }}");
             const low      = Number("${{ steps.sca.outputs.low }}");
             const quality  = "${{ steps.qg.outputs.quality }}";
 
+            console.log("Critical:", critical);
+            console.log("High:", high);
+            console.log("Medium:", medium);
+            console.log("Low:", low);
+            console.log("Quality Gate:", quality);
+
             const body = `
-### 🔍 CodeScan SCA Results
+### 🔍 CodeScan SCA Results (Debug Enabled)
 
 **Quality Gate:** ${quality}
 
@@ -75,6 +126,8 @@ jobs:
 _Reported by CodeScan for project \`${process.env.CODESCAN_PROJECT_KEY}\`._
 `;
 
+            console.log("Posting PR comment...");
+
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -82,9 +135,20 @@ _Reported by CodeScan for project \`${process.env.CODESCAN_PROJECT_KEY}\`._
               body
             });
 
+            console.log("PR comment posted successfully.");
+
+      ###########################################################################
+      # STEP 5 — FAIL THE BUILD IF CRITICAL/HIGH ISSUES EXIST
+      ###########################################################################
       - name: Fail on Critical/High vulnerabilities
         run: |
+          echo "=== STEP 5: Checking if build should fail ==="
+          echo "Critical: ${{ steps.sca.outputs.critical }}"
+          echo "High: ${{ steps.sca.outputs.high }}"
+
           if [ ${{ steps.sca.outputs.critical }} -gt 0 ] || [ ${{ steps.sca.outputs.high }} -gt 0 ]; then
-            echo "Critical/High vulnerabilities found. Failing the check."
+            echo "❌ Critical/High vulnerabilities found. Failing the check."
             exit 1
+          else
+            echo "✅ No Critical/High vulnerabilities. Build passes."
           fi
