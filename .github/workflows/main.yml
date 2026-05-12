@@ -12,6 +12,8 @@ on:
       sforgName:
         required: false
         type: string
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   scan-all-prs:
@@ -77,37 +79,33 @@ jobs:
             INFO=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
 
             # Build table
-            echo "| File | Line | Issue | Severity |" > issue_table.md
-            echo "|------|------|--------|----------|" >> issue_table.md
+            printf "| File | Line | Issue | Severity |\n" > issue_table.md
+            printf "|------|------|--------|----------|\n" >> issue_table.md
 
             echo "$RESPONSE" | jq -r '
               .issues[] |
               "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message) | \(.severity) |"
             ' >> issue_table.md
 
-            # Build comment
-            cat > comment.md <<EOF
-            ### 🔍 CodeScan SCA Summary for PR #$PR
+            # Build comment using printf (NO HEREDOCS)
+            {
+              printf "### 🔍 CodeScan SCA Summary for PR #%s\n\n" "$PR"
+              printf "**Critical:** %s  \n" "$CRITICAL"
+              printf "**Major:** %s  \n" "$MAJOR"
+              printf "**Minor:** %s  \n" "$MINOR"
+              printf "**Info:** %s  \n\n" "$INFO"
 
-            **Critical:** $CRITICAL  
-            **Major:** $MAJOR  
-            **Minor:** $MINOR  
-            **Info:** $INFO  
+              printf "---\n\n### 📄 Issue Details\n"
+              cat issue_table.md
+              printf "\n---\n\n"
 
-            ---
+              printf "### 🧩 ARM Metadata\n"
+              printf "**Project Name:** %s  \n" "${{ github.event.inputs.projectName }}"
+              printf "**Build Number:** %s  \n" "${{ github.event.inputs.buildNumber }}"
+              printf "**Salesforce Org:** %s  \n\n" "${{ github.event.inputs.sforgName }}"
 
-            ### 📄 Issue Details  
-            $(cat issue_table.md)
-
-            ---
-
-            ### 🧩 ARM Metadata
-            **Project Name:** ${ARM_PROJECT:-${{ github.event.inputs.projectName }}}
-            **Build Number:** ${ARM_BUILD:-${{ github.event.inputs.buildNumber }}}
-            **Salesforce Org:** ${ARM_ORG:-${{ github.event.inputs.sforgName }}}
-
-            _This report was generated automatically by GitHub Actions._
-            EOF
+              printf "_This report was generated automatically by GitHub Actions._\n"
+            } > comment.md
 
             echo "Posting comment to PR #$PR"
 
@@ -119,6 +117,3 @@ jobs:
 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARM_PROJECT: ${{ github.event.inputs.projectName }}
-          ARM_BUILD: ${{ github.event.inputs.buildNumber }}
-          ARM_ORG: ${{ github.event.inputs.sforgName }}
