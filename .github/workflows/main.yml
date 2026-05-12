@@ -68,6 +68,7 @@ jobs:
           API_URL="$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
           RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" "$API_URL")
 
+          # Extract counts
           critical=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
           major=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MAJOR")] | length')
           minor=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MINOR")] | length')
@@ -79,15 +80,15 @@ jobs:
           echo "info=$info"         >> "$GITHUB_OUTPUT"
 
           # Build table into a file
-          echo "| File | Issue | Severity |" > issue_table.md
-          echo "|------|--------|----------|" >> issue_table.md
+          echo "| File | Line | Issue | Severity |" > issue_table.md
+          echo "|------|------|--------|----------|" >> issue_table.md
 
           echo "$RESPONSE" | jq -r '
             .issues[] |
-            "| \(.component | split(":")[-1]) | \(.message) | \(.severity) |"
+            "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message) | \(.severity) |"
           ' >> issue_table.md
 
-          # Save table as a single-line output (base64 encoded)
+          # Encode table for safe output
           TABLE_B64=$(base64 -w 0 issue_table.md)
           echo "table_b64=$TABLE_B64" >> "$GITHUB_OUTPUT"
 
