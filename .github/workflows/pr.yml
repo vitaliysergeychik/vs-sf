@@ -68,7 +68,7 @@ jobs:
             sonar.pullrequest.key=${{ github.event.number }}
 
       # -------------------------------------------------------
-      # Upload SARIF to GitHub Security Tab - Disabled for now
+      # Upload SARIF to GitHub Security Tab
       # -------------------------------------------------------
       #- name: Upload SARIF file
       #  uses: github/codeql-action/upload-sarif@v3
@@ -97,44 +97,61 @@ jobs:
                 $run.results[]
                 | . as $r
                 | ($run.tool.driver.rules[] | select(.id == $r.ruleId)) as $rule
+                | (
+                    # Map SARIF rule severity → CodeScan severity categories
+                    if $rule.defaultConfiguration.level == "error" then
+                      { sev: "blocker" }
+                    elif $rule.defaultConfiguration.level == "warning" then
+                      { sev: "major" }
+                    elif $rule.defaultConfiguration.level == "note" then
+                      { sev: "minor" }
+                    else
+                      { sev: "info" }
+                    end
+                  ) as $sevmap
                 | {
                     file: ($r.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
                     line: $r.locations[0].physicalLocation.region.startLine,
-                    severity: (
-                      if $rule.defaultConfiguration.level == "error" then "CRITICAL"
-                      elif $rule.defaultConfiguration.level == "warning" then "MAJOR"
-                      elif $rule.defaultConfiguration.level == "note" then "MINOR"
-                      else "INFO" end
-                    ),
+                    severity: $sevmap.sev,
                     msg: ($r.message.text | gsub("\n"; " "))
                   }
               ]
           ' codescan.sarif)
 
           # -------------------------------------------------------
-          # CORRECT SEVERITY COUNTS (SINGLE NUMBERS)
+          # SEVERITY COUNTS
           # -------------------------------------------------------
-          CRITICAL=$(echo "$NORMALIZED" | jq 'map(select(.severity=="CRITICAL")) | length')
-          HIGH=$(echo "$NORMALIZED"     | jq 'map(select(.severity=="MAJOR"))    | length')
-          MEDIUM=$(echo "$NORMALIZED"   | jq 'map(select(.severity=="MINOR"))    | length')
-          LOW=$(echo "$NORMALIZED"      | jq 'map(select(.severity=="INFO"))     | length')
+          BLOCKER=$(echo "$NORMALIZED"  | jq 'map(select(.severity=="blocker"))  | length')
+          CRITICAL=$(echo "$NORMALIZED" | jq 'map(select(.severity=="critical")) | length')  # placeholder if needed later
+          MAJOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="major"))    | length')
+          MINOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="minor"))    | length')
+          INFO=$(echo "$NORMALIZED"     | jq 'map(select(.severity=="info"))     | length')
 
           # -------------------------------------------------------
-          # BUILD TABLE
+          # SORT ISSUES BY FILENAME, THEN LINE NUMBER
           # -------------------------------------------------------
-          TABLE=$(echo "$NORMALIZED" | jq -r '
+          SORTED=$(echo "$NORMALIZED" | jq 'sort_by(.file, .line)')
+
+          # -------------------------------------------------------
+          # BUILD MARKDOWN TABLE
+          # -------------------------------------------------------
+          TABLE=$(echo "$SORTED" | jq -r '
             .[] |
             "| \(.file) | \(.line) | \(.severity) | \(.msg) |"
           ')
 
-          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+          # -------------------------------------------------------
+          # BUILD COMMENT BODY
+          # -------------------------------------------------------
+          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
             "### 🔍 CodeScan PR Summary" \
             "" \
             "**Severity Counts**" \
+            "- Blocker: $BLOCKER" \
             "- Critical: $CRITICAL" \
-            "- High: $HIGH" \
-            "- Medium: $MEDIUM" \
-            "- Low: $LOW" \
+            "- Major: $MAJOR" \
+            "- Minor: $MINOR" \
+            "- Info: $INFO" \
             "" \
             "### Issues" \
             "| File | Line | Severity | Message |" \
@@ -142,6 +159,9 @@ jobs:
             "$TABLE"
           )
 
+          # -------------------------------------------------------
+          # POST COMMENT TO PR
+          # -------------------------------------------------------
           echo "Posting PR comment..."
           curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
