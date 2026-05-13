@@ -70,12 +70,12 @@ jobs:
             sonar.pullrequest.key=${{ github.event.number }}
 
       # -------------------------------------------------------
-      # Upload SARIF to GitHub Security Tab -- Disabled for now, taking too long to run
+      # Upload SARIF to GitHub Security Tab
       # -------------------------------------------------------
-      #- name: Upload SARIF file
-      #  uses: github/codeql-action/upload-sarif@v3
-      #  with:
-      #    sarif_file: codescan.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: codescan.sarif
 
       # -------------------------------------------------------
       # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
@@ -90,19 +90,68 @@ jobs:
         run: |
           echo "Parsing SARIF..."
 
-          # Correct CodeScan severity mapping (uses .properties.severity)
-          CRITICAL=$(jq '[.runs[].results[] | select(.properties.severity=="CRITICAL")] | length' codescan.sarif)
-          HIGH=$(jq '[.runs[].results[] | select(.properties.severity=="MAJOR")] | length' codescan.sarif)
-          MEDIUM=$(jq '[.runs[].results[] | select(.properties.severity=="MINOR")] | length' codescan.sarif)
-          LOW=$(jq '[.runs[].results[] | select(.properties.severity=="INFO")] | length' codescan.sarif)
+          # Helper: normalize severity from properties.severity or level
+          # error  -> CRITICAL
+          # warning -> MAJOR
+          # note    -> MINOR
+          # anything else -> INFO
+          CRITICAL=$(jq '
+            [.runs[].results[]
+             | ( .properties.severity
+                 // (if .level=="error" then "CRITICAL"
+                     elif .level=="warning" then "MAJOR"
+                     elif .level=="note" then "MINOR"
+                     else "INFO" end)
+               ) as $sev
+             | select($sev=="CRITICAL")] | length
+          ' codescan.sarif)
 
-          # Build markdown table (filename only + line + severity + message)
+          HIGH=$(jq '
+            [.runs[].results[]
+             | ( .properties.severity
+                 // (if .level=="error" then "CRITICAL"
+                     elif .level=="warning" then "MAJOR"
+                     elif .level=="note" then "MINOR"
+                     else "INFO" end)
+               ) as $sev
+             | select($sev=="MAJOR")] | length
+          ' codescan.sarif)
+
+          MEDIUM=$(jq '
+            [.runs[].results[]
+             | ( .properties.severity
+                 // (if .level=="error" then "CRITICAL"
+                     elif .level=="warning" then "MAJOR"
+                     elif .level=="note" then "MINOR"
+                     else "INFO" end)
+               ) as $sev
+             | select($sev=="MINOR")] | length
+          ' codescan.sarif)
+
+          LOW=$(jq '
+            [.runs[].results[]
+             | ( .properties.severity
+                 // (if .level=="error" then "CRITICAL"
+                     elif .level=="warning" then "MAJOR"
+                     elif .level=="note" then "MINOR"
+                     else "INFO" end)
+               ) as $sev
+             | select($sev=="INFO")] | length
+          ' codescan.sarif)
+
+          # Build markdown table (filename only + line + normalized severity + message)
           TABLE=$(jq -r '
             .runs[].results[] |
             {
               file: (.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
               line: .locations[0].physicalLocation.region.startLine,
-              level: .properties.severity,
+              level: (
+                .properties.severity
+                // (if .level=="error" then "CRITICAL"
+                    elif .level=="warning" then "MAJOR"
+                    elif .level=="note" then "MINOR"
+                    else "INFO" end)
+              ),
               msg: (.message.text | gsub("\n"; " "))
             } |
             "| \(.file) | \(.line) | \(.level) | \(.msg) |"
