@@ -1,4 +1,4 @@
-name: CI
+name: CodeScan SCA Report
 
 on:
   push:
@@ -78,6 +78,59 @@ jobs:
           sarif_file: codescan.sarif
 
       # -------------------------------------------------------
+      # PR COMMENT SUMMARY (FILE + LINE + SEVERITY + MESSAGE)
+      # -------------------------------------------------------
+      - name: Comment on PR with CodeScan Summary
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.number }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          echo "Parsing SARIF..."
+
+          # Correct CodeScan severity mapping
+          CRITICAL=$(jq '[.runs[].results[] | select(.level=="CRITICAL")] | length' codescan.sarif)
+          HIGH=$(jq '[.runs[].results[] | select(.level=="MAJOR")] | length' codescan.sarif)
+          MEDIUM=$(jq '[.runs[].results[] | select(.level=="MINOR")] | length' codescan.sarif)
+          LOW=$(jq '[.runs[].results[] | select(.level=="INFO")] | length' codescan.sarif)
+
+          # Build markdown table (FILE | LINE | SEVERITY | MESSAGE)
+          TABLE=$(jq -r '
+            .runs[].results[] |
+            {
+              file: .locations[0].physicalLocation.artifactLocation.uri,
+              line: .locations[0].physicalLocation.region.startLine,
+              level: .level,
+              msg: (.message.text | gsub("\n"; " "))
+            } |
+            "| \(.file) | \(.line) | \(.level) | \(.msg) |"
+          ' codescan.sarif)
+
+          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+            "### 🔍 CodeScan PR Summary" \
+            "" \
+            "**Severity Counts**" \
+            "- Critical: $CRITICAL" \
+            "- High: $HIGH" \
+            "- Medium: $MEDIUM" \
+            "- Low: $LOW" \
+            "" \
+            "### Issues" \
+            "| File | Line | Severity | Message |" \
+            "|------|------|----------|---------|" \
+            "$TABLE"
+          )
+
+          echo "Posting PR comment..."
+          curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
+            "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
+
+      # -------------------------------------------------------
       # Archive SARIF as artifact
       # -------------------------------------------------------
       - name: Archive CodeScan SARIF
@@ -85,5 +138,3 @@ jobs:
         with:
           name: codescan.sarif
           path: codescan.sarif
-
-     
