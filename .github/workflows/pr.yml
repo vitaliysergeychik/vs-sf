@@ -12,18 +12,17 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: main   # <-- environment added
+    environment: main
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # ensure initial full clone
+          fetch-depth: 0
 
-      # -----------------------------
-      # FIX: Ensure full git history
-      # Prevents "fatal: bad object <sha>"
-      # -----------------------------
+      # -------------------------------------------------------
+      # FIX: Ensure full git history (prevents "bad object <sha>")
+      # -------------------------------------------------------
       - name: Ensure full git history
         run: |
           git fetch --unshallow || true
@@ -37,9 +36,9 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      # -----------------------------
-      # FULL SCAN ON PUSH TO MAIN
-      # -----------------------------
+      # -------------------------------------------------------
+      # FULL SCAN ON PUSH
+      # -------------------------------------------------------
       - name: Run CodeScan on Push
         if: github.event_name == 'push'
         uses: codescan-io/codescan-scanner-action@2.0
@@ -49,11 +48,11 @@ jobs:
           codeScanUrl:  ${{ secrets.CODESCAN_URL }}
           login:        ${{ secrets.CODESCAN_TOKEN }}
           generateSarifFile: true
-          failOnRedQualityGate: false
+          failOnRedQualityGate: true
 
-      # -----------------------------
+      # -------------------------------------------------------
       # PR SCAN (CHANGED FILES ONLY)
-      # -----------------------------
+      # -------------------------------------------------------
       - name: Run CodeScan on PR
         if: github.event_name == 'pull_request'
         uses: codescan-io/codescan-scanner-action@2.0
@@ -64,23 +63,32 @@ jobs:
           login:        ${{ secrets.CODESCAN_TOKEN }}
           scanChangedFilesOnly: true
           generateSarifFile: true
-          failOnRedQualityGate: false
+          failOnRedQualityGate: true
           args: |
             sonar.pullrequest.branch=${{ github.head_ref }}
             sonar.pullrequest.base=${{ github.base_ref }}
             sonar.pullrequest.key=${{ github.event.number }}
 
-      # -----------------------------
+      # -------------------------------------------------------
       # Upload SARIF to GitHub Security Tab
-      # -----------------------------
+      # -------------------------------------------------------
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: codescan.sarif
 
-          # -----------------------------
-      # Parse SARIF and comment on PR
-      # -----------------------------
+      # -------------------------------------------------------
+      # Archive SARIF as artifact
+      # -------------------------------------------------------
+      - name: Archive CodeScan SARIF
+        uses: actions/upload-artifact@v4
+        with:
+          name: codescan.sarif
+          path: codescan.sarif
+
+      # -------------------------------------------------------
+      # PR COMMENT SUMMARY (FILE FIRST COLUMN + CORRECT SEVERITY)
+      # -------------------------------------------------------
       - name: Comment on PR with CodeScan Summary
         if: github.event_name == 'pull_request'
         env:
@@ -91,31 +99,26 @@ jobs:
         run: |
           echo "Parsing SARIF..."
 
-          # Extract issue summary from SARIF
-          SUMMARY=$(jq -r '
-            .runs[].results[] |
-            {
-              ruleId: .ruleId,
-              level: .level,
-              message: .message.text,
-              file: .locations[0].physicalLocation.artifactLocation.uri,
-              line: .locations[0].physicalLocation.region.startLine
-            }
-          ' codescan.sarif)
+          # Correct CodeScan severity mapping
+          CRITICAL=$(jq '[.runs[].results[] | select(.level=="CRITICAL")] | length' codescan.sarif)
+          HIGH=$(jq '[.runs[].results[] | select(.level=="MAJOR")] | length' codescan.sarif)
+          MEDIUM=$(jq '[.runs[].results[] | select(.level=="MINOR")] | length' codescan.sarif)
+          LOW=$(jq '[.runs[].results[] | select(.level=="INFO")] | length' codescan.sarif)
 
-          # Count severities
-          CRITICAL=$(jq '[.runs[].results[] | select(.level=="error")] | length' codescan.sarif)
-          HIGH=$(jq '[.runs[].results[] | select(.level=="warning")] | length' codescan.sarif)
-          MEDIUM=$(jq '[.runs[].results[] | select(.level=="note")] | length' codescan.sarif)
-          LOW=0
-
-          # Build markdown table
+          # Build markdown table (FILE FIRST)
           TABLE=$(jq -r '
             .runs[].results[] |
-            "| \(.ruleId) | \(.level) | \(.message.text | gsub("\n"; " ")) | \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine) |"
+            {
+              file: .locations[0].physicalLocation.artifactLocation.uri,
+              line: .locations[0].physicalLocation.region.startLine,
+              rule: .ruleId,
+              level: .level,
+              msg: (.message.text | gsub("\n"; " "))
+            } |
+            "| \(.file):\(.line) | \(.level) | \(.rule) | \(.msg) |"
           ' codescan.sarif)
 
-          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
             "### 🔍 CodeScan PR Summary" \
             "" \
             "**Severity Counts**" \
@@ -125,8 +128,8 @@ jobs:
             "- Low: $LOW" \
             "" \
             "### Issues" \
-            "| Rule | Level | Message | Location |" \
-            "|------|--------|---------|----------|" \
+            "| File | Severity | Rule | Message |" \
+            "|------|----------|------|---------|" \
             "$TABLE"
           )
 
@@ -136,12 +139,3 @@ jobs:
             -H "Content-Type: application/json" \
             -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
             "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
-
-      # -----------------------------
-      # Archive SARIF as artifact
-      # -----------------------------
-      - name: Archive CodeScan SARIF
-        uses: actions/upload-artifact@v4
-        with:
-          name: codescan.sarif
-          path: codescan.sarif
