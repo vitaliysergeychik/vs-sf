@@ -1,6 +1,8 @@
 name: CodeScan SCA Report
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -68,15 +70,15 @@ jobs:
             sonar.pullrequest.key=${{ github.event.number }}
 
       # -------------------------------------------------------
-      # Upload SARIF to GitHub Security Tab
+      # Upload SARIF to GitHub Security Tab -- Disabled for now, taking too long to run
       # -------------------------------------------------------
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: codescan.sarif
+      #- name: Upload SARIF file
+      #  uses: github/codeql-action/upload-sarif@v3
+      #  with:
+      #    sarif_file: codescan.sarif
 
       # -------------------------------------------------------
-      # PR COMMENT SUMMARY (FILE + LINE + SEVERITY + MESSAGE)
+      # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
       # -------------------------------------------------------
       - name: Comment on PR with CodeScan Summary
         if: github.event_name == 'pull_request'
@@ -88,19 +90,19 @@ jobs:
         run: |
           echo "Parsing SARIF..."
 
-          # Correct CodeScan severity mapping
-          CRITICAL=$(jq '[.runs[].results[] | select(.level=="CRITICAL")] | length' codescan.sarif)
-          HIGH=$(jq '[.runs[].results[] | select(.level=="MAJOR")] | length' codescan.sarif)
-          MEDIUM=$(jq '[.runs[].results[] | select(.level=="MINOR")] | length' codescan.sarif)
-          LOW=$(jq '[.runs[].results[] | select(.level=="INFO")] | length' codescan.sarif)
+          # Correct CodeScan severity mapping (uses .properties.severity)
+          CRITICAL=$(jq '[.runs[].results[] | select(.properties.severity=="CRITICAL")] | length' codescan.sarif)
+          HIGH=$(jq '[.runs[].results[] | select(.properties.severity=="MAJOR")] | length' codescan.sarif)
+          MEDIUM=$(jq '[.runs[].results[] | select(.properties.severity=="MINOR")] | length' codescan.sarif)
+          LOW=$(jq '[.runs[].results[] | select(.properties.severity=="INFO")] | length' codescan.sarif)
 
-          # Build markdown table (FILE | LINE | SEVERITY | MESSAGE)
+          # Build markdown table (filename only + line + severity + message)
           TABLE=$(jq -r '
             .runs[].results[] |
             {
-              file: .locations[0].physicalLocation.artifactLocation.uri,
+              file: (.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
               line: .locations[0].physicalLocation.region.startLine,
-              level: .level,
+              level: .properties.severity,
               msg: (.message.text | gsub("\n"; " "))
             } |
             "| \(.file) | \(.line) | \(.level) | \(.msg) |"
