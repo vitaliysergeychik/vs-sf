@@ -15,4 +15,8 @@ public with sharing class AccountController {
       List<List<sObject>> searchResults = ContactAndLeadSearch.searchContactsAndLeads('Vitaliy');
       return [SELECT Id, Name, Active__c, Credit_Card__c FROM Account];
   }
+  public static List<Account> getAllAccounts2() {
+      List<List<sObject>> searchResults = ContactAndLeadSearch.searchContactsAndLeads('Vitaliy');
+      return [SELECT Id, Name, Active__c, Credit_Card__c FROM Account];
+  }
 }
