@@ -76,7 +76,7 @@ jobs:
       #    sarif_file: codescan.sarif
 
       # -------------------------------------------------------
-      # PR COMMENT SUMMARY (Filename + Line + Severity + Type + Message)
+      # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
       # -------------------------------------------------------
       - name: Comment on PR with CodeScan Summary
         if: github.event_name == 'pull_request'
@@ -114,21 +114,12 @@ jobs:
                     else "INFO" end
                   ) as $sev
 
-                # Clean message: remove "[Type: ..., Severity: ...]"
-                | ($r.message.text
-                    | sub("\
-
-          \[Type:.*$"; "")
-                    | gsub("\n"; " ")
-                    | rtrimstr(" ")
-                  ) as $cleanMsg
-
                 | {
                     file: ($r.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
                     line: $r.locations[0].physicalLocation.region.startLine,
                     severity: $sev,
                     type: $type,
-                    msg: $cleanMsg
+                    msg: ($r.message.text | gsub("\n"; " "))
                   }
               ]
           ' codescan.sarif)
@@ -147,7 +138,7 @@ jobs:
           SORTED=$(echo "$NORMALIZED" | jq 'sort_by(.file, .line)')
 
           # -------------------------------------------------------
-          # BUILD TABLE (WITH TYPE COLUMN)
+          # BUILD TABLE (NOW WITH TYPE COLUMN)
           # -------------------------------------------------------
           TABLE=$(echo "$SORTED" | jq -r '
             .[] |
