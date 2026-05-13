@@ -73,4 +73,11 @@ public with sharing class ProductController {
         String query = 'SELECT Id, Name, MSRP__c, Description__c, Category__c, Level__c, Picture_URL__c, Material__c, Product_Family__c FROM Product__c WHERE Product_Family__c = :familyId AND Id != :productId' + securityClause;
         return (Product__c[]) Database.query(query);
     }
+
+    @AuraEnabled(Cacheable=true scope='global')
+    public static Product__c[] getSimilarProducts3(Id productId, Id familyId) {
+        String securityClause = Test.isRunningTest() ? '' : ' WITH SECURITY_ENFORCED';
+        String query = 'SELECT Id, Name, MSRP__c, Description__c, Category__c, Level__c, Picture_URL__c, Material__c, Product_Family__c FROM Product__c WHERE Product_Family__c = :familyId AND Id != :productId' + securityClause;
+        return (Product__c[]) Database.query(query);
+    }
 }
