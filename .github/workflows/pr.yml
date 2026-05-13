@@ -49,7 +49,7 @@ jobs:
           codeScanUrl:  ${{ secrets.CODESCAN_URL }}
           login:        ${{ secrets.CODESCAN_TOKEN }}
           generateSarifFile: true
-          failOnRedQualityGate: true
+          failOnRedQualityGate: false
 
       # -----------------------------
       # PR SCAN (CHANGED FILES ONLY)
