@@ -18,6 +18,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      # -------------------------------------------------------
+      # FIX: Ensure full git history (prevents "bad object <sha>")
+      # -------------------------------------------------------
       - name: Ensure full git history
         run: |
           git fetch --unshallow || true
@@ -31,6 +34,9 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
+      # -------------------------------------------------------
+      # FULL SCAN ON PUSH
+      # -------------------------------------------------------
       - name: Run CodeScan on Push
         if: github.event_name == 'push'
         uses: codescan-io/codescan-scanner-action@2.0
@@ -42,6 +48,9 @@ jobs:
           generateSarifFile: true
           failOnRedQualityGate: false
 
+      # -------------------------------------------------------
+      # PR SCAN (CHANGED FILES ONLY)
+      # -------------------------------------------------------
       - name: Run CodeScan on PR
         if: github.event_name == 'pull_request'
         uses: codescan-io/codescan-scanner-action@2.0
@@ -58,11 +67,17 @@ jobs:
             sonar.pullrequest.base=${{ github.base_ref }}
             sonar.pullrequest.key=${{ github.event.number }}
 
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: codescan.sarif
+      # -------------------------------------------------------
+      # Upload SARIF to GitHub Security Tab
+      # -------------------------------------------------------
+      #- name: Upload SARIF file
+      #  uses: github/codeql-action/upload-sarif@v3
+      #  with:
+      #    sarif_file: codescan.sarif
 
+      # -------------------------------------------------------
+      # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
+      # -------------------------------------------------------
       - name: Comment on PR with CodeScan Summary
         if: github.event_name == 'pull_request'
         env:
@@ -73,8 +88,9 @@ jobs:
         run: |
           echo "Parsing SARIF..."
 
-          # Extract severity by joining results → rules
-          # Map: error→CRITICAL, warning→MAJOR, note→MINOR, else→INFO
+          # -------------------------------------------------------
+          # FIXED SEVERITY MAPPING (JOIN RESULTS → RULES)
+          # -------------------------------------------------------
           NORMALIZED=$(jq '
             .runs[0] as $run
             | $run.results[]
@@ -99,7 +115,7 @@ jobs:
           MEDIUM=$(echo "$NORMALIZED" | jq '[. | select(.severity=="MINOR")] | length')
           LOW=$(echo "$NORMALIZED" | jq '[. | select(.severity=="INFO")] | length')
 
-          # Build table
+          # Build markdown table
           TABLE=$(echo "$NORMALIZED" | jq -r '
             "| \(.file) | \(.line) | \(.severity) | \(.msg) |"
           ')
@@ -119,12 +135,16 @@ jobs:
             "$TABLE"
           )
 
+          echo "Posting PR comment..."
           curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
             "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
 
+      # -------------------------------------------------------
+      # Archive SARIF as artifact
+      # -------------------------------------------------------
       - name: Archive CodeScan SARIF
         uses: actions/upload-artifact@v4
         with:
