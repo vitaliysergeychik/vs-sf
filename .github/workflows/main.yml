@@ -1,177 +1,140 @@
-name: CodeScan SCA Report
+name: CodeScan SCA Report for All Open PRs
 
 on:
-  pull_request:
-    branches: [main]
-
-env:
-  SONAR_SCANNER_VERSION: 5.0.1.3006
+  workflow_dispatch:
+    inputs:
+      projectName:
+        required: false
+        type: string
+      buildNumber:
+        required: false
+        type: string
+      sforgName:
+        required: false
+        type: string
 
 jobs:
-  build:
+  scan-all-prs:
     runs-on: ubuntu-latest
     environment: main
+
+    env:
+      CODESCAN_URL: "https://app.codescan.io"
+      CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
+      CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      # -------------------------------------------------------
-      # FIX: Ensure full git history (prevents "bad object <sha>")
-      # -------------------------------------------------------
-      - name: Ensure full git history
+      - name: Print ARM metadata
         run: |
-          git fetch --unshallow || true
-          git fetch --all --tags
+          echo "=== ARM Metadata ==="
+          echo "Project Name: ${{ github.event.inputs.projectName }}"
+          echo "Build Number: ${{ github.event.inputs.buildNumber }}"
+          echo "Salesforce Org: ${{ github.event.inputs.sforgName }}"
+          echo "===================="
 
-      - name: Cache files
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.sonar
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      - name: Get all open PR numbers
+        id: prs
+        run: |
+          PR_LIST=$(gh pr list \
+            --repo ${{ github.repository }} \
+            --state open \
+            --json number \
+            --jq '.[].number')
 
-      # -------------------------------------------------------
-      # FULL SCAN ON PUSH
-      # -------------------------------------------------------
-      - name: Run CodeScan on Push
-        if: github.event_name == 'push'
-        uses: codescan-io/codescan-scanner-action@2.0
-        with:
-          organization: ${{ secrets.CODESCAN_ORG }}
-          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}
-          codeScanUrl:  ${{ secrets.CODESCAN_URL }}
-          login:        ${{ secrets.CODESCAN_TOKEN }}
-          generateSarifFile: true
-          failOnRedQualityGate: false
+          echo "pr_list<<EOF" >> $GITHUB_OUTPUT
+          echo "$PR_LIST" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      # -------------------------------------------------------
-      # PR SCAN (CHANGED FILES ONLY)
-      # -------------------------------------------------------
-      - name: Run CodeScan on PR
-        if: github.event_name == 'pull_request'
-        uses: codescan-io/codescan-scanner-action@2.0
-        with:
-          organization: ${{ secrets.CODESCAN_ORG }}
-          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}
-          codeScanUrl:  ${{ secrets.CODESCAN_URL }}
-          login:        ${{ secrets.CODESCAN_TOKEN }}
-          scanChangedFilesOnly: true
-          generateSarifFile: true
-          failOnRedQualityGate: false
-          args: |
-            sonar.pullrequest.branch=${{ github.head_ref }}
-            sonar.pullrequest.base=${{ github.base_ref }}
-            sonar.pullrequest.key=${{ github.event.number }}
-
-      # -------------------------------------------------------
-      # Upload SARIF to GitHub Security Tab - Disabled for now
-      # -------------------------------------------------------
-      #- name: Upload SARIF file
-      #  uses: github/codeql-action/upload-sarif@v3
-      #  with:
-      #    sarif_file: codescan.sarif
-
-      # -------------------------------------------------------
-      # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
-      # -------------------------------------------------------
-      - name: Comment on PR with CodeScan Summary
-        if: github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.number }}
-          OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.event.repository.name }}
+
+      - name: Process each PR
         run: |
-          echo "Parsing SARIF..."
+          while read -r PR; do
+            [ -z "$PR" ] && continue
 
-          # -------------------------------------------------------
-          # NORMALIZE RESULTS INTO AN ARRAY WITH CORRECT SEVERITY + TYPE
-          # -------------------------------------------------------
-          NORMALIZED=$(jq '
-            .runs[0] as $run
-            | [
-                $run.results[]
-                | . as $r
-                | ($run.tool.driver.rules[] | select(.id == $r.ruleId)) as $rule
+            echo "Checking CodeScan results for PR #$PR"
 
-                # Extract issue type from help.text: "[Type: Code Smell, Severity: Major]"
-                | ($rule.help.text
-                    | capture("Type: (?<t>[^,]+)")
-                    | .t
-                    | ascii_downcase
-                    | gsub(" "; "_")
-                  ) as $type
+            API_URL="$CODESCAN_URL/api/issues/search?componentKeys=$CODESCAN_PROJECT_KEY&pullRequest=$PR"
+            RESPONSE=$(curl -s -u "$CODESCAN_TOKEN:" "$API_URL")
 
-                # Map SARIF rule severity → CRITICAL / MAJOR / MINOR / INFO
-                | (
-                    if $rule.defaultConfiguration.level == "error" then "CRITICAL"
-                    elif $rule.defaultConfiguration.level == "warning" then "MAJOR"
-                    elif $rule.defaultConfiguration.level == "note" then "MINOR"
-                    else "INFO" end
-                  ) as $sev
+            ISSUE_COUNT=$(echo "$RESPONSE" | jq '.issues | length')
 
-                | {
-                    file: ($r.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
-                    line: $r.locations[0].physicalLocation.region.startLine,
-                    severity: $sev,
-                    type: $type,
-                    msg: ($r.message.text | gsub("\n"; " "))
-                  }
-              ]
-          ' codescan.sarif)
+            if [ "$ISSUE_COUNT" -eq 0 ]; then
+              echo "No SCA issues found for PR #$PR — skipping."
+              continue
+            fi
 
-          # -------------------------------------------------------
-          # CORRECT SEVERITY COUNTS (SINGLE NUMBERS)
-          # -------------------------------------------------------
-          CRITICAL=$(echo "$NORMALIZED" | jq 'map(select(.severity=="CRITICAL")) | length')
-          MAJOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="MAJOR"))    | length')
-          MINOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="MINOR"))    | length')
-          INFO=$(echo "$NORMALIZED"     | jq 'map(select(.severity=="INFO"))     | length')
+            echo "SCA issues found for PR #$PR — generating table."
 
-          # -------------------------------------------------------
-          # SORT ISSUES BY FILE NAME, THEN LINE NUMBER
-          # -------------------------------------------------------
-          SORTED=$(echo "$NORMALIZED" | jq 'sort_by(.file, .line)')
+            # Extract counts
+            CRITICAL=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="CRITICAL")] | length')
+            MAJOR=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MAJOR")] | length')
+            MINOR=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="MINOR")] | length')
+            INFO=$(echo "$RESPONSE" | jq '[.issues[] | select(.severity=="INFO")] | length')
 
-          # -------------------------------------------------------
-          # BUILD TABLE (NOW WITH TYPE COLUMN)
-          # -------------------------------------------------------
-          TABLE=$(echo "$SORTED" | jq -r '
-            .[] |
-            "| \(.file) | \(.line) | \(.severity) | \(.type) | \(.msg) |"
-          ')
+            # Build table
+            printf "%s\n" "| File | Line | Issue | Severity |" > issue_table.md
+            printf "%s\n" "|------|------|--------|----------|" >> issue_table.md
 
-          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
-            "### 🔍 CodeScan PR Summary" \
-            "" \
-            "**Severity Counts**" \
-            "- Critical: $CRITICAL" \
-            "- Major: $MAJOR" \
-            "- Minor: $MINOR" \
-            "- Info: $INFO" \
-            "" \
-            "### Issues" \
-            "| File | Line | Severity | Type | Message |" \
-            "|------|------|----------|------|---------|" \
-            "$TABLE"
-          )
+            echo "$RESPONSE" | jq -r '
+              .issues[] |
+              "| \(.component | split(":")[-1] | split("/")[-1]) | \(.textRange.startLine // "N/A") | \(.message | gsub("\n"; " ")) | \(.severity) |"
+            ' >> issue_table.md
 
-          echo "Posting PR comment..."
-          curl -s -X POST \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
-            "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
+            # Build comment with PR-specific marker
+            {
+              printf "%s\n" "<!-- codescan-sca-report PR=$PR -->"
+              printf "%s\n\n" "### 🔍 CodeScan SCA Summary for PR #$PR"
 
-      # -------------------------------------------------------
-      # Archive SARIF as artifact
-      # -------------------------------------------------------
-      - name: Archive CodeScan SARIF
-        uses: actions/upload-artifact@v4
-        with:
-          name: codescan.sarif
-          path: codescan.sarif
+              printf "%s\n" "**Critical:** $CRITICAL  "
+              printf "%s\n" "**Major:** $MAJOR  "
+              printf "%s\n" "**Minor:** $MINOR  "
+              printf "%s\n\n" "**Info:** $INFO  "
+
+              printf "%s\n" "---"
+              printf "%s\n\n" "### 📄 Issue Details"
+              cat issue_table.md
+              printf "\n%s\n\n" "---"
+
+              printf "%s\n" "### 🧩 ARM Metadata"
+              printf "%s\n" "**Project Name:** ${{ github.event.inputs.projectName }}  "
+              printf "%s\n" "**Build Number:** ${{ github.event.inputs.buildNumber }}  "
+              printf "%s\n\n" "**Salesforce Org:** ${{ github.event.inputs.sforgName }}  "
+
+              printf "%s\n" "_This report was generated automatically by GitHub Actions._"
+            } > comment.md
+
+            echo "Checking for existing comment on PR #$PR"
+
+            # Fetch last comment for THIS PR from THIS workflow
+            gh pr comment list "$PR" \
+              --repo ${{ github.repository }} \
+              --json body \
+              --jq ".[] | select(.body | contains(\"codescan-sca-report PR=$PR\")) | .body" \
+              | head -n 1 > last_comment.md
+
+            if [ -s last_comment.md ]; then
+              echo "Existing comment found — comparing…"
+
+              if cmp -s comment.md last_comment.md; then
+                echo "No changes since last comment — skipping."
+                continue
+              else
+                echo "Changes detected — posting updated comment."
+              fi
+            else
+              echo "No previous comment found — posting new comment."
+            fi
+
+            gh pr comment "$PR" \
+              --repo ${{ github.repository }} \
+              --body-file comment.md
+
+          done <<< "${{ steps.prs.outputs.pr_list }}"
+
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

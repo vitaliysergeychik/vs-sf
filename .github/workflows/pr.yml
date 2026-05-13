@@ -68,7 +68,7 @@ jobs:
             sonar.pullrequest.key=${{ github.event.number }}
 
       # -------------------------------------------------------
-      # Upload SARIF to GitHub Security Tab
+      # Upload SARIF to GitHub Security Tab - Disabled for now
       # -------------------------------------------------------
       #- name: Upload SARIF file
       #  uses: github/codeql-action/upload-sarif@v3
@@ -76,7 +76,7 @@ jobs:
       #    sarif_file: codescan.sarif
 
       # -------------------------------------------------------
-      # PR COMMENT SUMMARY (Filename + Line + Severity + Type + Message)
+      # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
       # -------------------------------------------------------
       - name: Comment on PR with CodeScan Summary
         if: github.event_name == 'pull_request'
@@ -99,55 +99,52 @@ jobs:
                 | ($run.tool.driver.rules[] | select(.id == $r.ruleId)) as $rule
 
                 # Extract issue type from help.text: "[Type: Code Smell, Severity: Major]"
-                | ($rule.help.text | capture("Type: (?<t>[^,]+)") | .t | ascii_downcase | gsub(" "; "_")) as $type
+                | ($rule.help.text
+                    | capture("Type: (?<t>[^,]+)")
+                    | .t
+                    | ascii_downcase
+                    | gsub(" "; "_")
+                  ) as $type
 
-                # Map SARIF rule severity → critical/major/minor/info
+                # Map SARIF rule severity → CRITICAL / MAJOR / MINOR / INFO
                 | (
-                    if $rule.defaultConfiguration.level == "error" then "critical"
-                    elif $rule.defaultConfiguration.level == "warning" then "major"
-                    elif $rule.defaultConfiguration.level == "note" then "minor"
-                    else "info" end
+                    if $rule.defaultConfiguration.level == "error" then "CRITICAL"
+                    elif $rule.defaultConfiguration.level == "warning" then "MAJOR"
+                    elif $rule.defaultConfiguration.level == "note" then "MINOR"
+                    else "INFO" end
                   ) as $sev
-
-                # Clean message: remove "[Type: ..., Severity: ...]"
-                | ($r.message.text | sub("\
-
-                \[Type:.*$"; "") | gsub("\n"; " ") | rtrimstr(" ")) as $cleanMsg
 
                 | {
                     file: ($r.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
                     line: $r.locations[0].physicalLocation.region.startLine,
                     severity: $sev,
                     type: $type,
-                    msg: $cleanMsg
+                    msg: ($r.message.text | gsub("\n"; " "))
                   }
               ]
           ' codescan.sarif)
 
           # -------------------------------------------------------
-          # SEVERITY COUNTS
+          # CORRECT SEVERITY COUNTS (SINGLE NUMBERS)
           # -------------------------------------------------------
-          CRITICAL=$(echo "$NORMALIZED" | jq 'map(select(.severity=="critical")) | length')
-          MAJOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="major"))    | length')
-          MINOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="minor"))    | length')
-          INFO=$(echo "$NORMALIZED"     | jq 'map(select(.severity=="info"))     | length')
+          CRITICAL=$(echo "$NORMALIZED" | jq 'map(select(.severity=="CRITICAL")) | length')
+          MAJOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="MAJOR"))    | length')
+          MINOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="MINOR"))    | length')
+          INFO=$(echo "$NORMALIZED"     | jq 'map(select(.severity=="INFO"))     | length')
 
           # -------------------------------------------------------
-          # SORT ISSUES BY FILENAME, THEN LINE NUMBER
+          # SORT ISSUES BY FILE NAME, THEN LINE NUMBER
           # -------------------------------------------------------
           SORTED=$(echo "$NORMALIZED" | jq 'sort_by(.file, .line)')
 
           # -------------------------------------------------------
-          # BUILD MARKDOWN TABLE
+          # BUILD TABLE (NOW WITH TYPE COLUMN)
           # -------------------------------------------------------
           TABLE=$(echo "$SORTED" | jq -r '
             .[] |
             "| \(.file) | \(.line) | \(.severity) | \(.type) | \(.msg) |"
           ')
 
-          # -------------------------------------------------------
-          # BUILD COMMENT BODY
-          # -------------------------------------------------------
           COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
             "### 🔍 CodeScan PR Summary" \
             "" \
@@ -163,9 +160,6 @@ jobs:
             "$TABLE"
           )
 
-          # -------------------------------------------------------
-          # POST COMMENT TO PR
-          # -------------------------------------------------------
           echo "Posting PR comment..."
           curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
