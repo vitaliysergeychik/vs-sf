@@ -78,6 +78,65 @@ jobs:
         with:
           sarif_file: codescan.sarif
 
+          # -----------------------------
+      # Parse SARIF and comment on PR
+      # -----------------------------
+      - name: Comment on PR with CodeScan Summary
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.number }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          echo "Parsing SARIF..."
+
+          # Extract issue summary from SARIF
+          SUMMARY=$(jq -r '
+            .runs[].results[] |
+            {
+              ruleId: .ruleId,
+              level: .level,
+              message: .message.text,
+              file: .locations[0].physicalLocation.artifactLocation.uri,
+              line: .locations[0].physicalLocation.region.startLine
+            }
+          ' codescan.sarif)
+
+          # Count severities
+          CRITICAL=$(jq '[.runs[].results[] | select(.level=="error")] | length' codescan.sarif)
+          HIGH=$(jq '[.runs[].results[] | select(.level=="warning")] | length' codescan.sarif)
+          MEDIUM=$(jq '[.runs[].results[] | select(.level=="note")] | length' codescan.sarif)
+          LOW=0
+
+          # Build markdown table
+          TABLE=$(jq -r '
+            .runs[].results[] |
+            "| \(.ruleId) | \(.level) | \(.message.text | gsub("\n"; " ")) | \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine) |"
+          ' codescan.sarif)
+
+          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+            "### 🔍 CodeScan PR Summary" \
+            "" \
+            "**Severity Counts**" \
+            "- Critical: $CRITICAL" \
+            "- High: $HIGH" \
+            "- Medium: $MEDIUM" \
+            "- Low: $LOW" \
+            "" \
+            "### Issues" \
+            "| Rule | Level | Message | Location |" \
+            "|------|--------|---------|----------|" \
+            "$TABLE"
+          )
+
+          echo "Posting PR comment..."
+          curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
+            "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
+
       # -----------------------------
       # Archive SARIF as artifact
       # -----------------------------
