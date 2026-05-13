@@ -18,9 +18,9 @@ jobs:
       - name: Get PR Diff
         id: diff
         run: |
-          echo "Fetching base and head branches..."
-          git fetch origin ${{ github.base_ref }} --depth=1
-          git fetch origin ${{ github.head_ref }} --depth=1
+          echo "Fetching base and head branches with enough history..."
+          git fetch origin ${{ github.base_ref }} --depth=50
+          git fetch origin ${{ github.head_ref }} --depth=50
 
           echo "Generating diff..."
           DIFF=$(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
