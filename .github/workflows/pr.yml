@@ -17,6 +17,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # ensure initial full clone
+
+      # -----------------------------
+      # FIX: Ensure full git history
+      # Prevents "fatal: bad object <sha>"
+      # -----------------------------
+      - name: Ensure full git history
+        run: |
+          git fetch --unshallow || true
+          git fetch --all --tags
 
       - name: Cache files
         uses: actions/cache@v4
@@ -33,9 +44,9 @@ jobs:
         if: github.event_name == 'push'
         uses: codescan-io/codescan-scanner-action@2.0
         with:
-          organization: ${{ secrets.CODESCAN_ORG }}          # <-- from environment
-          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}  # <-- from environment
-          codeScanUrl:  ${{ secrets.CODESCAN_URL }}          # <-- from environment
+          organization: ${{ secrets.CODESCAN_ORG }}
+          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}
+          codeScanUrl:  ${{ secrets.CODESCAN_URL }}
           login:        ${{ secrets.CODESCAN_TOKEN }}
           generateSarifFile: true
           failOnRedQualityGate: true
@@ -47,9 +58,9 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: codescan-io/codescan-scanner-action@2.0
         with:
-          organization: ${{ secrets.CODESCAN_ORG }}          # <-- from environment
-          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}  # <-- from environment
-          codeScanUrl:  ${{ secrets.CODESCAN_URL }}          # <-- from environment
+          organization: ${{ secrets.CODESCAN_ORG }}
+          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}
+          codeScanUrl:  ${{ secrets.CODESCAN_URL }}
           login:        ${{ secrets.CODESCAN_TOKEN }}
           scanChangedFilesOnly: true
           generateSarifFile: true
