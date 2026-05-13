@@ -18,8 +18,13 @@ jobs:
       - name: Get PR Diff
         id: diff
         run: |
+          echo "Fetching base and head branches..."
           git fetch origin ${{ github.base_ref }} --depth=1
-          DIFF=$(git diff origin/${{ github.base_ref }}...${{ github.head_ref }})
+          git fetch origin ${{ github.head_ref }} --depth=1
+
+          echo "Generating diff..."
+          DIFF=$(git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }})
+
           DIFF_ESCAPED=$(printf '%s' "$DIFF" | jq -Rs .)
           echo "diff=$DIFF_ESCAPED" >> $GITHUB_OUTPUT
 
@@ -30,6 +35,8 @@ jobs:
           CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
           CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
         run: |
+          echo "Starting diff scan..."
+
           RESPONSE=$(curl -s -X POST "$CODESCAN_URL/api/v1/sca/diff-scan" \
             -H "Authorization: Bearer $CODESCAN_TOKEN" \
             -H "Content-Type: application/json" \
@@ -42,6 +49,7 @@ jobs:
                 }")
 
           SCAN_ID=$(echo "$RESPONSE" | jq -r '.scanId')
+          echo "Scan ID: $SCAN_ID"
           echo "scanId=$SCAN_ID" >> $GITHUB_OUTPUT
 
       - name: Wait for Scan Completion (max 3 minutes)
@@ -87,6 +95,8 @@ jobs:
           CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
           SCAN_ID: ${{ steps.startscan.outputs.scanId }}
         run: |
+          echo "Fetching final scan results..."
+
           RESPONSE=$(curl -s -X GET "$CODESCAN_URL/api/v1/sca/scan-results?scanId=$SCAN_ID" \
             -H "Authorization: Bearer $CODESCAN_TOKEN")
 
@@ -117,10 +127,18 @@ jobs:
             "- High: $HIGH | Medium: $MEDIUM | Low: $LOW" \
           )
 
+          echo "Posting PR comment..."
           curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
             -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
             "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
 
-      
+      - name: Block PR on critical/high issues
+        run: |
+          if [ ${{ steps.scan.outputs.critical }} -gt 0 ] || [ ${{ steps.scan.outputs.high }} -gt 0 ]; then
+            echo "❌ Critical/High issues found — blocking merge."
+            exit 1
+          fi
+
+          echo "✅ No critical/high issues — merge allowed."
