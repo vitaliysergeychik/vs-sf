@@ -1,0 +1,126 @@
+name: AutoRABIT CodeScan Diff Scan
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  codescan-diff:
+    runs-on: ubuntu-latest
+    environment: main
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR Diff
+        id: diff
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          DIFF=$(git diff origin/${{ github.base_ref }}...${{ github.head_ref }})
+          DIFF_ESCAPED=$(printf '%s' "$DIFF" | jq -Rs .)
+          echo "diff=$DIFF_ESCAPED" >> $GITHUB_OUTPUT
+
+      - name: Start Diff Scan
+        id: startscan
+        env:
+          CODESCAN_URL: ${{ secrets.CODESCAN_URL }}
+          CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
+          CODESCAN_PROJECT_KEY: ${{ secrets.CODESCAN_PROJECT_KEY }}
+        run: |
+          RESPONSE=$(curl -s -X POST "$CODESCAN_URL/api/v1/sca/diff-scan" \
+            -H "Authorization: Bearer $CODESCAN_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+                  \"repository\": \"${{ github.repository }}\",
+                  \"projectKey\": \"$CODESCAN_PROJECT_KEY\",
+                  \"prNumber\": \"${{ github.event.pull_request.number }}\",
+                  \"branch\": \"${{ github.head_ref }}\",
+                  \"diff\": ${{ steps.diff.outputs.diff }}
+                }")
+
+          SCAN_ID=$(echo "$RESPONSE" | jq -r '.scanId')
+          echo "scanId=$SCAN_ID" >> $GITHUB_OUTPUT
+
+      - name: Wait for Scan Completion (max 3 minutes)
+        id: waitscan
+        env:
+          CODESCAN_URL: ${{ secrets.CODESCAN_URL }}
+          CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
+          SCAN_ID: ${{ steps.startscan.outputs.scanId }}
+        run: |
+          echo "Waiting for CodeScan scan to complete (max 3 minutes)..."
+
+          TIMEOUT_SECONDS=180
+          INTERVAL=10
+          ELAPSED=0
+
+          while [ $ELAPSED -lt $TIMEOUT_SECONDS ]; do
+            STATUS=$(curl -s -X GET "$CODESCAN_URL/api/v1/sca/scan-status?scanId=$SCAN_ID" \
+              -H "Authorization: Bearer $CODESCAN_TOKEN" | jq -r '.status')
+
+            echo "Status: $STATUS (elapsed ${ELAPSED}s)"
+
+            if [ "$STATUS" = "COMPLETED" ]; then
+              echo "Scan completed."
+              exit 0
+            fi
+
+            if [ "$STATUS" = "FAILED" ]; then
+              echo "Scan failed."
+              exit 1
+            fi
+
+            sleep $INTERVAL
+            ELAPSED=$((ELAPSED + INTERVAL))
+          done
+
+          echo "❌ CodeScan scan did not finish within 3 minutes — failing workflow."
+          exit 1
+
+      - name: Fetch Final Scan Results
+        id: scan
+        env:
+          CODESCAN_URL: ${{ secrets.CODESCAN_URL }}
+          CODESCAN_TOKEN: ${{ secrets.CODESCAN_TOKEN }}
+          SCAN_ID: ${{ steps.startscan.outputs.scanId }}
+        run: |
+          RESPONSE=$(curl -s -X GET "$CODESCAN_URL/api/v1/sca/scan-results?scanId=$SCAN_ID" \
+            -H "Authorization: Bearer $CODESCAN_TOKEN")
+
+          echo "critical=$(echo $RESPONSE | jq '.criticalCount')" >> $GITHUB_OUTPUT
+          echo "high=$(echo $RESPONSE | jq '.highCount')" >> $GITHUB_OUTPUT
+          echo "medium=$(echo $RESPONSE | jq '.mediumCount')" >> $GITHUB_OUTPUT
+          echo "low=$(echo $RESPONSE | jq '.lowCount')" >> $GITHUB_OUTPUT
+
+      - name: Comment PR with results (printf)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          CRITICAL: ${{ steps.scan.outputs.critical }}
+          HIGH: ${{ steps.scan.outputs.high }}
+          MEDIUM: ${{ steps.scan.outputs.medium }}
+          LOW: ${{ steps.scan.outputs.low }}
+          SCAN_ID: ${{ steps.startscan.outputs.scanId }}
+        run: |
+          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+            "### 🔍 AutoRABIT CodeScan Diff Scan Results" \
+            "" \
+            "**Scan ID:** $SCAN_ID" \
+            "" \
+            "#### Vulnerabilities Found" \
+            "- Critical: $CRITICAL" \
+            "- High: $HIGH | Medium: $MEDIUM | Low: $LOW" \
+          )
+
+          curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg body "$COMMENT" '{body: $body}')" \
+            "https://api.github.com/repos/$OWNER/$REPO/issues/$PR_NUMBER/comments"
+
+      
