@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  SONAR_SCANNER_VERSION: 5.0.1.3006
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: main   # <-- environment added
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache files
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.sonar
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      # -----------------------------
+      # FULL SCAN ON PUSH TO MAIN
+      # -----------------------------
+      - name: Run CodeScan on Push
+        if: github.event_name == 'push'
+        uses: codescan-io/codescan-scanner-action@2.0
+        with:
+          organization: ${{ secrets.CODESCAN_ORG }}          # <-- from environment
+          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}  # <-- from environment
+          codeScanUrl:  ${{ secrets.CODESCAN_URL }}          # <-- from environment
+          login:        ${{ secrets.CODESCAN_TOKEN }}
+          generateSarifFile: true
+          failOnRedQualityGate: true
+
+      # -----------------------------
+      # PR SCAN (CHANGED FILES ONLY)
+      # -----------------------------
+      - name: Run CodeScan on PR
+        if: github.event_name == 'pull_request'
+        uses: codescan-io/codescan-scanner-action@2.0
+        with:
+          organization: ${{ secrets.CODESCAN_ORG }}          # <-- from environment
+          projectKey:   ${{ secrets.CODESCAN_PROJECT_KEY }}  # <-- from environment
+          codeScanUrl:  ${{ secrets.CODESCAN_URL }}          # <-- from environment
+          login:        ${{ secrets.CODESCAN_TOKEN }}
+          scanChangedFilesOnly: true
+          generateSarifFile: true
+          failOnRedQualityGate: true
+          args: |
+            sonar.pullrequest.branch=${{ github.head_ref }}
+            sonar.pullrequest.base=${{ github.base_ref }}
+            sonar.pullrequest.key=${{ github.event.number }}
+
+      # -----------------------------
+      # Upload SARIF to GitHub Security Tab
+      # -----------------------------
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: codescan.sarif
+
+      # -----------------------------
+      # Archive SARIF as artifact
+      # -----------------------------
+      - name: Archive CodeScan SARIF
+        uses: actions/upload-artifact@v4
+        with:
+          name: codescan.sarif
+          path: codescan.sarif
