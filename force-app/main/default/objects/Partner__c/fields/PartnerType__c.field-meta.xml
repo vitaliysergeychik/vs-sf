@@ -15,6 +15,12 @@
                 <label>Buyer</label>
             </value>
             <value>
+                <fullName>Contractor</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Contractor</label>
+            </value>
+            <value>
                 <fullName>Reseller</fullName>
                 <default>false</default>
                 <label>Reseller</label>
