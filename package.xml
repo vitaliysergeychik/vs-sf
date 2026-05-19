@@ -130,6 +130,7 @@
         <members>Account.Website</members>
         <members>Account.YearStarted</members>
         <members>Account.gd_Text__c</members>
+        <members>Campaign__c.Alphabet__c</members>
         <members>Campaign__c.StartDate__c</members>
         <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
@@ -167,6 +168,7 @@
         <members>Partner__c.DealerContact__c</members>
         <members>Partner__c.DealsClosedPercent__c</members>
         <members>Partner__c.Industry__c</members>
+        <members>Partner__c.Letter__c</members>
         <members>Partner__c.Name__c</members>
         <members>Partner__c.Notes__c</members>
         <members>Partner__c.NumCustomers__c</members>
@@ -228,6 +230,10 @@
         <members>Store__c</members>
         <members>Voter__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Partner__c</members>
+        <name>CustomTab</name>
     </types>
     <types>
         <members>Enablement_sfdcSESv60/</members>
@@ -317,6 +323,10 @@
         <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>FlowDefinition</name>
+    </types>
+    <types>
+        <members>Alphabet</members>
+        <name>GlobalValueSet</name>
     </types>
     <types>
         <members>DE Default</members>
@@ -572,6 +582,7 @@
         <members>Order.AllDraftOrders</members>
         <members>Order.AllOrders</members>
         <members>Order__c.All_Orders</members>
+        <members>Partner__c.All</members>
         <members>Product2.AllProducts</members>
         <members>Product_Family__c.All_Product_Families</members>
         <members>Product__c.ProductList</members>
@@ -661,6 +672,10 @@
         <members>Task.UpdatePriority</members>
         <members>Task.UpdateStatus</members>
         <name>QuickAction</name>
+    </types>
+    <types>
+        <members>Partner__c.AC</members>
+        <name>RecordType</name>
     </types>
     <types>
         <members>ApexDevNet</members>
