@@ -24,6 +24,10 @@
                 <behavior>Edit</behavior>
                 <field>NumCustomers__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PartnerType__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
