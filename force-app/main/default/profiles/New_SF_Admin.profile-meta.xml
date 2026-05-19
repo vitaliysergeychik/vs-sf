@@ -21,7 +21,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Campaign__c.Alphabet__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Campaign__c.StartDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Partner__c.Letter__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -60,6 +70,10 @@
         <layout>Partner__c-Partner Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Partner__c-Partner Layout</layout>
+        <recordType>Partner__c.AC</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Store__c-Store Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -83,6 +97,15 @@
         <object>Voter__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Partner__c.AC</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <tabVisibilities>
+        <tab>Partner__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>
