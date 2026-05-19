@@ -159,17 +159,29 @@
         <members>Order_Item__c.Qty_S__c</members>
         <members>Order__c.Account__c</members>
         <members>Order__c.Status__c</members>
+        <members>Partner__c.Active__c</members>
         <members>Partner__c.Birthdate__c</members>
         <members>Partner__c.CellPhone__c</members>
         <members>Partner__c.DateCreated__c</members>
+        <members>Partner__c.Date_Validated__c</members>
         <members>Partner__c.DealerContact__c</members>
+        <members>Partner__c.DealsClosedPercent__c</members>
+        <members>Partner__c.Industry__c</members>
         <members>Partner__c.Name__c</members>
         <members>Partner__c.Notes__c</members>
         <members>Partner__c.NumCustomers__c</members>
+        <members>Partner__c.NumEployees__c</members>
         <members>Partner__c.ParterPhone__c</members>
         <members>Partner__c.PartnerEmailField__c</members>
         <members>Partner__c.PartnerEmail__c</members>
+        <members>Partner__c.PartnerObjective__c</members>
+        <members>Partner__c.PartnerRating__c</members>
+        <members>Partner__c.PartnerTargetNumber__c</members>
         <members>Partner__c.PartnerType__c</members>
+        <members>Partner__c.PartnerWebsite__c</members>
+        <members>Partner__c.PercentClosed__c</members>
+        <members>Partner__c.Use_Cases__c</members>
+        <members>Partner__c.Validated__c</members>
         <members>Product_Family__c.Category__c</members>
         <members>Product_Family__c.Description__c</members>
         <members>Product__c.Battery__c</members>
@@ -210,6 +222,7 @@
         <members>Manufacturing_Event__e</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
+        <members>Partner__c</members>
         <members>Product_Family__c</members>
         <members>Product__c</members>
         <members>Store__c</members>
