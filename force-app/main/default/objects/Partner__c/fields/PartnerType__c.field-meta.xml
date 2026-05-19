@@ -10,6 +10,11 @@
         <valueSetDefinition>
             <sorted>true</sorted>
             <value>
+                <fullName>Buyer</fullName>
+                <default>false</default>
+                <label>Buyer</label>
+            </value>
+            <value>
                 <fullName>Reseller</fullName>
                 <default>false</default>
                 <label>Reseller</label>
