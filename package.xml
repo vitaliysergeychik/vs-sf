@@ -291,13 +291,16 @@
         <name>FlexiPage</name>
     </types>
     <types>
+        <members>Account_Revenue_Update</members>
         <members>AnnuelRevFlow</members>
+        <members>TestProcessBuilder</members>
         <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>Flow</name>
     </types>
     <types>
         <members>AnnuelRevFlow</members>
+        <members>TestProcessBuilder</members>
         <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>FlowDefinition</name>
