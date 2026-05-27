@@ -90,6 +90,7 @@
         <members>Account.AutorabitExtId__c</members>
         <members>Account.BillingAddress</members>
         <members>Account.CleanStatus</members>
+        <members>Account.ContractEndDate__c</members>
         <members>Account.ContractStartDate__c</members>
         <members>Account.Credit_Card__c</members>
         <members>Account.CurrencyIsoCode</members>
