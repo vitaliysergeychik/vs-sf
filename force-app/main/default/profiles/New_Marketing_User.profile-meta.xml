@@ -5,6 +5,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContactController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProductController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -12,6 +16,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.SE__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.gd_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -34,6 +43,10 @@
         <field>Voter__c.PhoneNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <flowAccesses>
+        <enabled>false</enabled>
+        <flow>TestProcessBuilder</flow>
+    </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
         <flow>UpdateContactFlow</flow>
