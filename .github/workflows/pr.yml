@@ -68,15 +68,15 @@ jobs:
             sonar.pullrequest.key=${{ github.event.number }}
 
       # -------------------------------------------------------
-      # Upload SARIF to GitHub Security Tab
+      # Upload SARIF to GitHub Security Tab - Disabled for now
       # -------------------------------------------------------
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: codescan.sarif
+      #- name: Upload SARIF file
+      #  uses: github/codeql-action/upload-sarif@v3
+      #  with:
+      #    sarif_file: codescan.sarif
 
       # -------------------------------------------------------
-      # PR COMMENT SUMMARY (FILE + LINE + SEVERITY + MESSAGE)
+      # PR COMMENT SUMMARY (Filename + Line + Severity + Message)
       # -------------------------------------------------------
       - name: Comment on PR with CodeScan Summary
         if: github.event_name == 'pull_request'
@@ -88,36 +88,75 @@ jobs:
         run: |
           echo "Parsing SARIF..."
 
-          # Correct CodeScan severity mapping
-          CRITICAL=$(jq '[.runs[].results[] | select(.level=="CRITICAL")] | length' codescan.sarif)
-          HIGH=$(jq '[.runs[].results[] | select(.level=="MAJOR")] | length' codescan.sarif)
-          MEDIUM=$(jq '[.runs[].results[] | select(.level=="MINOR")] | length' codescan.sarif)
-          LOW=$(jq '[.runs[].results[] | select(.level=="INFO")] | length' codescan.sarif)
+          # -------------------------------------------------------
+          # NORMALIZE RESULTS INTO AN ARRAY WITH CORRECT SEVERITY + TYPE
+          # -------------------------------------------------------
+          NORMALIZED=$(jq '
+            .runs[0] as $run
+            | [
+                $run.results[]
+                | . as $r
+                | ($run.tool.driver.rules[] | select(.id == $r.ruleId)) as $rule
 
-          # Build markdown table (FILE | LINE | SEVERITY | MESSAGE)
-          TABLE=$(jq -r '
-            .runs[].results[] |
-            {
-              file: .locations[0].physicalLocation.artifactLocation.uri,
-              line: .locations[0].physicalLocation.region.startLine,
-              level: .level,
-              msg: (.message.text | gsub("\n"; " "))
-            } |
-            "| \(.file) | \(.line) | \(.level) | \(.msg) |"
+                # Extract issue type from help.text: "[Type: Code Smell, Severity: Major]"
+                | ($rule.help.text
+                    | capture("Type: (?<t>[^,]+)")
+                    | .t
+                    | ascii_downcase
+                    | gsub(" "; "_")
+                  ) as $type
+
+                # Map SARIF rule severity → CRITICAL / MAJOR / MINOR / INFO
+                | (
+                    if $rule.defaultConfiguration.level == "error" then "CRITICAL"
+                    elif $rule.defaultConfiguration.level == "warning" then "MAJOR"
+                    elif $rule.defaultConfiguration.level == "note" then "MINOR"
+                    else "INFO" end
+                  ) as $sev
+
+                | {
+                    file: ($r.locations[0].physicalLocation.artifactLocation.uri | split("/") | last),
+                    line: $r.locations[0].physicalLocation.region.startLine,
+                    severity: $sev,
+                    type: $type,
+                    msg: ($r.message.text | gsub("\n"; " "))
+                  }
+              ]
           ' codescan.sarif)
 
-          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+          # -------------------------------------------------------
+          # CORRECT SEVERITY COUNTS (SINGLE NUMBERS)
+          # -------------------------------------------------------
+          CRITICAL=$(echo "$NORMALIZED" | jq 'map(select(.severity=="CRITICAL")) | length')
+          MAJOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="MAJOR"))    | length')
+          MINOR=$(echo "$NORMALIZED"    | jq 'map(select(.severity=="MINOR"))    | length')
+          INFO=$(echo "$NORMALIZED"     | jq 'map(select(.severity=="INFO"))     | length')
+
+          # -------------------------------------------------------
+          # SORT ISSUES BY FILE NAME, THEN LINE NUMBER
+          # -------------------------------------------------------
+          SORTED=$(echo "$NORMALIZED" | jq 'sort_by(.file, .line)')
+
+          # -------------------------------------------------------
+          # BUILD TABLE (NOW WITH TYPE COLUMN)
+          # -------------------------------------------------------
+          TABLE=$(echo "$SORTED" | jq -r '
+            .[] |
+            "| \(.file) | \(.line) | \(.severity) | \(.type) | \(.msg) |"
+          ')
+
+          COMMENT=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
             "### 🔍 CodeScan PR Summary" \
             "" \
             "**Severity Counts**" \
             "- Critical: $CRITICAL" \
-            "- High: $HIGH" \
-            "- Medium: $MEDIUM" \
-            "- Low: $LOW" \
+            "- Major: $MAJOR" \
+            "- Minor: $MINOR" \
+            "- Info: $INFO" \
             "" \
             "### Issues" \
-            "| File | Line | Severity | Message |" \
-            "|------|------|----------|---------|" \
+            "| File | Line | Severity | Type | Message |" \
+            "|------|------|----------|------|---------|" \
             "$TABLE"
           )
 
