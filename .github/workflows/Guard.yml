@@ -1,0 +1,47 @@
+name: Guard Agentic Code Analysis
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  guard-review:
+    runs-on: ubuntu-latest
+    environment: main
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed so --pr can diff against the base branch
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Download Guard CLI plugin
+        run: |
+          curl -fsSL -H "X-API-Key: ${{ secrets.GUARD_API_KEY }}" \
+            -o /tmp/sf-guard-cli.tgz \
+            "${{ secrets.GUARD_URL }}/cli/sf-guard-cli.tgz"
+
+      - name: Install Guard CLI plugin
+        run: echo y | sf plugins install file:///tmp/sf-guard-cli.tgz
+
+      - name: Run Agentic Code Review
+        run: |
+          sf guard review --check-tests --progress --pr --html \
+            --url "${{ secrets.GUARD_URL }}" \
+            "${GITHUB_WORKSPACE}"
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guard-report
+          path: .guard/reports/*.html
+          if-no-files-found: ignore
