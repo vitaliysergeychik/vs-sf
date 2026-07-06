@@ -43,7 +43,7 @@ jobs:
 
       - name: Run Agentic Code Review
         run: |
-          sf guard review --api-key ${{ secrets.GUARD_API_KEY }} --url=${{ secrets.GUARD_URL }}
+          sf guard review --api-key ${{ secrets.GUARD_API_KEY }} --url=${{ secrets.GUARD_URL }} --endpoint=${{ secrets.GUARD_ENDPOINT }} --pr 
 
       - name: Upload HTML report
         if: always()
