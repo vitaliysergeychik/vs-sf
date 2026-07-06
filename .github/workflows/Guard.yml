@@ -28,6 +28,15 @@ jobs:
           curl -fsSL -H "X-API-Key: ${{ secrets.GUARD_API_KEY }}" \
             -o /tmp/sf-guard-cli.tgz \
             "${{ secrets.GUARD_URL }}/cli/sf-guard-cli.tgz"
+      #To delete----------    
+      - name: Debug secret presence (safe — no value exposed)
+        run: |
+          echo "GUARD_URL length: ${#GUARD_URL}"
+          echo "GUARD_ENDPOINT length: ${#GUARD_ENDPOINT}"
+        env:
+          GUARD_URL: ${{ secrets.GUARD_URL }}
+          GUARD_ENDPOINT: ${{ secrets.GUARD_ENDPOINT }}
+      #--------------------
 
       - name: Install Guard CLI plugin
         run: echo y | sf plugins install file:///tmp/sf-guard-cli.tgz
