@@ -612,6 +612,7 @@
     </types>
     <types>
         <members>API_Is_Enabled</members>
+        <members>Developer</members>
         <members>Experience_Profile_Manager</members>
         <members>ExternalUser_PS</members>
         <members>ModifyAllAccounts_PS</members>
@@ -642,7 +643,6 @@
         <name>PermissionSetGroup</name>
     </types>
     <types>
-        <members>New_Marketing_User</members>
         <members>New_SF_Admin</members>
         <members>New_Standard_User</members>
         <name>Profile</name>
