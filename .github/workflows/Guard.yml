@@ -45,7 +45,7 @@ jobs:
 
       - name: Run Agentic Code Review
         run: |
-          sf guard review --api-key "${GUARD_API_KEY}" --pr --html \
+          sf guard review --api-key "${GUARD_API_KEY}" --pr --html --check-tests --progress \
             --url "${GUARD_URL}" --endpoint "${GUARD_ENDPOINT}" \
             "${GITHUB_WORKSPACE}"
         env:
