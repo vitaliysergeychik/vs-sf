@@ -88,3 +88,5 @@ force-app/main/default/profiles/SolutionManager.profile-meta.xml
 force-app/main/default/profiles/Standard.profile-meta.xml
 force-app/main/default/profiles/StandardAul.profile-meta.xml
 force-app/main/default/profiles/Work%2Ecom Only User.profile-meta.xml
+
+.guard
