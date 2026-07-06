@@ -25,10 +25,16 @@ jobs:
 
       - name: Download Guard CLI plugin
         run: |
-          curl -fsSL -H "X-API-Key: ${{ secrets.GUARD_API_KEY }}" \
+          curl -fsSL -H "X-API-Key: ${GUARD_API_KEY}" \
             -o /tmp/sf-guard-cli.tgz \
-            "${{ secrets.GUARD_URL }}/cli/sf-guard-cli.tgz"
-      #To delete----------    
+            "${GUARD_URL}/cli/sf-guard-cli.tgz"
+        env:
+          GUARD_API_KEY: ${{ secrets.GUARD_API_KEY }}
+          GUARD_URL: ${{ secrets.GUARD_URL }}
+
+      - name: Install Guard CLI plugin
+        run: echo y | sf plugins install file:///tmp/sf-guard-cli.tgz
+
       - name: Debug secret presence (safe — no value exposed)
         run: |
           echo "GUARD_URL length: ${#GUARD_URL}"
@@ -36,14 +42,16 @@ jobs:
         env:
           GUARD_URL: ${{ secrets.GUARD_URL }}
           GUARD_ENDPOINT: ${{ secrets.GUARD_ENDPOINT }}
-      #--------------------
-
-      - name: Install Guard CLI plugin
-        run: echo y | sf plugins install file:///tmp/sf-guard-cli.tgz
 
       - name: Run Agentic Code Review
         run: |
-          sf guard review --api-key ${{ secrets.GUARD_API_KEY }} --url=${{ secrets.GUARD_URL }} --endpoint=${{ secrets.GUARD_ENDPOINT }} --pr 
+          sf guard review --api-key "${GUARD_API_KEY}" --pr --html \
+            --url "${GUARD_URL}" --endpoint "${GUARD_ENDPOINT}" \
+            "${GITHUB_WORKSPACE}"
+        env:
+          GUARD_API_KEY: ${{ secrets.GUARD_API_KEY }}
+          GUARD_URL: ${{ secrets.GUARD_URL }}
+          GUARD_ENDPOINT: ${{ secrets.GUARD_ENDPOINT }}
 
       - name: Upload HTML report
         if: always()
