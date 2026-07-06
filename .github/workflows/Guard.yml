@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Agentic Code Review
         run: |
-          sf guard review --check-tests --progress --pr --html \
+          sf guard review --api-key ${{ secrets.GUARD_API_KEY }} --check-tests --progress --pr --html \
             --url "${{ secrets.GUARD_URL }}" \
             "${GITHUB_WORKSPACE}"
 
