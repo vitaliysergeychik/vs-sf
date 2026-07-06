@@ -1,0 +1,5 @@
+{"t":"0.00","kind":"trace-open","workspaceRoot":"/Users/vitaliy.sergeychik/Repo/vs-sf","stem":"2026-07-06T15-21-51-013Z_c01f7ac4"}
+{"t":"0.00","kind":"session-id","sessionId":"c01f7ac4-6578-4720-bc4f-1288beb8a7c1"}
+{"t":"0.00","kind":"config","checkTests":false,"prFlag":true,"htmlFlag":false,"workspaceRoot":"/Users/vitaliy.sergeychik/Repo/vs-sf"}
+{"t":"0.00","kind":"pr-detect-failed","message":"--pr was passed but no CI environment variable is set. Supported: GITHUB_BASE_REF, BITBUCKET_PR_DESTINATION_BRANCH, CI_MERGE_REQUEST_TARGET_BRANCH_NAME, SYSTEM_PULLREQUESTTARGETBRANCH, CHANGE_TARGET. Set one of these (e.g. export GITHUB_BASE_REF=main) or omit --pr to run a full review."}
+{"t":"0.00","kind":"trace-close"}
