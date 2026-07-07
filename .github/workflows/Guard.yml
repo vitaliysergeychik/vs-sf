@@ -43,10 +43,16 @@ jobs:
         id: guard_review
         run: |
           set +e
-          sf guard review --api-key "${GUARD_API_KEY}" --pr --html --json \
+          sf guard review --api-key "${GUARD_API_KEY}" --pr --html \
             --url "${GUARD_URL}" --endpoint "${GUARD_ENDPOINT}" \
-            "${GITHUB_WORKSPACE}" > guard-result.json
+            "${GITHUB_WORKSPACE}" 
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+          # --html writes a timestamped report under .guard/reports/*.html.
+          # Grab the most recently written one so the comment step knows
+          # exactly which file to parse.
+          html_report=$(ls -t .guard/reports/*.html 2>/dev/null | head -n1 || true)
+          echo "html_report=${html_report}" >> "$GITHUB_OUTPUT"
         env:
           GUARD_API_KEY: ${{ secrets.GUARD_API_KEY }}
           GUARD_URL: ${{ secrets.GUARD_URL }}
@@ -60,35 +66,79 @@ jobs:
             const fs = require('fs');
             const marker = '### 🛡️ Guard Agentic Code Review';
 
+            // The --html report has a stable, self-describing schema: every
+            // finding is a `<tr data-severity="…" data-category="…"
+            // data-file="…" data-line="…" data-rule="…" data-reason="…"
+            // data-recommendation="…">` row inside #findings-table. That's
+            // far more reliable than guessing at guard-result.json's field
+            // names, so this step reads the HTML report instead.
+            const htmlPath = ${{ toJSON(steps.guard_review.outputs.html_report) }};
+
+            function unescapeHtml(value) {
+              return String(value)
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .replace(/&amp;/g, '&');
+            }
+
+            function extractFindings(html) {
+              const findings = [];
+              const rowRe = /<tr\s+data-severity="[^"]*"[\s\S]*?<\/tr>/g;
+              const attr = (rowHtml, name) => {
+                const m = rowHtml.match(new RegExp(`data-${name}="([^"]*)"`));
+                return m ? unescapeHtml(m[1]) : '';
+              };
+              let match;
+              while ((match = rowRe.exec(html)) !== null) {
+                const row = match[0];
+                findings.push({
+                  severity: attr(row, 'severity'),
+                  category: attr(row, 'category'),
+                  file: attr(row, 'file'),
+                  line: attr(row, 'line'),
+                  rule: attr(row, 'rule'),
+                  reason: attr(row, 'reason'),
+                  recommendation: attr(row, 'recommendation'),
+                });
+              }
+              return findings;
+            }
+
             let body;
             try {
-              const raw = fs.readFileSync('guard-result.json', 'utf8');
-              const result = JSON.parse(raw);
+              if (!htmlPath || !fs.existsSync(htmlPath)) {
+                throw new Error(`no HTML report found (looked for path: ${htmlPath || '.guard/reports/*.html'})`);
+              }
 
-              // NOTE: the full GuardReviewResult schema isn't documented publicly —
-              // these accessors are best-effort guesses (file/line/rule id/severity
-              // are the fields the docs confirm exist). Inspect a real guard-result.json
-              // from a run and adjust the property names below if they don't match.
-              const findings = result.findings || result.issues || result.result?.findings || [];
+              const html = fs.readFileSync(htmlPath, 'utf8');
+              const findings = extractFindings(html);
+
+              const severityOrder = ['BLOCKER', 'CRITICAL', 'MAJOR', 'MINOR', 'INFO'];
+              const counts = severityOrder.reduce((acc, s) => ({ ...acc, [s]: 0 }), {});
+              for (const f of findings) {
+                if (counts[f.severity] !== undefined) counts[f.severity]++;
+              }
+              const summaryLine = severityOrder
+                .map((s) => `${counts[s]} ${s.toLowerCase()}`)
+                .join(' · ');
 
               body = `${marker}\n\n`;
               if (findings.length === 0) {
                 body += 'No issues found.';
               } else {
-                body += `Found **${findings.length}** issue(s):\n\n`;
-                body += '| Severity | File | Line | Rule | Message |\n';
-                body += '|---|---|---|---|---|\n';
+                findings.sort((a, b) => severityOrder.indexOf(a.severity) - severityOrder.indexOf(b.severity));
+                body += `Found **${findings.length}** issue(s) — ${summaryLine}\n\n`;
+                body += '| Severity | Category | Rule | File | Line | Reason | Recommendation |\n';
+                body += '|---|---|---|---|---|---|---|\n';
                 for (const f of findings) {
-                  const severity = f.severity ?? 'n/a';
-                  const file = f.file ?? f.path ?? 'n/a';
-                  const line = f.line ?? f.lineNumber ?? 'n/a';
-                  const rule = f.ruleId ?? f.rule ?? 'n/a';
-                  const message = String(f.message ?? f.description ?? '').replace(/\|/g, '\\|');
-                  body += `| ${severity} | ${file} | ${line} | ${rule} | ${message} |\n`;
+                  const esc = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+                  body += `| ${esc(f.severity)} | ${esc(f.category)} | \`${esc(f.rule)}\` | \`${esc(f.file)}\` | ${esc(f.line)} | ${esc(f.reason)} | ${esc(f.recommendation)} |\n`;
                 }
               }
             } catch (e) {
-              body = `${marker}\n\nCould not parse guard-result.json: ${e.message}`;
+              body = `${marker}\n\nCould not parse Guard HTML report: ${e.message}`;
             }
 
             const { data: comments } = await github.rest.issues.listComments({
