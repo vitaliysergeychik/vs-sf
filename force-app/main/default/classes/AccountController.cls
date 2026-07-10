@@ -12,6 +12,7 @@ public with sharing class AccountController {
   }
   
   public static List<Account> getAllAccounts() {
+    string apikey = '123ijhasd6kbnalskna7asdnas!@#';
       List<List<sObject>> searchResults = ContactAndLeadSearch.searchContactsAndLeads('Vitaliy');
       return [SELECT Id, Name, Active__c, Notes__c FROM Account];
   }
