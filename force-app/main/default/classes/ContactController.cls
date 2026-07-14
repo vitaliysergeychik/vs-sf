@@ -18,6 +18,11 @@ public with sharing class ContactController {
         List<Contact> opps = Database.query(
             'SELECT Id, FirstName, LastName, Email, MailingState FROM Contact WHERE MailingState = :state'
         );
+        List<Account> accounts = [
+        SELECT Id, Name, Active__c, Notes__c
+        FROM Account
+        WHERE Active__c = 'Yes'
+        ];
         return opps;
         
     }

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <version>63.0</version>
+<?xml version="1.0" encoding="UTF-8"?><Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <version>65.0</version>
     <types>
         <members>AccountController</members>
         <members>AccountControllerTest</members>
@@ -91,6 +90,8 @@
         <members>Account.AutorabitExtId__c</members>
         <members>Account.BillingAddress</members>
         <members>Account.CleanStatus</members>
+        <members>Account.ContractEndDate__c</members>
+        <members>Account.ContractStartDate__c</members>
         <members>Account.Credit_Card__c</members>
         <members>Account.CurrencyIsoCode</members>
         <members>Account.CustomerPriority__c</members>
@@ -131,6 +132,7 @@
         <members>Account.Website</members>
         <members>Account.YearStarted</members>
         <members>Account.gd_Text__c</members>
+        <members>Campaign__c.Alphabet__c</members>
         <members>Campaign__c.StartDate__c</members>
         <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
@@ -160,16 +162,30 @@
         <members>Order_Item__c.Qty_S__c</members>
         <members>Order__c.Account__c</members>
         <members>Order__c.Status__c</members>
+        <members>Partner__c.Active__c</members>
         <members>Partner__c.Birthdate__c</members>
         <members>Partner__c.CellPhone__c</members>
         <members>Partner__c.DateCreated__c</members>
+        <members>Partner__c.Date_Validated__c</members>
         <members>Partner__c.DealerContact__c</members>
+        <members>Partner__c.DealsClosedPercent__c</members>
+        <members>Partner__c.Industry__c</members>
+        <members>Partner__c.Letter__c</members>
         <members>Partner__c.Name__c</members>
         <members>Partner__c.Notes__c</members>
         <members>Partner__c.NumCustomers__c</members>
+        <members>Partner__c.NumEployees__c</members>
         <members>Partner__c.ParterPhone__c</members>
         <members>Partner__c.PartnerEmailField__c</members>
         <members>Partner__c.PartnerEmail__c</members>
+        <members>Partner__c.PartnerObjective__c</members>
+        <members>Partner__c.PartnerRating__c</members>
+        <members>Partner__c.PartnerTargetNumber__c</members>
+        <members>Partner__c.PartnerType__c</members>
+        <members>Partner__c.PartnerWebsite__c</members>
+        <members>Partner__c.PercentClosed__c</members>
+        <members>Partner__c.Use_Cases__c</members>
+        <members>Partner__c.Validated__c</members>
         <members>Product_Family__c.Category__c</members>
         <members>Product_Family__c.Description__c</members>
         <members>Product__c.Battery__c</members>
@@ -190,6 +206,9 @@
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
         <members>Project__c.Solutions_Architect__c</members>
+        <members>SalesCall__c.Answered__c</members>
+        <members>SalesCall__c.InitialOutreach__c</members>
+        <members>Store__c.Location__c</members>
         <members>Voter__c.Address__c</members>
         <members>Voter__c.BirthDate__c</members>
         <members>Voter__c.PhoneNumber__c</members>
@@ -209,11 +228,17 @@
         <members>Manufacturing_Event__e</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
+        <members>Partner__c</members>
         <members>Product_Family__c</members>
         <members>Product__c</members>
+        <members>SalesCall__c</members>
         <members>Store__c</members>
         <members>Voter__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Partner__c</members>
+        <name>CustomTab</name>
     </types>
     <types>
         <members>Enablement_sfdcSESv60/</members>
@@ -293,16 +318,23 @@
         <name>FlexiPage</name>
     </types>
     <types>
+        <members>Account_Revenue_Update</members>
         <members>AnnuelRevFlow</members>
+        <members>TestProcessBuilder</members>
         <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>Flow</name>
     </types>
     <types>
         <members>AnnuelRevFlow</members>
+        <members>TestProcessBuilder</members>
         <members>UpdateContactFlow</members>
         <members>Update_Campaign_Name</members>
         <name>FlowDefinition</name>
+    </types>
+    <types>
+        <members>Alphabet</members>
+        <name>GlobalValueSet</name>
     </types>
     <types>
         <members>DE Default</members>
@@ -447,6 +479,7 @@
         <members>ReturnOrderLineItem-Return Order Line Item Layout</members>
         <members>RevenueAsyncOperation-Revenue Async Operation Layout</members>
         <members>RevenueTransactionErrorLog-Revenue Transaction Error Log Layout</members>
+        <members>SalesCall__c-SalesCall Layout</members>
         <members>Scorecard-Scorecard Layout</members>
         <members>ScorecardAssociation-Scorecard Association Layout</members>
         <members>ScorecardMetric-Scorecard Metric Layout</members>
@@ -558,6 +591,7 @@
         <members>Order.AllDraftOrders</members>
         <members>Order.AllOrders</members>
         <members>Order__c.All_Orders</members>
+        <members>Partner__c.All</members>
         <members>Product2.AllProducts</members>
         <members>Product_Family__c.All_Product_Families</members>
         <members>Product__c.ProductList</members>
@@ -586,6 +620,7 @@
         <members>Experience_Profile_Manager</members>
         <members>ExternalUser_PS</members>
         <members>ModifyAllAccounts_PS</members>
+        <members>Modify_All_Data</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
         <members>Volunteer</members>
@@ -615,6 +650,8 @@
     <types>
         <members>New_SF_Admin</members>
         <members>New_Standard_User</members>
+        <members>SolutionManager</members>
+        <members>Standard_User_New</members>
         <name>Profile</name>
     </types>
     <types>
@@ -647,6 +684,10 @@
         <members>Task.UpdatePriority</members>
         <members>Task.UpdateStatus</members>
         <name>QuickAction</name>
+    </types>
+    <types>
+        <members>Partner__c.AC</members>
+        <name>RecordType</name>
     </types>
     <types>
         <members>ApexDevNet</members>
