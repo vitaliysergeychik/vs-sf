@@ -5,10 +5,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ContactController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ProductController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -53,10 +49,6 @@
         <field>Voter__c.PhoneNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <flowAccesses>
-        <enabled>false</enabled>
-        <flow>TestProcessBuilder</flow>
-    </flowAccesses>
     <flowAccesses>
         <enabled>false</enabled>
         <flow>UpdateContactFlow</flow>
