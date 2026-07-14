@@ -148,6 +148,8 @@
         <members>Lead.SICCode__c</members>
         <members>Manufacturing_Event__e.Order_Id__c</members>
         <members>Manufacturing_Event__e.Status__c</members>
+        <members>NewAccount__c.AccountInfo__c</members>
+        <members>NewAccount__c.ValidationDate__c</members>
         <members>Opportunity.CurrentGenerators__c</members>
         <members>Opportunity.DeliveryInstallationStatus__c</members>
         <members>Opportunity.MainCompetitors__c</members>
@@ -208,6 +210,7 @@
         <members>Account</members>
         <members>Campaign__c</members>
         <members>Manufacturing_Event__e</members>
+        <members>NewAccount__c</members>
         <members>Order_Item__c</members>
         <members>Order__c</members>
         <members>Product_Family__c</members>
@@ -413,6 +416,7 @@
         <members>LocationGroup-Location Group Layout</members>
         <members>LocationGroupAssignment-Location Group Assignment Layout</members>
         <members>Macro-Macro Layout</members>
+        <members>NewAccount__c-NewAccount Layout</members>
         <members>OperatingHours-Operating Hours Layout</members>
         <members>Opportunity-Opportunity %28Marketing%29 Layout</members>
         <members>Opportunity-Opportunity %28Sales%29 Layout</members>

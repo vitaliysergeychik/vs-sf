@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>AccountController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
     <custom>true</custom>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>NewAccount__c.AccountInfo__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>NewAccount__c.ValidationDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>SalesCall__c.Answered__c</field>
@@ -11,6 +25,9 @@
         <field>SalesCall__c.InitialOutreach__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <layoutAssignments>
+        <layout>NewAccount__c-NewAccount Layout</layout>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>SalesCall__c-SalesCall Layout</layout>
     </layoutAssignments>
