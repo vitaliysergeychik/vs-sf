@@ -206,6 +206,8 @@
         <members>Product__c.Seat_Color__c</members>
         <members>Product__c.Waterbottle_Color__c</members>
         <members>Project__c.Solutions_Architect__c</members>
+        <members>SalesCall__c.Answered__c</members>
+        <members>SalesCall__c.InitialOutreach__c</members>
         <members>Store__c.Location__c</members>
         <members>Voter__c.Address__c</members>
         <members>Voter__c.BirthDate__c</members>
@@ -229,6 +231,7 @@
         <members>Partner__c</members>
         <members>Product_Family__c</members>
         <members>Product__c</members>
+        <members>SalesCall__c</members>
         <members>Store__c</members>
         <members>Voter__c</members>
         <name>CustomObject</name>
@@ -476,6 +479,7 @@
         <members>ReturnOrderLineItem-Return Order Line Item Layout</members>
         <members>RevenueAsyncOperation-Revenue Async Operation Layout</members>
         <members>RevenueTransactionErrorLog-Revenue Transaction Error Log Layout</members>
+        <members>SalesCall__c-SalesCall Layout</members>
         <members>Scorecard-Scorecard Layout</members>
         <members>ScorecardAssociation-Scorecard Association Layout</members>
         <members>ScorecardMetric-Scorecard Metric Layout</members>
@@ -616,6 +620,7 @@
         <members>Experience_Profile_Manager</members>
         <members>ExternalUser_PS</members>
         <members>ModifyAllAccounts_PS</members>
+        <members>Modify_All_Data</members>
         <members>View_All_Data</members>
         <members>View_Modify_All_And_API</members>
         <members>Volunteer</members>
@@ -645,6 +650,8 @@
     <types>
         <members>New_SF_Admin</members>
         <members>New_Standard_User</members>
+        <members>SolutionManager</members>
+        <members>Standard_User_New</members>
         <name>Profile</name>
     </types>
     <types>
