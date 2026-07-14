@@ -30,72 +30,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.gd_Text__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Campaign__c.Alphabet__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Campaign__c.StartDate__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Partner__c.Letter__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Partner__c.PartnerType__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Store__c.Location__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Voter__c.Address__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Voter__c.BirthDate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Voter__c.PhoneNumber__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <flowAccesses>
-        <enabled>false</enabled>
-        <flow>TestProcessBuilder</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>false</enabled>
-        <flow>UpdateContactFlow</flow>
-    </flowAccesses>
     <layoutAssignments>
         <layout>Campaign__c-Campaign Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Partner__c-Partner Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Partner__c-Partner Layout</layout>
-        <recordType>Partner__c.AC</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Store__c-Store Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Voter__c-Voter Layout</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -106,24 +45,6 @@
         <object>Campaign__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Voter__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>Partner__c.AC</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <tabVisibilities>
-        <tab>Partner__c</tab>
-        <visibility>DefaultOff</visibility>
-    </tabVisibilities>
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>

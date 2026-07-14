@@ -131,8 +131,6 @@
         <members>Account.UpsellOpportunity__c</members>
         <members>Account.Website</members>
         <members>Account.YearStarted</members>
-        <members>Account.gd_Text__c</members>
-        <members>Campaign__c.Alphabet__c</members>
         <members>Campaign__c.StartDate__c</members>
         <members>Case.Case_Category__c</members>
         <members>Case.EngineeringReqNumber__c</members>
@@ -643,6 +641,7 @@
         <name>PermissionSetGroup</name>
     </types>
     <types>
+        <members>New_Marketing_User</members>
         <members>New_SF_Admin</members>
         <members>New_Standard_User</members>
         <name>Profile</name>

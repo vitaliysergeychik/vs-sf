@@ -14,10 +14,6 @@
                 <behavior>Edit</behavior>
                 <field>StartDate__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Alphabet__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
