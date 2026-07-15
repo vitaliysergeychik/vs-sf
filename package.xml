@@ -211,6 +211,8 @@
         <members>SalesCall__c.Answered__c</members>
         <members>SalesCall__c.InitialOutreach__c</members>
         <members>Store__c.Location__c</members>
+        <members>Ticket__c.Description__c</members>
+        <members>Ticket__c.OpenedDate__c</members>
         <members>Voter__c.Address__c</members>
         <members>Voter__c.BirthDate__c</members>
         <members>Voter__c.PhoneNumber__c</members>
@@ -236,6 +238,7 @@
         <members>Product__c</members>
         <members>SalesCall__c</members>
         <members>Store__c</members>
+        <members>Ticket__c</members>
         <members>Voter__c</members>
         <name>CustomObject</name>
     </types>
@@ -506,6 +509,7 @@
         <members>Store__c-Store Layout</members>
         <members>Task-Task Layout</members>
         <members>ThreatDetectionFeedback-Threat Detection Feedback Layout</members>
+        <members>Ticket__c-Ticket Layout</members>
         <members>TimeSlot-Time Slot Layout</members>
         <members>User-User Layout</members>
         <members>UserProvAccount-User Provisioning Account Layout</members>

@@ -1,4 +1,5 @@
 public with sharing class ProductController {
+//new comment
     static Integer PAGE_SIZE = 9;
 
     public class Filters {
