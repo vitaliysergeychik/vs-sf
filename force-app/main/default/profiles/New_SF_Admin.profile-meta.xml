@@ -45,11 +45,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Enrollment__c.ContactEmail__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Partner__c.Letter__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -88,9 +83,6 @@
     </flowAccesses>
     <layoutAssignments>
         <layout>Campaign__c-Campaign Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Enrollment__c-Enrollment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner__c-Partner Layout</layout>
