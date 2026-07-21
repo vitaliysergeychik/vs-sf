@@ -142,7 +142,6 @@
         <members>Contact.Account_Number__c</members>
         <members>Contact.Languages__c</members>
         <members>Contact.Level__c</members>
-        <members>Enrollment__c.ContactEmail__c</members>
         <members>Lead.CurrentGenerators__c</members>
         <members>Lead.NumberofLocations__c</members>
         <members>Lead.Primary__c</members>
@@ -230,7 +229,6 @@
     <types>
         <members>Account</members>
         <members>Campaign__c</members>
-        <members>Enrollment__c</members>
         <members>Manufacturing_Event__e</members>
         <members>NewAccount__c</members>
         <members>Order_Item__c</members>
@@ -423,7 +421,6 @@
         <members>DuplicateRecordSet-Duplicate Record Set Layout</members>
         <members>EmailMessage-Email Message Layout</members>
         <members>EngagementChannelType-Engagement Channel Type Layout</members>
-        <members>Enrollment__c-Enrollment Layout</members>
         <members>Entitlement-Entitlement Layout</members>
         <members>EntityMilestone-Object Milestone Layout</members>
         <members>Event-Event Layout</members>
@@ -661,6 +658,7 @@
     <types>
         <members>New_SF_Admin</members>
         <members>New_Standard_User</members>
+        <members>SolutionManager</members>
         <members>Standard_User_New</members>
         <name>Profile</name>
     </types>
