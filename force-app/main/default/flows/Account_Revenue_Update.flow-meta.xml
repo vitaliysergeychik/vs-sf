@@ -3,6 +3,13 @@
     <apiVersion>64.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <constants>
+        <name>Default_notes</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Im a note!</stringValue>
+        </value>
+    </constants>
+    <constants>
         <description>Default revenue for an account</description>
         <name>Default_Revenue</name>
         <dataType>Number</dataType>
@@ -34,7 +41,6 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <description>Updates the notes field if blank</description>
         <name>Update_Notes</name>
         <label>Update Notes</label>
         <locationX>0</locationX>
@@ -47,7 +53,7 @@
         <inputAssignments>
             <field>Notes__c</field>
             <value>
-                <elementReference>Default_Revenue</elementReference>
+                <elementReference>Default_notes</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -87,5 +93,5 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
