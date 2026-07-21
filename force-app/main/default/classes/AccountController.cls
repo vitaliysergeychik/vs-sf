@@ -1,5 +1,5 @@
 public with sharing class AccountController {
-  //new apex class
+  
   public static List<Account> getAllActiveAccounts() {
     return [
     SELECT Id, Name, Active__c, Notes__c
@@ -13,5 +13,8 @@ public with sharing class AccountController {
   
   public static List<Account> getAllAccounts() {
       return [SELECT Id, Name, Active__c, Notes__c FROM Account];
+  }
+  public static List<Account> getAllActiveAccounts2() {
+      return [SELECT Id, Name, Active__c, Notes__c FROM Account WHERE Active__c = 'Yes'];
   }
 }
